@@ -16,7 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String realName;
     private String password;
+
+    private String plainPassword;
     @Transient
     private String confirmPassword;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

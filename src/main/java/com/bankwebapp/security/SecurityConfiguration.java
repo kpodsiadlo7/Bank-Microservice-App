@@ -18,8 +18,6 @@ public class SecurityConfiguration {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
-    @Autowired
-    private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -44,19 +42,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
-                .disable().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and()
-                .authorizeHttpRequests()
+                .disable().authorizeRequests()
                 .antMatchers("/js/*", "/css/*").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/**").hasRole("USER").and()
                 .formLogin()
-                .loginPage("/login").defaultSuccessUrl("/budgets").permitAll()
+                .loginPage("/login").defaultSuccessUrl("/dashboard").permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();
         http.authenticationProvider(authenticationProvider());
-
         return http.build();
     }
 }
