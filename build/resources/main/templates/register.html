@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+    <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#backToMainPage").click(function () {
+                window.location.href = '/login';
+            });
+        });
+        $(function () {
+            if ($("#errorMsg").text() != "") {
+                $("#errorMsg").removeClass("d-none");
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="card">
+    <h2>Register</h2>
+    <div class="card-body col-2">
+        <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
+        <form action="" method="post">
+            <div class="form-group">
+                <label>
+                    <label for="realName" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" required th:field="${user.realName}">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <label for="username" class="form-label">Login</label>
+                    <input type="text" class="form-control" required th:field="${user.username}">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" required th:field="${user.password}">
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <label for="confirmPassword" class="form-label">Please confirm your password</label>
+                    <input type="password" class="form-control" required th:field="${user.confirmPassword}">
+                </label>
+            </div>
+            <button id="backToMainPage" type="button" class="btn">Back to main page</button>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

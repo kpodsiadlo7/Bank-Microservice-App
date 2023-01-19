@@ -11,7 +11,7 @@ import java.util.TreeSet;
 @Entity
 @Getter
 @Setter
-public class UserAccount {
+public class UserAccount implements Comparable<UserAccount> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,4 +22,13 @@ public class UserAccount {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAccount")
     @OrderBy(clause = "id")
     private Set<BankAccount> bankAccounts = new TreeSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAccount")
+    @OrderBy(clause = "id")
+    private Set<CardAccount> cardAccounts = new TreeSet<>();
+
+    @Override
+    public int compareTo(final UserAccount o) {
+        return this.id.compareTo(o.getId());
+    }
 }
