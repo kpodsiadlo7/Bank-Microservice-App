@@ -20,6 +20,7 @@ public class BankAccount implements Comparable<BankAccount>{
     private BigDecimal balance;
     private String number;
     private String currency;
+    private String currencyShort;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "bankAccount")
     @OrderBy(clause = "id")
     private Set<Transaction> transactions = new TreeSet<>();

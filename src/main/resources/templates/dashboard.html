@@ -6,12 +6,12 @@
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
 </head>
 <body>
-<div class="card text-bg-light mb-3" style="width: 25rem;">
-    <h5 class="card-header" >Account name</h5>
+<div class="card text-bg-light mb-3" th:each="account : ${userBankAccounts}" style="width: 25rem;">
+    <h5 class="card-header" th:text="${account.name}" >Account name</h5>
     <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted" >Currency account</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+        <h6 class="card-subtitle mb-2 text-muted" th:text="${account.currency}">Currency account</h6>
+        <h6 class="card-subtitle" th:text="|Account no. ${account.number}|">Currency number</h6>
+        <h6 class="card-subtitle" th:text="|Balance ${account.balance} ${account.currencyShort}|">Currency balance</h6>
         <a id="viewAccount" class="card-link">Card link</a>
     </div>
 </div>

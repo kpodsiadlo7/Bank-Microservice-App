@@ -28,9 +28,9 @@ public class DashboardController {
 
     @GetMapping
     private String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
-        //BankAccount bankAccount = new BankAccount();
+        BankAccount bankAccount = new BankAccount();
         modelMap.put("userBankAccounts",dashboardService.getAllUserAccountsByUserId(user));
-        //modelMap.put("bankAccount",bankAccount);
+        modelMap.put("bankAccount",bankAccount);
         return "dashboard";
     }
 }
