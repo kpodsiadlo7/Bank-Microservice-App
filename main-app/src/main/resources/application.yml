@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  flyway:
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_DATABASE_URL}
+    baseline-on-migrate: true
+  datasource:
+    url: ${POSTGRES_DATABASE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: 'org.postgresql.Driver'
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+user:
+  manager:
+    url: ${USER_MANAGER_URL}

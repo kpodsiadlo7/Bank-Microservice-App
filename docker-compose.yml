@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres:5432/postgres -schemas=public -connectRetries=60 migrate -user=postgres -password=password
+    volumes:
+      - ./flyway:/flyway/sql/
+    depends_on:
+      - postgres
+
+  main-app:
+    environment:
+      - USER_MANAGER_URL=http://user-manager:8090/
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+    restart: on-failure
+    build:
+      context: main-app
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
+  user-manager:
+    environment:
+      - AUTHENTICATION_MANAGER_URL=http://user-manager:8000/
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+    restart: on-failure
+    build:
+      context: user-manager
+      dockerfile: Dockerfile
+    ports:
+      - 8090:8090
+
+  authentication-manager:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+    restart: always
+    build:
+      context: authentication-manager
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
