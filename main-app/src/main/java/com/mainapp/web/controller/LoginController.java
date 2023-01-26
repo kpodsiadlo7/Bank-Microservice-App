@@ -35,8 +35,8 @@ public class LoginController {
 
     @PostMapping("/register")
     public String postRegister(@ModelAttribute UserDto userDto, ModelMap modelMap){
-        if (!userService.validUserData(userMapper.mapToUserFromUserDto(userDto),modelMap))
-            return "register";
+        //if (!userService.validUserData(userMapper.mapToUserFromUserDto(userDto),modelMap))
+           // return "register";
         return "redirect:/dashboard";
     }
 }

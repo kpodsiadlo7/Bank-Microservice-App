@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OrderBy;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -21,4 +23,6 @@ public class User {
     private String plainPassword;
     private String confirmPassword;
     private Set<Authority> authorities = new HashSet<>();
+    @OrderBy(clause = "id")
+    private Set<UserAccounts> accounts = new TreeSet<>();
 }
