@@ -54,3 +54,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+
+  accounts-manager:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+    restart: always
+    build:
+      context: accounts-manager
+      dockerfile: Dockerfile
+    ports:
+      - 8010:8010

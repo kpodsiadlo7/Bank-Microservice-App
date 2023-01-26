@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Bank Microservice.iml" filepath="$PROJECT_DIR$/.idea/Bank Microservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/accounts-manager/accounts-manager.iml" filepath="$PROJECT_DIR$/accounts-manager/accounts-manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/authentication-manager/authentication-manager.iml" filepath="$PROJECT_DIR$/authentication-manager/authentication-manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/main-app/main-app.iml" filepath="$PROJECT_DIR$/main-app/main-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/user-manager/user-manager.iml" filepath="$PROJECT_DIR$/user-manager/user-manager.iml" />

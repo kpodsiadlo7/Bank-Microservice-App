@@ -1,4 +1,4 @@
-package com.usermanager.domain;
+package com.accountsmanager.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +23,4 @@ public class AccountEntity {
     private String number;
     private String currency;
     private String currencySymbol;
-    @ManyToOne
-    private UserEntity userEntity;
 }
