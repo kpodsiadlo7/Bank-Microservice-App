@@ -1,61 +1,83 @@
 package com.mainapp.service;
 
 import com.mainapp.repository.adapter.AdapterAuthorityRepository;
-import com.mainapp.security.Authority;
+import com.mainapp.security.AuthorityEntity;
 import com.mainapp.service.data.User;
+import com.mainapp.service.data.UserAccount;
+import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
-import com.mainapp.web.dto.UserDto;
+import com.mainapp.web.feign.FeignServiceAccountsManager;
 import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 
-import java.util.Set;
+import java.math.BigDecimal;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-
-    private final PasswordEncoder passwordEncoder;
     private final FeignServiceUserManager feignServiceUserManager;
-    private final UserMapper userMapper;
+    private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final AdapterAuthorityRepository adapterAuthorityRepository;
+    private final UserMapper userMapper;
+    private final UserAccountsMapper userAccountsMapper;
 
     public boolean createUser(final User user, final ModelMap modelMap) {
-       /* if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getConfirmPassword()) || StringUtils.isEmpty(user.getRealName())) {
-            modelMap.put("error", "You must fill all fields!");
-            return false;
-        }
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            modelMap.put("error", "Passwords don't match");
-            return false;
-        }
-        encodeUserPassword(user);
+        User userFromUserManager = userMapper.mapToUserFromUserDto
+                (feignServiceUserManager.createUser(userMapper.mapToUserDtoFromUser(user)));
+        log.info("user id"+userFromUserManager.getId().toString());
+        if (userFromUserManager.getId() != null) {
+            createMainAccountForUser(userFromUserManager.getId());
+        } else
+            modelMap.put("error", returnCurrentErrorStatement(user.getUsername()));
 
-        */
-        User userFromUserManager = userMapper.mapToUserFromUserDto(feignServiceUserManager.createUser(userMapper.mapToUserDtoFromUser(user)));
 
-        Authority authority = new Authority();
-        authority.setAuthority("ROLE_USER");
-        authority.setUserId(userFromUserManager.getUserId());
-        adapterAuthorityRepository.save(authority);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        Authentication authentication = new UsernamePasswordAuthenticationToken
+                (setAuthorityForUser(userFromUserManager), null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        log.info(authority.getUserId().toString());
         return true;
     }
 
-    private void encodeUserPassword(final User user) {
-        user.setPlainPassword(user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    private String returnCurrentErrorStatement(final String username) {
+        switch (username) {
+            case "Password doesn't match!" -> {
+                return "Password doesn't match!";
+            }
+            case "Invalid data" -> {
+                return "Invalid Data";
+            }
+            case "User already exist!" -> {
+                return "User already exist!";
+            }
+        }
+        return "";
+    }
+
+    private User setAuthorityForUser(final User userFromUserManager) {
+        AuthorityEntity authorityEntity = new AuthorityEntity();
+        authorityEntity.setAuthority("ROLE_USER");
+        authorityEntity.setUserId(userFromUserManager.getId());
+        adapterAuthorityRepository.save(authorityEntity);
+        return userFromUserManager;
+    }
+
+    private void createMainAccountForUser(final Long userId) {
+        UserAccount userAccount = new UserAccount(
+                null,
+                "Main Account",
+                new BigDecimal(0),
+                "",
+                "PLN",
+                "zł"
+        );
+        feignServiceAccountsManager.createAccountForUser
+                (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount));
     }
 }

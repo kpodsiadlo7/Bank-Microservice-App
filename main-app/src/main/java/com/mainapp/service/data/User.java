@@ -1,6 +1,6 @@
 package com.mainapp.service.data;
 
-import com.mainapp.security.Authority;
+import com.mainapp.security.AuthorityEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,20 +16,20 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private Long userId;
+    private Long id;
     private String username;
     private String realName;
     private String password;
     private String plainPassword;
     private String confirmPassword;
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
-    private Set<UserAccounts> accounts = new TreeSet<>();
+    private Set<UserAccount> accounts = new TreeSet<>();
 
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", username='" + username + '\'' +
                 ", realName='" + realName + '\'' +
                 ", password='" + password + '\'' +

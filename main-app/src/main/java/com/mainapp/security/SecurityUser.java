@@ -12,14 +12,14 @@ public class SecurityUser extends User implements UserDetails {
 
     public SecurityUser(final User user) {
         this.setAuthorities(user.getAuthorities());
-        this.setUserId(user.getUserId());
+        this.setId(user.getId());
         this.setUsername(user.getUsername());
         this.setPassword(user.getPassword());
         this.setUsername(user.getUsername());
     }
 
     @Override
-    public Set<Authority> getAuthorities() {
+    public Set<AuthorityEntity> getAuthorities() {
         return super.getAuthorities();
     }
 

@@ -14,7 +14,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/getuser")
-    public ResponseEntity<UserDto> getUserById(@RequestParam final Long userId) {
+    public ResponseEntity<UserDto> getUserById(@RequestParam Long userId) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.getUserById(userId)));
     }
 

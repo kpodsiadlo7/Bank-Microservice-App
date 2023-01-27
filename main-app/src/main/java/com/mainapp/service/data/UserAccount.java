@@ -1,24 +1,18 @@
-package com.accountsmanager.domain;
+package com.mainapp.service.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "accounts_db")
-public class AccountEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserAccount {
     private Long id;
-    private Long userId;
     private String accountName;
     private BigDecimal balance;
     private String number;

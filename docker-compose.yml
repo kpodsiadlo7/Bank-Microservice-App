@@ -32,7 +32,6 @@ services:
 
   user-manager:
     environment:
-      - AUTHENTICATION_MANAGER_URL=http://user-manager:8000/
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres

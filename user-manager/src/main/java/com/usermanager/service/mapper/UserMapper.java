@@ -19,7 +19,7 @@ public class UserMapper {
 
     public User mapToUserFromUserDto(final UserDto userDto) {
         return new User(
-                userDto.getUserId(),
+                userDto.getId(),
                 userDto.getUsername(),
                 userDto.getRealName(),
                 userDto.getPassword(),

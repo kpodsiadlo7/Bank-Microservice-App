@@ -1,23 +1,27 @@
-package com.mainapp.security;
+package com.accountsmanager.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "authorities_db")
-public class Authority implements GrantedAuthority {
+@Table(name = "accounts_db")
+public class UserAccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private String authority;
+    private String accountName;
+    private BigDecimal balance;
+    private String number;
+    private String currency;
+    private String currencySymbol;
 }

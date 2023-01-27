@@ -1,7 +1,7 @@
 package com.mainapp.repository.adapter;
 
-import com.mainapp.security.Authority;
+import com.mainapp.security.AuthorityEntity;
 
 public interface AdapterAuthorityRepository {
-    Authority save(Authority userEntity);
+    AuthorityEntity save(AuthorityEntity userEntity);
 }

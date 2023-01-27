@@ -13,6 +13,15 @@ public class UserService {
     private final AdapterUserEntityRepository adapterUserRepository;
     private final UserMapper userMapper;
 
+
+    /*
+    private void encodeUserPassword(final User user) {
+        user.setPlainPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    }
+
+     */
+
     public User getUserById(final Long userId) {
         return new User(
                 7L,

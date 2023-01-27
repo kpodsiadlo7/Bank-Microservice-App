@@ -1,7 +1,7 @@
 package com.mainapp.web.dto;
 
-import com.mainapp.security.Authority;
-import com.mainapp.service.data.UserAccounts;
+import com.mainapp.security.AuthorityEntity;
+import com.mainapp.service.data.UserAccount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +15,13 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private Long userId;
+    private Long id;
     private String username;
     private String realName;
     private String password;
     private String plainPassword;
     private String confirmPassword;
-    private Set<Authority> authorities = new HashSet<>();
+    private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
-    private Set<UserAccounts> accounts = new TreeSet<>();
+    private Set<UserAccount> accounts = new TreeSet<>();
 }
