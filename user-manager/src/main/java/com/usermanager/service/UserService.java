@@ -14,22 +14,32 @@ public class UserService {
     private final UserMapper userMapper;
 
     public User getUserById(final Long userId) {
-        return new User();
+        return new User(
+                7L,
+                "test",
+                "test",
+                "test",
+                "test"
+        );
     }
 
-    public String createUser(final User user) {
+    public User createUser(final User user) {
+        User userForFail = new User();
         switch (validateBeforeCreateUser(user)) {
-            case "User already exist":
-                return "User already exist";
-            case "Invalid data":
-                return "Invalid data";
+            case "User already exist" -> {
+                userForFail.setUsername("User already exist");
+                return userForFail;
+            }
+            case "Invalid data" -> {
+                userForFail.setUsername("Invalid data");
+                return userForFail;
+            }
         }
-        registerUser(user);
-        return "ok";
+        return registerUser(user);
     }
 
-    private void registerUser(final User user) {
-        adapterUserRepository.save(userMapper.mapToUserEntityFromUser(user));
+    private User registerUser(final User user) {
+        return userMapper.mapToUserFromUserEntity(adapterUserRepository.save(userMapper.mapToUserEntityFromUser(user)));
     }
 
     private String validateBeforeCreateUser(final User user) {

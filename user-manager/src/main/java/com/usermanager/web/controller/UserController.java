@@ -13,13 +13,13 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @GetMapping("/getuser/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable final Long userId) {
+    @GetMapping("/getuser")
+    public ResponseEntity<UserDto> getUserById(@RequestParam final Long userId) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.getUserById(userId)));
     }
 
     @PostMapping("/createuser")
-    public ResponseEntity<String> createUser(@RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.createUser(userMapper.mapToUserFromUserDto(userDto)));
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+        return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.createUser(userMapper.mapToUserFromUserDto(userDto))));
     }
 }

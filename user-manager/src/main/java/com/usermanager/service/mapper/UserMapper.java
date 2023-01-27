@@ -36,4 +36,14 @@ public class UserMapper {
                 user.getPlainPassword()
         );
     }
+
+    public User mapToUserFromUserEntity(final UserEntity userEntity) {
+        return new User(
+                userEntity.getId(),
+                userEntity.getUsername(),
+                userEntity.getRealName(),
+                userEntity.getPassword(),
+                userEntity.getPlainPassword()
+        );
+    }
 }
