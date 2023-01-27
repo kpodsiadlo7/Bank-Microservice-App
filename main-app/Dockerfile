@@ -5,6 +5,8 @@ COPY .mvn .mvn
 
 RUN mvn -f /home/app/pom.xml clean install
 FROM openjdk:17
-COPY --from=build /home/app/target/main-app-0.0.1-SNAPSHOT.jar /usr/local/lib/main-app.jar
+FROM tomcat:latest
+
+COPY --from=build /home/app/target/main-app-0.0.1-SNAPSHOT.war /usr/local/lib/main-app.war
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -jar /usr/local/lib/main-app.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar /usr/local/lib/main-app.war"]

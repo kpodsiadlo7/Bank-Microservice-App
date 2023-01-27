@@ -22,4 +22,9 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.createUser(userMapper.mapToUserFromUserDto(userDto))));
     }
+
+    @GetMapping("/login")
+    public ResponseEntity<UserDto> loginUser(@RequestParam String username){
+        return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.loginUser(username)));
+    }
 }

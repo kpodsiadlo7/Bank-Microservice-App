@@ -1,6 +1,7 @@
 package com.usermanager.service;
 
-import com.usermanager.adapter.AdapterUserEntityRepository;
+import com.usermanager.domain.UserEntity;
+import com.usermanager.repository.adapter.AdapterUserEntityRepository;
 import com.usermanager.service.data.User;
 import com.usermanager.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +61,10 @@ public class UserService {
                 user.getPlainPassword() == null || user.getPlainPassword().isEmpty())
             return "Invalid data";
         return "";
+    }
+
+    public User loginUser(final String username) {
+        UserEntity userFromDbByUsername = adapterUserRepository.findByUsername(username);
+        return userMapper.mapToUserFromUserEntity(userFromDbByUsername);
     }
 }

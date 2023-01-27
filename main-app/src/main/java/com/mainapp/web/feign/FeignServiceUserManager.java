@@ -14,4 +14,7 @@ public interface FeignServiceUserManager {
 
     @PostMapping(value = "/createuser")
     UserDto createUser(@RequestBody UserDto userDto);
+
+    @GetMapping("/login")
+    UserDto loginUser(@RequestParam String username);
 }

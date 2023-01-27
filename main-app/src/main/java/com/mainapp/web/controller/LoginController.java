@@ -18,8 +18,8 @@ public class LoginController {
 
     @GetMapping
     public String getLogin(ModelMap modelMap) {
-        UserDto userDto = new UserDto();
-        modelMap.put("userDto", userDto);
+        //UserDto userDto = new UserDto();
+        //modelMap.put("userDto", userDto);
         return "login";
     }
 
