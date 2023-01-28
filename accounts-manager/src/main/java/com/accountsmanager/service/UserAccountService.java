@@ -1,9 +1,9 @@
 package com.accountsmanager.service;
 
 import com.accountsmanager.domain.UserAccountEntity;
-import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.repository.adapter.AdapterUserAccountRepository;
 import com.accountsmanager.service.data.UserAccount;
+import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.web.dto.UserAccountDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

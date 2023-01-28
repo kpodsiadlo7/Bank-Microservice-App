@@ -1,7 +1,7 @@
 package com.accountsmanager.web.controller;
 
-import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.service.UserAccountService;
+import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.web.dto.UserAccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class UserAccountController {
 
     @PostMapping("/createaccount")
     public ResponseEntity<UserAccountDto> createAccount(@RequestParam Long userId,
-                                                        @RequestBody UserAccountDto userAccountDto){
+                                                        @RequestBody UserAccountDto userAccountDto) {
         return ResponseEntity.ok(userAccountService.createAccountForUser
-                (userId,userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto)));
+                (userId, userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto)));
     }
 }

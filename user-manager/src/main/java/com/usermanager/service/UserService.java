@@ -16,24 +16,6 @@ public class UserService {
     private final AdapterUserEntityRepository adapterUserRepository;
     private final UserMapper userMapper;
 
-
-    /*
-    private void encodeUserPassword(final User user) {
-        user.setPlainPassword(user.getPassword());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-    }
-
-     */
-
-    public User getUserById(final Long userId) {
-        return new User(
-                7L,
-                "test",
-                "test",
-                "test"
-        );
-    }
-
     public User createUser(final User user) {
         User userForFail = new User();
         log.info("create user start method");
@@ -53,6 +35,7 @@ public class UserService {
         log.info("after validation, before register");
         return registerUser(user);
     }
+
     public boolean checkIfUserExistInDbWithThisUsername(final String username) {
         return adapterUserRepository.existsByUsername(username);
     }
@@ -66,13 +49,14 @@ public class UserService {
         log.info("register method start");
         UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
         adapterUserRepository.save(userEntity);
-        log.info("after save db and user id: "+userEntity.getId().toString());
+        log.info("after save db and user id: " + userEntity.getId().toString());
         return userMapper.mapToUserFromUserEntity(userEntity);
     }
 
     private String validateBeforeCreateUser(final User user) {
-        log.info("validate before create user start method");
+
+        //TODO
+
         return "";
     }
-
 }
