@@ -12,7 +12,6 @@ public class UserMapper {
                 userDto.getUsername(),
                 userDto.getRealName(),
                 userDto.getPassword(),
-                userDto.getPlainPassword(),
                 userDto.getConfirmPassword(),
                 userDto.getAuthorities(),
                 userDto.getAccounts()
@@ -25,7 +24,6 @@ public class UserMapper {
                 user.getUsername(),
                 user.getRealName(),
                 user.getPassword(),
-                user.getPlainPassword(),
                 user.getConfirmPassword(),
                 user.getAuthorities(),
                 user.getAccounts()

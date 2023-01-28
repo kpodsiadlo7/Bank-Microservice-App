@@ -21,7 +21,6 @@ public class UserDto {
     private String username;
     private String realName;
     private String password;
-    private String plainPassword;
     private String confirmPassword;
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")

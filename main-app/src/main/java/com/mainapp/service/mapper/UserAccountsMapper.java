@@ -36,4 +36,15 @@ public class UserAccountsMapper {
                 userAccount.getCurrencySymbol()
         );
     }
+
+    public UserAccount mapToUserAccountFromUserAccountDto(final UserAccountDto accountForUser) {
+        return new UserAccount(
+                accountForUser.getId(),
+                accountForUser.getAccountName(),
+                accountForUser.getBalance(),
+                accountForUser.getNumber(),
+                accountForUser.getCurrency(),
+                accountForUser.getCurrencySymbol()
+        );
+    }
 }

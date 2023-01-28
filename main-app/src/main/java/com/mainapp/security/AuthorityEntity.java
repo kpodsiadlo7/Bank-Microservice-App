@@ -20,4 +20,5 @@ public class AuthorityEntity implements GrantedAuthority {
     private Long id;
     private Long userId;
     private String authority;
+    private String userPassword;
 }

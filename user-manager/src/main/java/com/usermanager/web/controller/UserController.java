@@ -17,14 +17,18 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@RequestParam Long userId) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.getUserById(userId)));
     }
+    @GetMapping("/login")
+    public ResponseEntity<UserDto> loginUser(@RequestParam String username){
+        return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.loginUser(username)));
+    }
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkUser(@RequestParam String username){
+        return ResponseEntity.ok(userService.checkIfUserExistInDbWithThisUsername(username));
+    }
 
     @PostMapping("/createuser")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.createUser(userMapper.mapToUserFromUserDto(userDto))));
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<UserDto> loginUser(@RequestParam String username){
-        return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.loginUser(username)));
-    }
 }

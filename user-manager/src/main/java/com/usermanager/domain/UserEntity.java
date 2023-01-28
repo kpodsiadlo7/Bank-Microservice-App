@@ -16,12 +16,10 @@ public class UserEntity {
     private String username;
     private String realName;
     private String password;
-    private String plainPassword;
 
-    public UserEntity(final String username, final String realName, final String password, final String plainPassword) {
+    public UserEntity(final String username, final String realName, final String password) {
         this.username = username;
         this.realName = realName;
         this.password = password;
-        this.plainPassword = plainPassword;
     }
 }

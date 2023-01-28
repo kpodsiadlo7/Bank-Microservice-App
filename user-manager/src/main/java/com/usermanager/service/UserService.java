@@ -30,7 +30,6 @@ public class UserService {
                 7L,
                 "test",
                 "test",
-                "test",
                 "test"
         );
     }
@@ -41,7 +40,6 @@ public class UserService {
         log.info(user.getUsername());
         log.info(user.getPassword());
         log.info(user.getRealName());
-        log.info(user.getPlainPassword());
         switch (validateBeforeCreateUser(user)) {
             case "User already exist" -> {
                 userForFail.setUsername("User already exist");
@@ -55,6 +53,14 @@ public class UserService {
         log.info("after validation, before register");
         return registerUser(user);
     }
+    public boolean checkIfUserExistInDbWithThisUsername(final String username) {
+        return adapterUserRepository.existsByUsername(username);
+    }
+
+    public User loginUser(final String username) {
+        UserEntity userFromDbByUsername = adapterUserRepository.findByUsername(username);
+        return userMapper.mapToUserFromUserEntity(userFromDbByUsername);
+    }
 
     private User registerUser(final User user) {
         log.info("register method start");
@@ -66,19 +72,7 @@ public class UserService {
 
     private String validateBeforeCreateUser(final User user) {
         log.info("validate before create user start method");
-        if (adapterUserRepository.existsByUsernameAndPlainPassword(user.getUsername(), user.getPlainPassword()))
-            return "User already exist";
-        if (user.getUsername() == null || user.getUsername().isEmpty() ||
-                user.getRealName() == null || user.getRealName().isEmpty() ||
-                user.getPassword() == null || user.getPassword().isEmpty() ||
-                user.getPlainPassword() == null || user.getPlainPassword().isEmpty())
-            return "Invalid data";
-        log.info("validate before create end method");
         return "";
     }
 
-    public User loginUser(final String username) {
-        UserEntity userFromDbByUsername = adapterUserRepository.findByUsername(username);
-        return userMapper.mapToUserFromUserEntity(userFromDbByUsername);
-    }
 }
