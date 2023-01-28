@@ -29,7 +29,6 @@ public class UserMapper {
 
     public UserEntity mapToUserEntityFromUser(final User user) {
         return new UserEntity(
-                user.getId(),
                 user.getUsername(),
                 user.getRealName(),
                 user.getPassword(),

@@ -33,7 +33,6 @@ public class UserAccountsMapper {
 
     public UserAccountEntity mapToUserAccountEntityFromUserAccount(final UserAccount userAccount) {
         return new UserAccountEntity(
-                userAccount.getId(),
                 userAccount.getUserId(),
                 userAccount.getAccountName(),
                 userAccount.getBalance(),
