@@ -18,13 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class MainService {
 
     private final FeignServiceUserManager feignServiceUserManager;
     private final FeignServiceAccountsManager feignServiceAccountsManager;
@@ -48,7 +47,9 @@ public class UserService {
         User userFromUserManager = createAndReturnNewUser(user);
 
         //creating, returning and set main account for new user using external application accounts-manager
-        userFromUserManager.setAccounts(Set.of(createMainAccountForUser(userFromUserManager.getId())));
+        UserAccount userAccount = new UserAccount();
+        userAccount.setAccountName("Main account");
+        userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), userAccount)));
 
         User afterAuthority = setAuthorityForUser(userFromUserManager);
         log.info(afterAuthority.toString());
@@ -76,15 +77,7 @@ public class UserService {
         return userFromUserManager;
     }
 
-    private UserAccount createMainAccountForUser(final Long userId) {
-        UserAccount userAccount = new UserAccount(
-                null,
-                "Main Account",
-                new BigDecimal(0),
-                "",
-                "PLN",
-                "zł"
-        );
+    private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }

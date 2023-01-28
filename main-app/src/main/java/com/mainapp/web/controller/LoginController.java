@@ -1,9 +1,8 @@
 package com.mainapp.web.controller;
 
 import com.mainapp.service.mapper.UserMapper;
-import com.mainapp.service.UserService;
+import com.mainapp.service.MainService;
 import com.mainapp.web.dto.UserDto;
-import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/login")
 public class LoginController {
 
-    private final UserService userService;
+    private final MainService mainService;
     private final UserMapper userMapper;
 
     @GetMapping
@@ -36,7 +35,7 @@ public class LoginController {
     @PostMapping("/register")
     public String postRegister(@ModelAttribute UserDto userDto,ModelMap modelMap){
         log.info(userDto.toString());
-        if (!userService.createUser(userMapper.mapToUserFromUserDto(userDto),modelMap))
+        if (!mainService.createUser(userMapper.mapToUserFromUserDto(userDto),modelMap))
             return "register";
         return "redirect:/dashboard";
     }
