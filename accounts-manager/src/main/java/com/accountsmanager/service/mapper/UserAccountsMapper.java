@@ -3,8 +3,13 @@ package com.accountsmanager.service.mapper;
 import com.accountsmanager.domain.UserAccountEntity;
 import com.accountsmanager.service.data.UserAccount;
 import com.accountsmanager.web.dto.UserAccountDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @Service
 public class UserAccountsMapper {
     public UserAccountDto mapToUserAccountDtoFromUserAccount(final UserAccount userAccount) {
@@ -52,5 +57,23 @@ public class UserAccountsMapper {
                 userAccountEntity.getCurrency(),
                 userAccountEntity.getCurrencySymbol()
         );
+    }
+
+    public List<UserAccount> mapToUserAccountSetFromUserAccountEntitySet(final List<UserAccountEntity> allUserAccounts) {
+        List<UserAccount> accounts = new ArrayList<>();
+        for (UserAccountEntity account : allUserAccounts) {
+            accounts.add(mapToUserAccountFromUserAccountEntity(account));
+        }
+        log.info("account after first mapper size: "+accounts.size());
+        return accounts;
+    }
+
+    public List<UserAccountDto> mapToUserAccountDtoSetFromUserAccountSet(final List<UserAccount> allUserAccounts) {
+        List<UserAccountDto> accounts = new ArrayList<>();
+        for (UserAccount account : allUserAccounts) {
+            accounts.add(mapToUserAccountDtoFromUserAccount(account));
+        }
+        log.info("account after second mapper size: "+accounts.size());
+        return accounts;
     }
 }

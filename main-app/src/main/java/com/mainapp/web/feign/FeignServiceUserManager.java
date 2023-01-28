@@ -20,4 +20,7 @@ public interface FeignServiceUserManager {
 
     @GetMapping("/check")
     boolean checkUser(@RequestParam String username);
+
+    @GetMapping("/warm")
+    void warmUp();
 }

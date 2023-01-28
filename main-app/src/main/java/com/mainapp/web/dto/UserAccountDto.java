@@ -11,11 +11,16 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountDto {
+public class UserAccountDto implements Comparable<UserAccountDto>{
     private Long id;
     private String accountName;
     private BigDecimal balance;
     private String number;
     private String currency;
     private String currencySymbol;
+
+    @Override
+    public int compareTo(final UserAccountDto o) {
+        return this.id.compareTo(o.getId());
+    }
 }

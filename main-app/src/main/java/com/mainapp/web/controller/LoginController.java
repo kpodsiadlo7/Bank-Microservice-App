@@ -3,6 +3,8 @@ package com.mainapp.web.controller;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.service.MainService;
 import com.mainapp.web.dto.UserDto;
+import com.mainapp.web.feign.FeignServiceAccountsManager;
+import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,15 @@ public class LoginController {
 
     private final MainService mainService;
     private final UserMapper userMapper;
+    private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final FeignServiceUserManager feignServiceUserManager;
 
     @GetMapping
     public String getLogin(ModelMap modelMap) {
         UserDto userDto = new UserDto();
         modelMap.put("userDto", userDto);
+        feignServiceAccountsManager.warmUp();
+        feignServiceUserManager.warmUp();
         return "login";
     }
 

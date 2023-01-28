@@ -5,10 +5,10 @@ import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.web.dto.UserAccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.TreeSet;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +23,13 @@ public class UserAccountController {
         return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccountService.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto))));
     }
+
+    @GetMapping("/getaccounts")
+    public ResponseEntity<List<UserAccountDto>> getAllUserAccountsByUserId(@RequestParam Long userId){
+        return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoSetFromUserAccountSet
+                (userAccountService.getAllUserAccounts(userId)));
+    }
+
+    @GetMapping("/warm")
+    public void warmUp(){}
 }

@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
+import java.util.TreeSet;
 
 @Slf4j
 @Service
@@ -56,5 +58,12 @@ public class UserAccountService {
             b.append(random.nextInt(7));
         }
         return b.toString();
+    }
+
+    public List<UserAccount> getAllUserAccounts(final Long userId) {
+        log.info("get all user accounts start method and user id: " +userId);
+        List<UserAccountEntity> accountEntities = adapterUserAccountRepository.findAllByUserId(userId);
+        log.info("quantity accounts from db: "+accountEntities.size());
+        return userAccountsMapper.mapToUserAccountSetFromUserAccountEntitySet(accountEntities);
     }
 }
