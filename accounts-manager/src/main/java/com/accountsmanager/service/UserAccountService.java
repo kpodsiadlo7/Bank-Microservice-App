@@ -51,8 +51,8 @@ public class UserAccountService {
 
     private String createAccountNumber(final String bankNumberSymbol) {
         String symbol = switch (bankNumberSymbol) {
-            case "PLN" -> "PL";
-            case "EUR" -> "DE";
+            case "PLN" -> "PL55";
+            case "EUR" -> "DE49";
             default -> "";
         };
         Random random = new Random();
