@@ -20,7 +20,6 @@ public class User {
     private String username;
     private String realName;
     private String password;
-    private String plainPassword;
     private String confirmPassword;
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
@@ -29,14 +28,13 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + id +
+                "id=" + id +
                 ", username='" + username + '\'' +
                 ", realName='" + realName + '\'' +
                 ", password='" + password + '\'' +
-                ", plainPassword='" + plainPassword + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
-                ", authorities=" + authorities.size() +
-                ", accounts=" + accounts.size() +
+                ", authorities= " + authorities.size() +
+                ", accounts= " + accounts.size() +
                 '}';
     }
 }

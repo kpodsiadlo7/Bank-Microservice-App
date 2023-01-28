@@ -12,8 +12,7 @@ public class UserMapper {
                 user.getId(),
                 user.getUsername(),
                 user.getRealName(),
-                user.getPassword(),
-                user.getPlainPassword()
+                user.getPassword()
         );
     }
 
@@ -22,8 +21,7 @@ public class UserMapper {
                 userDto.getId(),
                 userDto.getUsername(),
                 userDto.getRealName(),
-                userDto.getPassword(),
-                userDto.getPlainPassword()
+                userDto.getPassword()
         );
     }
 
@@ -31,8 +29,7 @@ public class UserMapper {
         return new UserEntity(
                 user.getUsername(),
                 user.getRealName(),
-                user.getPassword(),
-                user.getPlainPassword()
+                user.getPassword()
         );
     }
 
@@ -41,8 +38,7 @@ public class UserMapper {
                 userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getRealName(),
-                userEntity.getPassword(),
-                userEntity.getPlainPassword()
+                userEntity.getPassword()
         );
     }
 }

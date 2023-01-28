@@ -17,4 +17,7 @@ public interface FeignServiceUserManager {
 
     @GetMapping("/login")
     UserDto loginUser(@RequestParam String username);
+
+    @GetMapping("/check")
+    boolean checkUser(@RequestParam String username);
 }

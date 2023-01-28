@@ -31,8 +31,7 @@ public class UserServiceTestSuite {
                 7L,
                 "user",
                 "real user",
-                "password",
-                "plain password"
+                "password"
         );
         //when
         UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);
@@ -40,7 +39,6 @@ public class UserServiceTestSuite {
         Assertions.assertEquals(7L, userAfterMapper.getId());
         Assertions.assertEquals("real user", userAfterMapper.getRealName());
         Assertions.assertEquals("password", userAfterMapper.getPassword());
-        Assertions.assertEquals("plain password", userAfterMapper.getPlainPassword());
     }
 
     @Test
@@ -50,8 +48,7 @@ public class UserServiceTestSuite {
                 7L,
                 "user dto",
                 "real dto",
-                "dtopass",
-                "plain dtopass"
+                "dtopass"
         );
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
@@ -59,7 +56,6 @@ public class UserServiceTestSuite {
         Assertions.assertEquals(7L, userAfterMapper.getId());
         Assertions.assertEquals("real dto", userAfterMapper.getRealName());
         Assertions.assertEquals("dtopass", userAfterMapper.getPassword());
-        Assertions.assertEquals("plain dtopass", userAfterMapper.getPlainPassword());
     }
 
     @Test
@@ -69,8 +65,7 @@ public class UserServiceTestSuite {
                 7L,
                 "user",
                 "user",
-                "user",
-                "plain user"
+                "user"
         );
         //when
         UserEntity userAfterMapper = userMapper.mapToUserEntityFromUser(user);
@@ -81,7 +76,6 @@ public class UserServiceTestSuite {
         Assertions.assertEquals(1, userId);
         Assertions.assertEquals("user", userAfterMapper.getRealName());
         Assertions.assertEquals("user", userAfterMapper.getPassword());
-        Assertions.assertEquals("plain user", userAfterMapper.getPlainPassword());
     }
 
     @Test
@@ -91,8 +85,7 @@ public class UserServiceTestSuite {
                 7L,
                 "entity",
                 "entity",
-                "entity",
-                "plain entity"
+                "entity"
         );
         //when
         UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
@@ -104,6 +97,5 @@ public class UserServiceTestSuite {
         Assertions.assertEquals(2, userAfterMapper.getId());
         Assertions.assertEquals("entity", userAfterMapper.getRealName());
         Assertions.assertEquals("entity", userAfterMapper.getPassword());
-        Assertions.assertEquals("plain entity", userAfterMapper.getPlainPassword());
     }
 }
