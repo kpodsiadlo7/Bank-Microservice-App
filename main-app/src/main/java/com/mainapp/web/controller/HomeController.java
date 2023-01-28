@@ -15,8 +15,7 @@ public class HomeController {
     private final FeignServiceUserManager feignServiceUserManager;
     @GetMapping
     public String getHome(){
-        //return "redirect:/login";
-        return "home";
+        return "redirect:/login";
     }
 
     @ResponseBody

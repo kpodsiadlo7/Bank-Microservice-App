@@ -5,6 +5,7 @@ import com.mainapp.service.data.UserAccount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OrderBy;
 
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
@@ -24,4 +26,14 @@ public class UserDto {
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
     private Set<UserAccount> accounts = new TreeSet<>();
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "username='" + username + '\'' +
+                ", realName='" + realName + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                '}';
+    }
 }
