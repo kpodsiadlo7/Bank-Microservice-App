@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "accounts_db")
 public class UserAccountEntity {
     @Id

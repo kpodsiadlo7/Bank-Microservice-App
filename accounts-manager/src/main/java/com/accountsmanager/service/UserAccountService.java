@@ -1,7 +1,7 @@
 package com.accountsmanager.service;
 
 import com.accountsmanager.domain.UserAccountEntity;
-import com.accountsmanager.mapper.UserAccountsMapper;
+import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.repository.adapter.AdapterUserAccountRepository;
 import com.accountsmanager.service.data.UserAccount;
 import com.accountsmanager.web.dto.UserAccountDto;

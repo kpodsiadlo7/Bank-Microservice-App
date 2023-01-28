@@ -6,7 +6,6 @@ import com.usermanager.repository.adapter.AdapterUserEntityRepository;
 import com.usermanager.service.data.User;
 import com.usermanager.web.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class UserServiceTestSuite {
     private AdapterUserEntityRepository adapterUserEntityRepository;
 
     @Test
-    void mapToUserDtoFromUser(){
+    void mapToUserDtoFromUser() {
         //given
         User user = new User(
                 7L,
@@ -38,14 +37,14 @@ public class UserServiceTestSuite {
         //when
         UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);
         //then
-        Assertions.assertEquals(7L,userAfterMapper.getId());
-        Assertions.assertEquals("real name",userAfterMapper.getRealName());
-        Assertions.assertEquals("password",userAfterMapper.getPassword());
-        Assertions.assertEquals("plain password",userAfterMapper.getPlainPassword());
+        Assertions.assertEquals(7L, userAfterMapper.getId());
+        Assertions.assertEquals("real user", userAfterMapper.getRealName());
+        Assertions.assertEquals("password", userAfterMapper.getPassword());
+        Assertions.assertEquals("plain password", userAfterMapper.getPlainPassword());
     }
 
     @Test
-    void mapToUserFromUserDto(){
+    void mapToUserFromUserDto() {
         //given
         UserDto userDto = new UserDto(
                 7L,
@@ -57,14 +56,14 @@ public class UserServiceTestSuite {
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
         //then
-        Assertions.assertEquals(7L,userAfterMapper.getId());
-        Assertions.assertEquals("real dto",userAfterMapper.getRealName());
-        Assertions.assertEquals("dtopass",userAfterMapper.getPassword());
-        Assertions.assertEquals("plain dtopass",userAfterMapper.getPlainPassword());
+        Assertions.assertEquals(7L, userAfterMapper.getId());
+        Assertions.assertEquals("real dto", userAfterMapper.getRealName());
+        Assertions.assertEquals("dtopass", userAfterMapper.getPassword());
+        Assertions.assertEquals("plain dtopass", userAfterMapper.getPlainPassword());
     }
 
     @Test
-    void mapToUserEntityFromUser(){
+    void mapToUserEntityFromUser() {
         //given
         User user = new User(
                 7L,
@@ -79,16 +78,16 @@ public class UserServiceTestSuite {
         Long userId = userAfterMapper.getId();
         //then
         Assertions.assertNotEquals(7, userAfterMapper.getId());
-        Assertions.assertEquals(1,userId);
-        Assertions.assertEquals("user",userAfterMapper.getRealName());
-        Assertions.assertEquals("user",userAfterMapper.getPassword());
-        Assertions.assertEquals("plain user",userAfterMapper.getPlainPassword());
+        Assertions.assertEquals(1, userId);
+        Assertions.assertEquals("user", userAfterMapper.getRealName());
+        Assertions.assertEquals("user", userAfterMapper.getPassword());
+        Assertions.assertEquals("plain user", userAfterMapper.getPlainPassword());
     }
 
     @Test
-    void mapToUserFromUserEntity(){
+    void mapToUserFromUserEntityAndSaveToDb() {
         //given
-        UserEntity userEntity = new UserEntity(
+        User user = new User(
                 7L,
                 "entity",
                 "entity",
@@ -96,11 +95,15 @@ public class UserServiceTestSuite {
                 "plain entity"
         );
         //when
+        UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
+        adapterUserEntityRepository.save(userEntity);
+        //and
         User userAfterMapper = userMapper.mapToUserFromUserEntity(userEntity);
         //then
-        Assertions.assertEquals(7,userAfterMapper.getId());
-        Assertions.assertEquals("entity",userAfterMapper.getRealName());
-        Assertions.assertEquals("entity",userAfterMapper.getPassword());
-        Assertions.assertEquals("plain entity",userAfterMapper.getPlainPassword());
+        Assertions.assertNotEquals(7, userAfterMapper.getId());
+        Assertions.assertEquals(2, userAfterMapper.getId());
+        Assertions.assertEquals("entity", userAfterMapper.getRealName());
+        Assertions.assertEquals("entity", userAfterMapper.getPassword());
+        Assertions.assertEquals("plain entity", userAfterMapper.getPlainPassword());
     }
 }

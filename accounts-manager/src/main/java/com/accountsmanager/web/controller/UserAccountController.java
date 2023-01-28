@@ -1,6 +1,6 @@
 package com.accountsmanager.web.controller;
 
-import com.accountsmanager.mapper.UserAccountsMapper;
+import com.accountsmanager.service.mapper.UserAccountsMapper;
 import com.accountsmanager.service.UserAccountService;
 import com.accountsmanager.web.dto.UserAccountDto;
 import lombok.RequiredArgsConstructor;

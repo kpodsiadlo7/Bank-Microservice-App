@@ -1,4 +1,4 @@
-package com.accountsmanager.mapper;
+package com.accountsmanager.service.mapper;
 
 import com.accountsmanager.domain.UserAccountEntity;
 import com.accountsmanager.service.data.UserAccount;
