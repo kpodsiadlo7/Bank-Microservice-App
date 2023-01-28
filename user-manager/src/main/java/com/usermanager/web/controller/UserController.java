@@ -18,11 +18,6 @@ public class UserController {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.loginUser(username)));
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<Boolean> checkUser(@RequestParam String username) {
-        return ResponseEntity.ok(userService.checkIfUserExistInDbWithThisUsername(username));
-    }
-
     @PostMapping("/create-user")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.validateData(userMapper.mapToUserFromUserDto(userDto))));

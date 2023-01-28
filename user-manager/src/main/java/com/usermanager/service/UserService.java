@@ -27,6 +27,11 @@ public class UserService {
         }
         if (user.getUsername() == null){
             errorUser.setUsername("Enter login");
+            return errorUser;
+        }
+        if (checkIfUserExistInDbWithThisUsername(user.getUsername())) {
+            errorUser.setUsername("User already exist!");
+            return errorUser;
         }
         return registerUser(user);
     }

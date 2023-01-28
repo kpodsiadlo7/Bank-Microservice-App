@@ -83,6 +83,6 @@ public class MainService {
     }
 
     public void createNewAccount(final UserAccountDto userAccountDto, Long userId) {
-        log.info("USER ID FROM 'ACCOUNT.HTML' MODEL ATTRIBUTE"+userId.toString());
+        log.info("USER ID FROM 'ACCOUNT.HTML' MODEL ATTRIBUTE "+userId.toString());
     }
 }
