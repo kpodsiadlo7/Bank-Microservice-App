@@ -1,13 +1,13 @@
-package com.authenticationmanager;
+package com.transactionsmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthenticationManagerApplication {
+public class TransactionsManagerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthenticationManagerApplication.class, args);
+        SpringApplication.run(TransactionsManagerApplication.class, args);
     }
 
 }

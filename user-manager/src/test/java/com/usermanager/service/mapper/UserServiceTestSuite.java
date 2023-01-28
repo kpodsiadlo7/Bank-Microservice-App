@@ -31,7 +31,8 @@ public class UserServiceTestSuite {
                 7L,
                 "user",
                 "real user",
-                "password"
+                "password",
+                null
         );
         //when
         UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);
@@ -48,7 +49,8 @@ public class UserServiceTestSuite {
                 7L,
                 "user dto",
                 "real dto",
-                "dtopass"
+                "dtopass",
+                null
         );
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
@@ -65,7 +67,8 @@ public class UserServiceTestSuite {
                 7L,
                 "user",
                 "user",
-                "user"
+                "user",
+                null
         );
         //when
         UserEntity userAfterMapper = userMapper.mapToUserEntityFromUser(user);
@@ -85,7 +88,8 @@ public class UserServiceTestSuite {
                 7L,
                 "entity",
                 "entity",
-                "entity"
+                "entity",
+                null
         );
         //when
         UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);

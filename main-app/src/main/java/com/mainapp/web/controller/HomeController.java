@@ -12,15 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final FeignServiceUserManager feignServiceUserManager;
     @GetMapping
     public String getHome(){
         return "redirect:/login";
-    }
-
-    @ResponseBody
-    @GetMapping("/getuser")
-    public String getUserByUserId(@RequestParam Long userId){
-        return feignServiceUserManager.getUserById(userId);
     }
 }

@@ -5,6 +5,8 @@ COPY .mvn .mvn
 
 RUN mvn -f /home/app/pom.xml clean install
 FROM openjdk:17
+FROM tomcat:latest
+
 COPY --from=build /home/app/target/user-manager-0.0.1-SNAPSHOT.jar /usr/local/lib/user-manager.jar
 EXPOSE 8090
 ENTRYPOINT ["sh", "-c", "java -jar /usr/local/lib/user-manager.jar"]

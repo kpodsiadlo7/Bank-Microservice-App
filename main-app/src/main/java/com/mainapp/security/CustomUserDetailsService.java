@@ -27,7 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User doesn't exist!");
         AuthorityEntity authority = adapterAuthorityRepository.findByUserId(user.getId());
         user.getAuthorities().add(authority);
-        log.info("sadasdsadsadasdasdasdasdsdasdasdasdass");
         return new SecurityUser(user);
     }
 }

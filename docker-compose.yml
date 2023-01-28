@@ -42,14 +42,14 @@ services:
     ports:
       - 8090:8090
 
-  authentication-manager:
+  transactions-manager:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
     restart: always
     build:
-      context: authentication-manager
+      context: transactions-manager
       dockerfile: Dockerfile
     ports:
       - 8000:8000

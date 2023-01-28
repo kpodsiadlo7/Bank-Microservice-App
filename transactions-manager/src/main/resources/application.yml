@@ -2,9 +2,6 @@ server:
   port: 8000
 spring:
   flyway:
-    user: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_DATABASE_URL}
     baseline-on-migrate: true
   datasource:
     url: ${POSTGRES_DATABASE_URL}

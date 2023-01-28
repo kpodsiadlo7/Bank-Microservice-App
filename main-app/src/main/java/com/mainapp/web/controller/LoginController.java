@@ -14,20 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/login")
 public class LoginController {
 
     private final MainService mainService;
     private final UserMapper userMapper;
-    private final FeignServiceAccountsManager feignServiceAccountsManager;
-    private final FeignServiceUserManager feignServiceUserManager;
 
-    @GetMapping
+    @GetMapping("/login")
     public String getLogin(ModelMap modelMap) {
         UserDto userDto = new UserDto();
         modelMap.put("userDto", userDto);
-        feignServiceAccountsManager.warmUp();
-        feignServiceUserManager.warmUp();
         return "login";
     }
 

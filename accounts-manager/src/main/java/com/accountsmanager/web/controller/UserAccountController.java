@@ -20,7 +20,7 @@ public class UserAccountController {
     @PostMapping("/createaccount")
     public ResponseEntity<UserAccountDto> createAccount(@RequestParam Long userId,
                                                         @RequestBody UserAccountDto userAccountDto) {
-        return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccountService.createAccountForUser
+        return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccountService.validateData
                 (userId, userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto))));
     }
 

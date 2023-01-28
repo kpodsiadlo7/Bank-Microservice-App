@@ -17,7 +17,4 @@ public interface FeignServiceAccountsManager {
 
     @GetMapping("/getaccounts")
     TreeSet<UserAccountDto> getAllUserAccountsByUserId(@RequestParam Long userId);
-
-    @GetMapping("/warm")
-    void warmUp();
 }

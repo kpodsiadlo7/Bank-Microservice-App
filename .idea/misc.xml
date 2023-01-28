@@ -10,8 +10,8 @@
         <option value="$PROJECT_DIR$/main-app/pom.xml" />
         <option value="$PROJECT_DIR$/user-manage/pom.xml" />
         <option value="$PROJECT_DIR$/user-manager/pom.xml" />
-        <option value="$PROJECT_DIR$/authentication-manager/pom.xml" />
         <option value="$PROJECT_DIR$/accounts-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/transactions-manager/pom.xml" />
       </list>
     </option>
   </component>

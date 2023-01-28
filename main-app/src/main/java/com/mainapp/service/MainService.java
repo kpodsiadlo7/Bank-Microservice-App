@@ -38,18 +38,17 @@ public class MainService {
             modelMap.put("error", "Password doesn't match!");
             return false;
         }
-        if (checkIfUserAlreadyExist(user.getUsername())) {
-            modelMap.put("error", "User with this login already exist!");
-            return false;
-        }
 
         //creating new user and returning him using external application user-manager
         User userFromUserManager = createAndReturnNewUser(user);
 
+        if (userFromUserManager.getId() == null) {
+            modelMap.put("error", userFromUserManager.getUsername());
+            return false;
+        }
+
         //creating, returning and set main account for new user using external application accounts-manager
-        UserAccount userAccount = new UserAccount();
-        userAccount.setAccountName("Main account");
-        userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), userAccount)));
+        userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new UserAccount())));
 
         User afterAuthority = setAuthorityForUser(userFromUserManager);
         log.info(afterAuthority.toString());
@@ -80,12 +79,5 @@ public class MainService {
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
-    }
-
-    /**
-     * Before create user, we check in database if user with this login already exist
-     */
-    private boolean checkIfUserAlreadyExist(final String username) {
-        return feignServiceUserManager.checkUser(username);
     }
 }

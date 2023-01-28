@@ -21,23 +21,27 @@ public class UserAccountService {
     private final UserAccountsMapper userAccountsMapper;
     private final AdapterUserAccountRepository adapterUserAccountRepository;
 
-    public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
-        if (userAccount.getAccountName().equals("Main account"))
+    public UserAccount validateData(final Long userId, final UserAccount userAccount) {
+        if (userAccount.getCurrency() == null)
             return createMainAccount(userId);
+        return createAccountForUser(userId,userAccount);
+    }
+
+    private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         accountEntity.setUserId(userId);
         accountEntity.setNumber(createAccountNumber(userAccount.getCurrency()));
-        log.info("account is created: OK");
-        return new UserAccount();
+        return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
     }
 
     private UserAccount createMainAccount(final Long userId) {
+        String accountNumber = createAccountNumber("PLN");
         UserAccount mainAccount = new UserAccount(
                 null,
                 userId,
                 "Main account",
                 new BigDecimal(0),
-                createAccountNumber("PLN"),
+                accountNumber,
                 "PLN",
                 "zł"
         );

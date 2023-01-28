@@ -15,24 +15,19 @@ public class UserService {
 
     private final AdapterUserEntityRepository adapterUserRepository;
     private final UserMapper userMapper;
-
-    public User createUser(final User user) {
-        User userForFail = new User();
-        log.info("create user start method");
-        log.info(user.getUsername());
-        log.info(user.getPassword());
-        log.info(user.getRealName());
-        switch (validateBeforeCreateUser(user)) {
-            case "User already exist" -> {
-                userForFail.setUsername("User already exist");
-                return userForFail;
-            }
-            case "Invalid data" -> {
-                userForFail.setUsername("Invalid data");
-                return userForFail;
-            }
+    public User validateData(final User user){
+        User errorUser = new User();
+        if (user.getPassword() == null || user.getConfirmPassword() == null){
+            errorUser.setUsername("Fill password fields");
+            return errorUser;
         }
-        log.info("after validation, before register");
+        if (user.getRealName() == null){
+            errorUser.setUsername("Enter name");
+            return errorUser;
+        }
+        if (user.getUsername() == null){
+            errorUser.setUsername("Enter login");
+        }
         return registerUser(user);
     }
 
@@ -49,14 +44,7 @@ public class UserService {
         log.info("register method start");
         UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
         adapterUserRepository.save(userEntity);
-        log.info("after save db and user id: " + userEntity.getId().toString());
+        log.info("after save and user id: " + userEntity.getId().toString());
         return userMapper.mapToUserFromUserEntity(userEntity);
-    }
-
-    private String validateBeforeCreateUser(final User user) {
-
-        //TODO
-
-        return "";
     }
 }

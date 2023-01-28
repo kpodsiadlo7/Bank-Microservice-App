@@ -9,8 +9,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="main-app" />
         <module name="accounts-manager" />
+        <module name="transactions-manager" />
         <module name="user-manager" />
-        <module name="authentication-manager" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +18,7 @@
       <module name="authentication-manager" target="17" />
       <module name="main-app" target="17" />
       <module name="transactions-app" target="17" />
+      <module name="transactions-manager" target="17" />
       <module name="user-manage" target="17" />
       <module name="user-manager" target="17" />
     </bytecodeTargetLevel>
@@ -28,6 +29,7 @@
       <module name="authentication-manager" options="-parameters" />
       <module name="main-app" options="-parameters" />
       <module name="transactions-app" options="-parameters" />
+      <module name="transactions-manager" options="-parameters" />
       <module name="user-manage" options="-parameters" />
       <module name="user-manager" options="-parameters" />
     </option>
