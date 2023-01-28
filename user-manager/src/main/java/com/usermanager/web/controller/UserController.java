@@ -23,10 +23,8 @@ public class UserController {
         return ResponseEntity.ok(userService.checkIfUserExistInDbWithThisUsername(username));
     }
 
-    @PostMapping("/createuser")
+    @PostMapping("/create-user")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.validateData(userMapper.mapToUserFromUserDto(userDto))));
     }
-    @GetMapping("/warm")
-    public void warmUp(){}
 }

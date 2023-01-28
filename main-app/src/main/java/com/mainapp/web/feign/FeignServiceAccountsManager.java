@@ -11,10 +11,10 @@ import java.util.TreeSet;
 
 @FeignClient(value = "accounts-manager", url = "http://accounts-manager:8010")
 public interface FeignServiceAccountsManager {
-    @PostMapping("/createaccount")
+    @PostMapping("/create-account")
     UserAccountDto createAccountForUser(@RequestParam Long userId,
                                         @RequestBody UserAccountDto userAccountDto);
 
-    @GetMapping("/getaccounts")
+    @GetMapping("/get-accounts")
     TreeSet<UserAccountDto> getAllUserAccountsByUserId(@RequestParam Long userId);
 }

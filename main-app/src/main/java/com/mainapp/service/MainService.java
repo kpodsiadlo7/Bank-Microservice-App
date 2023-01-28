@@ -6,6 +6,7 @@ import com.mainapp.service.data.User;
 import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
+import com.mainapp.web.dto.UserAccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
@@ -79,5 +80,9 @@ public class MainService {
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
+    }
+
+    public void createNewAccount(final UserAccountDto userAccountDto, Long userId) {
+        log.info("USER ID FROM 'ACCOUNT.HTML' MODEL ATTRIBUTE"+userId.toString());
     }
 }

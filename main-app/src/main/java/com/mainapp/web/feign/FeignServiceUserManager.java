@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "user-manager", url = "http://user-manager:8090")
 public interface FeignServiceUserManager {
-    @GetMapping("/getuser")
-    String getUserById(@RequestParam Long userId);
 
-    @PostMapping(value = "/createuser")
+    @PostMapping(value = "/create-user")
     UserDto createUser(@RequestBody UserDto userDto);
 
     @GetMapping("/login")
