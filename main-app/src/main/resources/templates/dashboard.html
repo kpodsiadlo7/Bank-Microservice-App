@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <title>Bank Web Application</title>
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#errorMsg").text() != "") {
+                $("#errorMsg").removeClass("d-none");
+            }
+        });
+    </script>
 </head>
 <body>
+<div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
 <div class="card text-bg-light mb-3" th:each="account : ${userBankAccounts}" style="width: 25rem;">
     <h5 class="card-header" th:text="${account.accountName}" >Account name</h5>
     <div class="card-body">

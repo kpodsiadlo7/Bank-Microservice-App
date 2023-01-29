@@ -6,7 +6,6 @@ import com.mainapp.service.data.User;
 import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
-import com.mainapp.web.dto.UserAccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +35,7 @@ public class MainService {
     @Transactional
     public boolean createUser(final User user, final ModelMap modelMap) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
+            log.info("wjechłem tutaj po error dla password");
             modelMap.put("error", "Password doesn't match!");
             return false;
         }
@@ -48,8 +48,12 @@ public class MainService {
             return false;
         }
 
-        //creating, returning and set main account for new user using external application accounts-manager
-        userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new UserAccount())));
+        try {
+            //creating, returning and set main account for new user using external application accounts-manager
+            userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new UserAccount())));
+        } catch (Exception e) {
+            modelMap.put("error", "Error with creating account");
+        }
 
         User afterAuthority = setAuthorityForUser(userFromUserManager);
         log.info(afterAuthority.toString());
@@ -78,7 +82,6 @@ public class MainService {
     }
 
     public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
-
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }

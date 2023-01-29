@@ -2,7 +2,6 @@ package com.mainapp.web.controller;
 
 import com.mainapp.service.MainService;
 import com.mainapp.service.data.User;
-import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.web.dto.UserAccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
@@ -31,25 +30,37 @@ public class DashboardController {
     @GetMapping
     public String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
         try {
-        modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
-        } catch (Exception e){
-            modelMap.put("userBankAccounts",new TreeSet<UserAccountDto>());
+            TreeSet<UserAccountDto> accounts = feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId());
+            if (accounts.size() == 0) {
+                try {
+                    mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(new UserAccountDto()));
+                    return "redirect:/dashboard";
+                } catch (Exception e) {
+                    modelMap.put("error", "Failed with loading your accounts");
+                }
+            }
+            modelMap.put("userBankAccounts", accounts);
+        } catch (Exception e) {
+            modelMap.put("error", "Failed with loading your accounts");
+            modelMap.put("userBankAccounts", new TreeSet<UserAccountDto>());
         }
         return "dashboard";
     }
+
     @GetMapping("/create-account")
-    public String getAccount(ModelMap modelMap){
+    public String getAccount(ModelMap modelMap) {
         UserAccountDto userAccount = new UserAccountDto();
-        modelMap.put("userAccount",userAccount);
+        modelMap.put("userAccount", userAccount);
         return "account";
     }
 
     @PostMapping("/create-account")
-    public String postAccount(@AuthenticationPrincipal User user,@ModelAttribute UserAccountDto userAccountDto){
+    public String postAccount(@AuthenticationPrincipal User user, @ModelAttribute UserAccountDto userAccountDto, ModelMap modelMap) {
         try {
-        mainService.createAccountForUser(user.getId(),userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto));
-        } catch (Exception e){
-            return "redirect:/dashboard";
+            mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto));
+        } catch (Exception e) {
+            modelMap.put("error","Failed with creating account");
+            return "dashboard";
         }
         return "redirect:/dashboard";
     }
