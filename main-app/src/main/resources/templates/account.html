@@ -4,27 +4,34 @@
     <meta charset="UTF-8">
     <title>Bank Web Application</title>
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#errorMsg").text() != "") {
+                $("#errorMsg").removeClass("d-none");
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="card">
     <h2>Minimum formalities, maximum benefits</h2>
     <div class="card-body">
+        <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
         <form action="" method="post">
             <fieldset>
                 <div class="form-group">
                     <label>
-                        <label for="username" class="form-label">account name</label>
+                        <label for="accountName" class="form-label">account name</label>
                         <input type="text" class="form-control" th:field="${userAccount.accountName}">
                     </label>
                 </div>
                 <div class="form-group">
                     <label>
-                        <label for="password" class="form-label">currency</label>
+                        <label for="currency" class="form-label">currency</label>
                         <input type="text" class="form-control" th:field="${userAccount.currency}">
                     </label>
                 </div>
-                <button type="submit" class="btn">Login</button>
-                <button id="registerBtn" type="button" class="btn btn-primary">Register Page</button>
+                <button type="submit" class="btn">Submit</button>
             </fieldset>
         </form>
     </div>

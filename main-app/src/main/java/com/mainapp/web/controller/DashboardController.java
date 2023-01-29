@@ -49,8 +49,7 @@ public class DashboardController {
 
     @GetMapping("/create-account")
     public String getAccount(ModelMap modelMap) {
-        UserAccountDto userAccount = new UserAccountDto();
-        modelMap.put("userAccount", userAccount);
+        modelMap.put("userAccount", new UserAccountDto());
         return "account";
     }
 
@@ -59,8 +58,9 @@ public class DashboardController {
         try {
             mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto));
         } catch (Exception e) {
-            modelMap.put("error","Failed with creating account");
-            return "dashboard";
+            modelMap.put("error", "Failed with creating account");
+            modelMap.put("userAccount",new UserAccountDto());
+            return "account";
         }
         return "redirect:/dashboard";
     }
