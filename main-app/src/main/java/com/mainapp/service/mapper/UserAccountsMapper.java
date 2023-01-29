@@ -10,21 +10,6 @@ import java.util.List;
 @Service
 public class UserAccountsMapper {
 
-    public List<UserAccount> mapToUserAccountListFromUserAccountsDtoList(final List<UserAccountDto> accountsDtoList) {
-        List<UserAccount> accounts = new ArrayList<>();
-        for (UserAccountDto account : accountsDtoList) {
-            accounts.add(new UserAccount(
-                    account.getId(),
-                    account.getAccountName(),
-                    account.getBalance(),
-                    account.getNumber(),
-                    account.getCurrency(),
-                    account.getCurrencySymbol()
-            ));
-        }
-        return accounts;
-    }
-
 
     public UserAccountDto mapToUserAccountDtoFromUserAccount(final UserAccount userAccount) {
         return new UserAccountDto(

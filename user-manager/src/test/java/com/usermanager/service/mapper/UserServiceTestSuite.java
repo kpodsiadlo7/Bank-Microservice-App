@@ -50,7 +50,7 @@ public class UserServiceTestSuite {
                 "user dto",
                 "real dto",
                 "dtopass",
-                null
+                "password"
         );
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
@@ -58,6 +58,7 @@ public class UserServiceTestSuite {
         Assertions.assertEquals(7L, userAfterMapper.getId());
         Assertions.assertEquals("real dto", userAfterMapper.getRealName());
         Assertions.assertEquals("dtopass", userAfterMapper.getPassword());
+        Assertions.assertEquals("password",userAfterMapper.getConfirmPassword());
     }
 
     @Test
