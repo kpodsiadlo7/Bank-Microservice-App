@@ -15,19 +15,65 @@
                 $("#errorTrans").removeClass("d-none");
             }
         });
+        $(function () {
+            $("#logoutBtn").click(function () {
+                window.location.href = '/logout';
+            });
+        });
+        $(function () {
+            $("#addAccountBtn").click(function () {
+                window.location.href = '/dashboard/create-account';
+            });
+        });
     </script>
     <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
 </head>
 <body>
-<div class="card text-bg-light mb-3" th:each="account : ${userBankAccounts}" style="width: 25rem;">
-    <h5 class="card-header" th:text="${account.accountName}" >Account name</h5>
-    <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted" th:text="${account.currency}">Currency account</h6>
-        <h6 class="card-subtitle" th:text="|Account no. ${account.number}|">Currency number</h6>
-        <h6 class="card-subtitle" th:text="|Balance ${account.balance} ${account.currencySymbol}|">Currency balance</h6>
-        <a href="/dashboard/create-account">create new account</a>
-        <a id="viewAccount" class="card-link">Card link</a>
+<div class="card">
+    <div class="card-header" style="margin-bottom: 3em">
+        <div class="row">
+            <div class="h2 col-11">
+                Microservices Bank Application
+            </div>
+            <div class="col-1">
+                <button id="logoutBtn" type="button" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-6">
+            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em" class="btn btn-primary">Add new account</button>
+        </div>
+    </div>
+    <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row"
+         style="margin-bottom: 2em; margin-left: 2em; margin-right: 2em">
+        <div class="col-sm" th:if="${index < userBankAccounts.size()}">
+            <h5 class="card-header" th:text="${userBankAccounts[index].accountName}">Account name</h5>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">Currency
+                    account</h6>
+                <h6 class="card-subtitle" th:text="|Account no. ${userBankAccounts[index].number}|">Currency number</h6>
+                <h6 class="card-subtitle"
+                    th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
+                    Currency balance</h6>
+                <a th:id="view+${index}" class="card-link">Card link</a>
+            </div>
+        </div>
+        <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
+            <h5 class="card-header" th:text="${userBankAccounts[index+1].accountName}">Account name</h5>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index+1].currency}">Currency
+                    account</h6>
+                <h6 class="card-subtitle" th:text="|Account no. ${userBankAccounts[index+1].number}|">Currency
+                    number</h6>
+                <h6 class="card-subtitle"
+                    th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
+                    Currency balance</h6>
+                <a th:id="view+${index}" class="card-link">Card link</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 <form action="" method="post">
     <fieldset>

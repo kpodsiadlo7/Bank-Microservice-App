@@ -31,31 +31,33 @@ public class UserAccountService {
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         userAccount.setUserId(userId);
         userAccount.setNumber(prepareAccountData(userAccount).getNumber());
+        log.info("wyjeżdża z currency: "+userAccount.getNumber());
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         adapterUserAccountRepository.save(accountEntity);
         return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
     }
 
-    private UserAccount createMainAccount(final Long userId, final UserAccount userAccount) {
-        userAccount.setUserId(userId);
-        userAccount.setAccountName("Main account");
-        userAccount.setCurrency("PLN");
-        userAccount.setNumber(prepareAccountData(userAccount).getNumber());
-        adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount));
-        return userAccount;
-    }
 
     private UserAccount prepareAccountData(final UserAccount userAccount) {
+        log.info("wjechał z currency: "+userAccount.getCurrency());
         String symbol = "";
         userAccount.setBalance(new BigDecimal(10000));
         switch (userAccount.getCurrency()) {
-            case "PLN" -> {
-                symbol = "PL55";
-                userAccount.setCurrencySymbol("zł");
+            case "USD" -> {
+                symbol = "US77";
+                userAccount.setCurrencySymbol("$");
             }
             case "EUR" -> {
                 symbol = "EU49";
                 userAccount.setCurrencySymbol("€");
+            }
+            case "GBP" -> {
+                symbol = "GB90";
+                userAccount.setCurrencySymbol("£");
+            }
+            case "PLN" -> {
+                symbol = "PL55";
+                userAccount.setCurrencySymbol("zł");
             }
         }
         Random random = new Random();
@@ -125,5 +127,12 @@ public class UserAccountService {
         userAccountToSpendMoney.setBalance(amountAfterDecrease);
         adapterUserAccountRepository.save(userAccountsMapper.updateUserAccountEntityFromUserAccount(userAccountToSpendMoney));
     }
-
+    private UserAccount createMainAccount(final Long userId, final UserAccount userAccount) {
+        userAccount.setUserId(userId);
+        userAccount.setAccountName("Main account");
+        userAccount.setCurrency("PLN");
+        userAccount.setNumber(prepareAccountData(userAccount).getNumber());
+        adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount));
+        return userAccount;
+    }
 }

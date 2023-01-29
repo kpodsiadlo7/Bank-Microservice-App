@@ -10,6 +10,11 @@
                 $("#errorMsg").removeClass("d-none");
             }
         });
+        $(function () {
+            $("#backToDashboard").click(function () {
+                window.location.href = '/dashboard';
+            });
+        });
     </script>
 </head>
 <body>
@@ -20,18 +25,22 @@
         <form action="" method="post">
             <fieldset>
                 <div class="form-group">
-                    <label>
-                        <label for="accountName" class="form-label">account name</label>
-                        <input type="text" class="form-control" th:field="${userAccount.accountName}">
-                    </label>
+                    <label for="accountName">Account</label>
+                    <select name="accountName">
+                        <option value="Business Account" th:selected="${userAccount.accountName}">Business Account</option>
+                        <option value="Savings Account" th:selected="${userAccount.accountName}">Savings Account</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <label for="currency" class="form-label">currency</label>
-                        <input type="text" class="form-control" th:field="${userAccount.currency}">
-                    </label>
-                </div>
-                <button type="submit" class="btn">Submit</button>
+                    <div class="form-group">
+                        <label for="currency">Currency</label>
+                        <select name="currency">
+                            <option value="USD" th:selected="${userAccount.currency}">USD</option>
+                            <option value="EUR" th:selected="${userAccount.currency}">EUR</option>
+                            <option value="GBP" th:selected="${userAccount.currency}">GBP</option>
+                        </select>
+                    </div>
+                <button id="backToDashboard" type="button" class="btn">Back to dashboard</button>
+                <button type="submit" class="btn">Create</button>
             </fieldset>
         </form>
     </div>

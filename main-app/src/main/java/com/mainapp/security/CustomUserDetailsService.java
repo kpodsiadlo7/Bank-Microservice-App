@@ -22,9 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        User user = userMapper.mapToUserFromUserDto(feignServiceUserManager.loginUser(username));
-        if (user == null)
+        /*
+        if (!feignServiceUserManager.checkIfExistInDb(username))
             throw new UsernameNotFoundException("User doesn't exist!");
+            nie czaje czemu to nie działa, sprawdź rano
+         */
+        User user = userMapper.mapToUserFromUserDto(feignServiceUserManager.loginUser(username));
+
         AuthorityEntity authority = adapterAuthorityRepository.findByUserId(user.getId());
         user.getAuthorities().add(authority);
         return new SecurityUser(user);

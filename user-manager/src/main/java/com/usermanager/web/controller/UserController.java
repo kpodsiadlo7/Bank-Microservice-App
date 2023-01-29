@@ -22,4 +22,9 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userMapper.mapToUserDtoFromUser(userService.validateData(userMapper.mapToUserFromUserDto(userDto))));
     }
+
+    @GetMapping("/check-user")
+    public ResponseEntity<Boolean> checkUserInDatabaseByUsername(@RequestParam String username){
+        return ResponseEntity.ok(userService.checkIfUserExistInDbWithThisUsername(username));
+    }
 }
