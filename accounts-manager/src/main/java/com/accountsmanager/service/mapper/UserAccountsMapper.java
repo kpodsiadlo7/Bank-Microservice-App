@@ -1,7 +1,9 @@
 package com.accountsmanager.service.mapper;
 
 import com.accountsmanager.domain.UserAccountEntity;
+import com.accountsmanager.service.data.Transfer;
 import com.accountsmanager.service.data.UserAccount;
+import com.accountsmanager.web.dto.TransferDto;
 import com.accountsmanager.web.dto.UserAccountDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -75,5 +77,17 @@ public class UserAccountsMapper {
         }
         log.info("account after second mapper size: " + accounts.size());
         return accounts;
+    }
+
+    public UserAccountEntity updateUserAccountEntityFromUserAccount(final UserAccount userAccount) {
+        return new UserAccountEntity(
+                userAccount.getId(),
+                userAccount.getUserId(),
+                userAccount.getAccountName(),
+                userAccount.getBalance(),
+                userAccount.getNumber(),
+                userAccount.getCurrency(),
+                userAccount.getCurrencySymbol()
+        );
     }
 }

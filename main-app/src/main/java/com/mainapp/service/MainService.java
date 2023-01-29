@@ -6,6 +6,7 @@ import com.mainapp.service.data.User;
 import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
+import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Slf4j
@@ -84,5 +86,14 @@ public class MainService {
     public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
+    }
+
+    public boolean quickTransferToUserByAccountNumber(final User user, final TransferDto transferDto, final ModelMap modelMap) {
+        TransferDto returningTransferFromAccountsManager = feignServiceAccountsManager.quickTransfer(user.getId(),transferDto);
+        if (returningTransferFromAccountsManager.getAmount().equals(new BigDecimal(-1))) {
+            modelMap.put("errorTransfer",returningTransferFromAccountsManager.getUserAccountNumber());
+            return false;
+        }
+        return true;
     }
 }

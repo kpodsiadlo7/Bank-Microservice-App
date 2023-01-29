@@ -3,6 +3,7 @@ package com.mainapp.web.controller;
 import com.mainapp.service.MainService;
 import com.mainapp.service.data.User;
 import com.mainapp.service.mapper.UserAccountsMapper;
+import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.dto.UserAccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class DashboardController {
             if (accounts.size() == 0) {
                 try {
                     mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(new UserAccountDto()));
+                    modelMap.put("quickTransfer",new TransferDto());
                     return "redirect:/dashboard";
                 } catch (Exception e) {
                     modelMap.put("error", "Failed with loading your accounts");
@@ -44,6 +46,7 @@ public class DashboardController {
             modelMap.put("error", "Failed with loading your accounts");
             modelMap.put("userBankAccounts", new TreeSet<UserAccountDto>());
         }
+        modelMap.put("quickTransfer",new TransferDto());
         return "dashboard";
     }
 
@@ -61,6 +64,18 @@ public class DashboardController {
             modelMap.put("error", "Failed with creating account");
             modelMap.put("userAccount",new UserAccountDto());
             return "account";
+        }
+        return "redirect:/dashboard";
+    }
+    @PostMapping
+    public String quickTransfer(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto, ModelMap modelMap){
+        try {
+            if (!mainService.quickTransferToUserByAccountNumber(user,transferDto,modelMap)) {
+                modelMap.put("quickTransfer", new TransferDto());
+                return "dashboard";
+            }
+        } catch (Exception e){
+            modelMap.put("error","There was an error creating transaction");
         }
         return "redirect:/dashboard";
     }
