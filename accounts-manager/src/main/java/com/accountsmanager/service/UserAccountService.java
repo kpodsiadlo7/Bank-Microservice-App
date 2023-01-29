@@ -23,7 +23,7 @@ public class UserAccountService {
 
     public UserAccount validateData(final Long userId, final UserAccount userAccount) {
         if (userAccount.getCurrency() == null)
-            return createMainAccount(userId);
+            return createMainAccount(userId,userAccount);
         return createAccountForUser(userId,userAccount);
     }
 
@@ -31,22 +31,19 @@ public class UserAccountService {
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         accountEntity.setUserId(userId);
         accountEntity.setNumber(createAccountNumber(userAccount.getCurrency()));
+        adapterUserAccountRepository.save(accountEntity);
         return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
     }
 
-    private UserAccount createMainAccount(final Long userId) {
-        String accountNumber = createAccountNumber("PLN");
-        UserAccount mainAccount = new UserAccount(
-                null,
-                userId,
-                "Main account",
-                new BigDecimal(0),
-                accountNumber,
-                "PLN",
-                "zł"
-        );
-        adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(mainAccount));
-        return mainAccount;
+    private UserAccount createMainAccount(final Long userId, final UserAccount userAccount) {
+        userAccount.setUserId(userId);
+        userAccount.setAccountName("Main account");
+        userAccount.setBalance(new BigDecimal(0));
+        userAccount.setNumber(createAccountNumber("PLN"));
+        userAccount.setCurrency("PLN");
+        userAccount.setCurrencySymbol("zł");
+        adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount));
+        return userAccount;
     }
 
     private String createAccountNumber(final String bankNumberSymbol) {
@@ -60,6 +57,10 @@ public class UserAccountService {
         b.append(symbol);
         for (int i = 0; i <= 20; i++) {
             b.append(random.nextInt(7));
+        }
+        if (adapterUserAccountRepository.existsByNumber(b.toString())) {
+            b.setLength(0);
+            return createAccountNumber(bankNumberSymbol);
         }
         return b.toString();
     }

@@ -8,4 +8,5 @@ public interface AdapterUserAccountRepository {
     UserAccountEntity save(UserAccountEntity accountEntity);
 
     List<UserAccountEntity> findAllByUserId(long userId);
+    boolean existsByNumber(String number);
 }

@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.TreeSet;
 
 public interface UserAccountRepository extends AdapterUserAccountRepository, JpaRepository<UserAccountEntity, Long> {
-
 }
