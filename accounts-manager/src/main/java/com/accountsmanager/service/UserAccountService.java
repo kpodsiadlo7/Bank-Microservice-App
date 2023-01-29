@@ -68,6 +68,6 @@ public class UserAccountService {
         log.info("get all user accounts start method and user id: " +userId);
         List<UserAccountEntity> accountEntities = adapterUserAccountRepository.findAllByUserId(userId);
         log.info("quantity accounts from db: "+accountEntities.size());
-        return userAccountsMapper.mapToUserAccountSetFromUserAccountEntitySet(accountEntities);
+        return userAccountsMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
     }
 }

@@ -14,6 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -26,10 +30,10 @@ public class UserAccountMapperTestSuite {
     private AdapterUserAccountRepository adapterUserAccountRepository;
 
     @Test
-    void mapToUserAccountDtoFromUserAccount(){
+    void mapToUserAccountDtoFromUserAccount() {
         //given
         UserAccount userAccount = new UserAccount(
-                7L,
+                null,
                 3L,
                 "account name",
                 new BigDecimal(3000),
@@ -40,20 +44,20 @@ public class UserAccountMapperTestSuite {
         //when
         UserAccountDto accountAfterMapper = userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount);
         //then
-        Assertions.assertEquals(7,accountAfterMapper.getId());
-        Assertions.assertEquals(3,accountAfterMapper.getUserId());
-        Assertions.assertEquals("account name",accountAfterMapper.getAccountName());
-        Assertions.assertEquals(new BigDecimal(3000),accountAfterMapper.getBalance());
-        Assertions.assertEquals("123",accountAfterMapper.getNumber());
-        Assertions.assertEquals("PLN",accountAfterMapper.getCurrency());
-        Assertions.assertEquals("zł",accountAfterMapper.getCurrencySymbol());
+        Assertions.assertEquals(3, accountAfterMapper.getUserId());
+        Assertions.assertNull(accountAfterMapper.getId());
+        Assertions.assertEquals("account name", accountAfterMapper.getAccountName());
+        Assertions.assertEquals(new BigDecimal(3000), accountAfterMapper.getBalance());
+        Assertions.assertEquals("123", accountAfterMapper.getNumber());
+        Assertions.assertEquals("PLN", accountAfterMapper.getCurrency());
+        Assertions.assertEquals("zł", accountAfterMapper.getCurrencySymbol());
     }
 
     @Test
-    void mapToUserAccountFromUserAccountDto(){
+    void mapToUserAccountFromUserAccountDto() {
         //given
         UserAccountDto userAccount = new UserAccountDto(
-                7L,
+                null,
                 3L,
                 "account name",
                 new BigDecimal(3000),
@@ -64,20 +68,20 @@ public class UserAccountMapperTestSuite {
         //when
         UserAccount accountAfterMapper = userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccount);
         //then
-        Assertions.assertEquals(7,accountAfterMapper.getId());
-        Assertions.assertEquals(3,accountAfterMapper.getUserId());
-        Assertions.assertEquals("account name",accountAfterMapper.getAccountName());
-        Assertions.assertEquals(new BigDecimal(3000),accountAfterMapper.getBalance());
-        Assertions.assertEquals("123",accountAfterMapper.getNumber());
-        Assertions.assertEquals("PLN",accountAfterMapper.getCurrency());
-        Assertions.assertEquals("zł",accountAfterMapper.getCurrencySymbol());
+        Assertions.assertNull(accountAfterMapper.getId());
+        Assertions.assertEquals(3, accountAfterMapper.getUserId());
+        Assertions.assertEquals("account name", accountAfterMapper.getAccountName());
+        Assertions.assertEquals(new BigDecimal(3000), accountAfterMapper.getBalance());
+        Assertions.assertEquals("123", accountAfterMapper.getNumber());
+        Assertions.assertEquals("PLN", accountAfterMapper.getCurrency());
+        Assertions.assertEquals("zł", accountAfterMapper.getCurrencySymbol());
     }
 
     @Test
-    void mapToUserAccountEntityFromUserAccount(){
+    void mapToUserAccountEntityFromUserAccountAndSaveToDb() {
         //given
         UserAccount userAccount = new UserAccount(
-                7L,
+                null,
                 3L,
                 "account name",
                 new BigDecimal(3000),
@@ -89,21 +93,21 @@ public class UserAccountMapperTestSuite {
         UserAccountEntity accountAfterMapper = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         adapterUserAccountRepository.save(accountAfterMapper);
         //then
-        Assertions.assertNotEquals(7,accountAfterMapper.getId());
-        Assertions.assertEquals(2,accountAfterMapper.getId());
-        Assertions.assertEquals(3,accountAfterMapper.getUserId());
-        Assertions.assertEquals("account name",accountAfterMapper.getAccountName());
-        Assertions.assertEquals(new BigDecimal(3000),accountAfterMapper.getBalance());
-        Assertions.assertEquals("123",accountAfterMapper.getNumber());
-        Assertions.assertEquals("PLN",accountAfterMapper.getCurrency());
-        Assertions.assertEquals("zł",accountAfterMapper.getCurrencySymbol());
+        Assertions.assertNotEquals(7, accountAfterMapper.getId());
+        Assertions.assertNotNull(accountAfterMapper.getId());
+        Assertions.assertEquals(3, accountAfterMapper.getUserId());
+        Assertions.assertEquals("account name", accountAfterMapper.getAccountName());
+        Assertions.assertEquals(new BigDecimal(3000), accountAfterMapper.getBalance());
+        Assertions.assertEquals("123", accountAfterMapper.getNumber());
+        Assertions.assertEquals("PLN", accountAfterMapper.getCurrency());
+        Assertions.assertEquals("zł", accountAfterMapper.getCurrencySymbol());
     }
 
     @Test
-    void mapToUserAccountFromUserAccountEntityAndSaveToDb(){
+    void mapToUserAccountFromUserAccountEntityAndSaveToDb() {
         //given
         UserAccount userAccount = new UserAccount(
-                7L,
+                null,
                 3L,
                 "account name",
                 new BigDecimal(3000),
@@ -117,13 +121,88 @@ public class UserAccountMapperTestSuite {
         //and
         UserAccount accountAfterMapper = userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
         //then
-        Assertions.assertNotEquals(7,accountAfterMapper.getId());
-        Assertions.assertEquals(1,accountAfterMapper.getId());
-        Assertions.assertEquals(3,accountAfterMapper.getUserId());
-        Assertions.assertEquals("account name",accountAfterMapper.getAccountName());
-        Assertions.assertEquals(new BigDecimal(3000),accountAfterMapper.getBalance());
-        Assertions.assertEquals("123",accountAfterMapper.getNumber());
-        Assertions.assertEquals("PLN",accountAfterMapper.getCurrency());
-        Assertions.assertEquals("zł",accountAfterMapper.getCurrencySymbol());
+        Assertions.assertNotEquals(7, accountAfterMapper.getId());
+        Assertions.assertNotNull(accountAfterMapper.getId());
+        Assertions.assertEquals(3, accountAfterMapper.getUserId());
+        Assertions.assertEquals("account name", accountAfterMapper.getAccountName());
+        Assertions.assertEquals(new BigDecimal(3000), accountAfterMapper.getBalance());
+        Assertions.assertEquals("123", accountAfterMapper.getNumber());
+        Assertions.assertEquals("PLN", accountAfterMapper.getCurrency());
+        Assertions.assertEquals("zł", accountAfterMapper.getCurrencySymbol());
+    }
+
+    @Test
+    void mapToUserAccountListFromUserAccountEntityListAndSaveToDb() {
+        //given
+        List<UserAccountEntity> entityAccountList = new ArrayList<>();
+        UserAccount account1ToEntity = new UserAccount(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
+        UserAccount account2ToEntity = new UserAccount(null, 55L, "account", new BigDecimal(30020), "444", "EUR", "€");
+        //and
+        UserAccountEntity account1Entity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(account1ToEntity);
+        UserAccountEntity account2Entity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(account2ToEntity);
+        adapterUserAccountRepository.save(account1Entity);
+        adapterUserAccountRepository.save(account2Entity);
+        //and
+        entityAccountList.add(account1Entity);
+        entityAccountList.add(account2Entity);
+        //when
+        List<UserAccount> accountListAfterMapper = userAccountsMapper.mapToUserAccountListFromUserAccountEntityList(entityAccountList);
+        //then
+        Assertions.assertEquals(2, accountListAfterMapper.size());
+
+        Assertions.assertNotNull(accountListAfterMapper.stream()
+                .filter(f->f.getUserId().equals(3L)).map(UserAccount::getId));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(userId -> userId.getUserId().equals(3L)));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(name -> name.getAccountName().equals("account")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(balance -> balance.getBalance().equals(new BigDecimal(3000))));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(num -> num.getNumber().equals("123")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(cur -> cur.getCurrency().equals("EUR")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(symbol -> symbol.getCurrencySymbol().equals("€")));
+    }
+
+    @Test
+    void mapToUserAccountDtoListFromUserAccountList() {
+        //given
+        List<UserAccount> userAccountList = new ArrayList<>();
+        UserAccount account1 = new UserAccount(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
+        UserAccount account2 = new UserAccount(null, 7L, "account", new BigDecimal(333000), "221", "EUR", "€");
+        //and
+        userAccountList.add(account1);
+        userAccountList.add(account2);
+        //when
+        List<UserAccountDto> accountListAfterMapper = userAccountsMapper.mapToUserAccountDtoListFromUserAccountList(userAccountList);
+        //then
+        Assertions.assertEquals(2, accountListAfterMapper.size());
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(userId -> userId.getUserId().equals(3L)));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(name -> name.getAccountName().equals("account")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(balance -> balance.getBalance().equals(new BigDecimal(333000))));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(num -> num.getNumber().equals("221")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(cur -> cur.getCurrency().equals("PLN")));
+
+        Assertions.assertTrue(accountListAfterMapper.stream()
+                .anyMatch(symbol -> symbol.getCurrencySymbol().equals("zł")));
+
     }
 }

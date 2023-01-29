@@ -25,7 +25,7 @@ public class UserAccountController {
 
     @GetMapping("/get-accounts")
     public ResponseEntity<List<UserAccountDto>> getAllUserAccountsByUserId(@RequestParam Long userId) {
-        return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoSetFromUserAccountSet
+        return ResponseEntity.ok(userAccountsMapper.mapToUserAccountDtoListFromUserAccountList
                 (userAccountService.getAllUserAccounts(userId)));
     }
 }

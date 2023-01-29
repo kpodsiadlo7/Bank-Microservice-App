@@ -59,21 +59,21 @@ public class UserAccountsMapper {
         );
     }
 
-    public List<UserAccount> mapToUserAccountSetFromUserAccountEntitySet(final List<UserAccountEntity> allUserAccounts) {
+    public List<UserAccount> mapToUserAccountListFromUserAccountEntityList(final List<UserAccountEntity> allUserAccounts) {
         List<UserAccount> accounts = new ArrayList<>();
         for (UserAccountEntity account : allUserAccounts) {
             accounts.add(mapToUserAccountFromUserAccountEntity(account));
         }
-        log.info("account after first mapper size: "+accounts.size());
+        log.info("account after first mapper size: " + accounts.size());
         return accounts;
     }
 
-    public List<UserAccountDto> mapToUserAccountDtoSetFromUserAccountSet(final List<UserAccount> allUserAccounts) {
+    public List<UserAccountDto> mapToUserAccountDtoListFromUserAccountList(final List<UserAccount> allUserAccounts) {
         List<UserAccountDto> accounts = new ArrayList<>();
         for (UserAccount account : allUserAccounts) {
             accounts.add(mapToUserAccountDtoFromUserAccount(account));
         }
-        log.info("account after second mapper size: "+accounts.size());
+        log.info("account after second mapper size: " + accounts.size());
         return accounts;
     }
 }
