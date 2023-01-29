@@ -49,7 +49,6 @@ public class UserService {
         log.info("register method start");
         UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
         adapterUserRepository.save(userEntity);
-        log.info("after save and user id: " + userEntity.getId().toString());
         return userMapper.mapToUserFromUserEntity(userEntity);
     }
 }

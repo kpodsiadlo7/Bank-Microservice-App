@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -100,9 +99,10 @@ public class UserAccountServiceTestSuite {
         Assertions.assertTrue(accountAfterRealMethod.stream()
                 .anyMatch(currency -> currency.getCurrency().equals("EUR")));
     }
+
     @Test
     @DisplayName("exists by number should return true when we check if account number which is 'generated' exist in database before assign to the user")
-    void existsByNumberInDb(){
+    void existsByNumberInDb() {
         //given
         UserAccountEntity userAccountPLN = new UserAccountEntity(7L, "pln account", new BigDecimal(777), "PL55123123", "PLN", "zł");
         adapterUserAccountRepository.save(userAccountPLN);
