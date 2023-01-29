@@ -78,11 +78,8 @@ public class MainService {
     }
 
     public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
+
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
-    }
-
-    public void createNewAccount(final UserAccountDto userAccountDto, Long userId) {
-        log.info("USER ID FROM 'ACCOUNT.HTML' MODEL ATTRIBUTE "+userId.toString());
     }
 }

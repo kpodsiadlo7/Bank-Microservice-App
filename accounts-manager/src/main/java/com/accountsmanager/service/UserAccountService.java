@@ -28,9 +28,9 @@ public class UserAccountService {
     }
 
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
+        userAccount.setUserId(userId);
+        userAccount.setNumber(prepareAccountData(userAccount).getNumber());
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
-        accountEntity.setUserId(userId);
-        accountEntity.setNumber(createAccountNumber(userAccount.getCurrency()));
         adapterUserAccountRepository.save(accountEntity);
         return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
     }
@@ -38,20 +38,27 @@ public class UserAccountService {
     private UserAccount createMainAccount(final Long userId, final UserAccount userAccount) {
         userAccount.setUserId(userId);
         userAccount.setAccountName("Main account");
-        userAccount.setBalance(new BigDecimal(0));
-        userAccount.setNumber(createAccountNumber("PLN"));
         userAccount.setCurrency("PLN");
+        userAccount.setBalance(new BigDecimal(0));
+        userAccount.setNumber(prepareAccountData(userAccount).getNumber());
         userAccount.setCurrencySymbol("zł");
         adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount));
         return userAccount;
     }
 
-    private String createAccountNumber(final String bankNumberSymbol) {
-        String symbol = switch (bankNumberSymbol) {
-            case "PLN" -> "PL55";
-            case "EUR" -> "DE49";
-            default -> "";
-        };
+    private UserAccount prepareAccountData(final UserAccount userAccount) {
+        String symbol = "";
+        userAccount.setBalance(new BigDecimal(0));
+        switch (userAccount.getCurrency()) {
+            case "PLN" -> {
+                symbol = "PL55";
+                userAccount.setCurrencySymbol("zł");
+            }
+            case "EUR" -> {
+                symbol = "EU49";
+                userAccount.setCurrencySymbol("€");
+            }
+        }
         Random random = new Random();
         StringBuilder b = new StringBuilder();
         b.append(symbol);
@@ -60,9 +67,10 @@ public class UserAccountService {
         }
         if (adapterUserAccountRepository.existsByNumber(b.toString())) {
             b.setLength(0);
-            return createAccountNumber(bankNumberSymbol);
+            return prepareAccountData(userAccount);
         }
-        return b.toString();
+        userAccount.setNumber(b.toString());
+        return userAccount;
     }
 
     public List<UserAccount> getAllUserAccounts(final Long userId) {

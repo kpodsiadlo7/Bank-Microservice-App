@@ -3,6 +3,7 @@ package com.mainapp.web.controller;
 import com.mainapp.service.MainService;
 import com.mainapp.service.data.User;
 import com.mainapp.service.data.UserAccount;
+import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.web.dto.UserAccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class DashboardController {
 
     private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final MainService mainService;
+    private final UserAccountsMapper userAccountsMapper;
 
     @GetMapping
     public String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
@@ -44,7 +46,11 @@ public class DashboardController {
 
     @PostMapping("/create-account")
     public String postAccount(@AuthenticationPrincipal User user,@ModelAttribute UserAccountDto userAccountDto){
-        mainService.createNewAccount(userAccountDto,user.getId());
+        try {
+        mainService.createAccountForUser(user.getId(),userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto));
+        } catch (Exception e){
+            return "redirect:/dashboard";
+        }
         return "redirect:/dashboard";
     }
 }

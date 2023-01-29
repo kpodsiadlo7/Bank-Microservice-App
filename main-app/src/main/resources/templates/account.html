@@ -11,6 +11,20 @@
     <div class="card-body">
         <form action="" method="post">
             <fieldset>
+                <div class="form-group">
+                    <label>
+                        <label for="username" class="form-label">account name</label>
+                        <input type="text" class="form-control" th:field="${userAccount.accountName}">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <label for="password" class="form-label">currency</label>
+                        <input type="text" class="form-control" th:field="${userAccount.currency}">
+                    </label>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <button id="registerBtn" type="button" class="btn btn-primary">Register Page</button>
             </fieldset>
         </form>
     </div>
