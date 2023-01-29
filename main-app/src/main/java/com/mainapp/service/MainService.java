@@ -60,14 +60,14 @@ public class MainService {
         return true;
     }
 
-    private User createAndReturnNewUser(final User user) {
+    public User createAndReturnNewUser(final User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.mapToUserFromUserDto
                 (feignServiceUserManager.createUser(userMapper.mapToUserDtoFromUser(user)));
     }
 
 
-    private User setAuthorityForUser(final User userFromUserManager) {
+    public User setAuthorityForUser(final User userFromUserManager) {
         AuthorityEntity authorityEntity = new AuthorityEntity();
         authorityEntity.setAuthority("ROLE_USER");
         authorityEntity.setUserId(userFromUserManager.getId());
@@ -77,7 +77,7 @@ public class MainService {
         return userFromUserManager;
     }
 
-    private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
+    public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }
