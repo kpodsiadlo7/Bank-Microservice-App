@@ -8,6 +8,7 @@ import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
+import com.mainapp.web.feign.FeignServiceTransactionsManager;
 import com.mainapp.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class MainService {
 
     private final FeignServiceUserManager feignServiceUserManager;
     private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final AdapterAuthorityRepository adapterAuthorityRepository;
     private final UserMapper userMapper;
     private final UserAccountsMapper userAccountsMapper;
@@ -89,6 +91,7 @@ public class MainService {
     }
 
     public boolean quickTransferToUserByAccountNumber(final User user, final TransferDto transferDto, final ModelMap modelMap) {
+        log.info(feignServiceTransactionsManager.test());
         TransferDto returningTransferFromAccountsManager = feignServiceAccountsManager.quickTransfer(user.getId(),transferDto);
         if (returningTransferFromAccountsManager.getAmount().equals(new BigDecimal(-1))) {
             modelMap.put("errorTransfer",returningTransferFromAccountsManager.getUserAccountNumber());
