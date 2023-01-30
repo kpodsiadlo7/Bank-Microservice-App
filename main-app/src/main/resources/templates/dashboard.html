@@ -67,7 +67,7 @@
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">Currency
                     account</h6>
-                <h6 class="card-subtitle" th:text="|Account no. ${userBankAccounts[index].number}|">Currency number</h6>
+                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index].number}|">Currency number</h6>
                 <h6 class="card-subtitle"
                     th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
                     Currency balance</h6>
@@ -79,14 +79,14 @@
                 <div class="row">
                     <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name</div>
                     <div style="margin-left: auto">
-                        <button th:id="|account-${userBankAccounts[index].id}|" type="button" class="btn btn-dark">Quick transaction</button>
+                        <button th:id="|account-${userBankAccounts[index+1].id}|" type="button" class="btn btn-dark">Quick transaction</button>
                     </div>
                 </div>
             </div>
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index+1].currency}">Currency
                     account</h6>
-                <h6 class="card-subtitle" th:text="|Account no. ${userBankAccounts[index+1].number}|">Currency
+                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index+1].number}|">Currency
                     number</h6>
                 <h6 class="card-subtitle"
                     th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
@@ -97,23 +97,5 @@
     </div>
 
 </div>
-<form action="" method="post">
-    <fieldset>
-        <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${errorTransfer}"></div>
-        <div class="form-group">
-            <label>
-                <label for="nrAccount" class="form-label">nr account</label>
-                <input type="text" class="form-control" th:field="${quickTransfer.userAccountNumber}" required>
-            </label>
-        </div>
-        <div class="form-group">
-            <label>
-                <label for="amount" class="form-label">amount</label>
-                <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
-            </label>
-        </div>
-        <button type="submit" name="kindTransaction" value="transfer" class="btn">Submit</button>
-    </fieldset>
-</form>
 </body>
 </html>

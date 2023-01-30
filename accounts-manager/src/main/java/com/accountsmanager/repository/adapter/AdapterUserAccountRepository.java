@@ -15,4 +15,5 @@ public interface AdapterUserAccountRepository {
     UserAccountEntity findByUserId(long userId);
 
     UserAccountEntity findByNumber(String number);
+    UserAccountEntity findById(long accountId);
 }

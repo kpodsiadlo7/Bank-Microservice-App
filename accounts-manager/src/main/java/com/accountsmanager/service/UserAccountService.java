@@ -152,4 +152,10 @@ public class UserAccountService {
         adapterUserAccountRepository.save(userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount));
         return userAccount;
     }
+
+    public UserAccount getAccountByAccountId(final Long accountId) {
+        UserAccount userAccount = userAccountsMapper.mapToUserAccountFromUserAccountEntity(adapterUserAccountRepository.findById(accountId));
+        log.info("user account "+userAccount.toString());
+        return userAccount;
+    }
 }

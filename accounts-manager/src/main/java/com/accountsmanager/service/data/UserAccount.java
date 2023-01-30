@@ -19,4 +19,17 @@ public class UserAccount {
     private String number;
     private String currency;
     private String currencySymbol;
+
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", accountName='" + accountName + '\'' +
+                ", balance=" + balance +
+                ", number='" + number + '\'' +
+                ", currency='" + currency + '\'' +
+                ", currencySymbol='" + currencySymbol + '\'' +
+                '}';
+    }
 }

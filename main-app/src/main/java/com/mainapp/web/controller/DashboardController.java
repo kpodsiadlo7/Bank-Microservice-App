@@ -45,7 +45,6 @@ public class DashboardController {
             modelMap.put("error", "Failed with loading your accounts");
             modelMap.put("userBankAccounts", new TreeSet<UserAccountDto>());
         }
-        modelMap.put("quickTransfer", new TransferDto());
         return "dashboard";
     }
 
@@ -65,21 +64,6 @@ public class DashboardController {
             modelMap.put("userAccount", new UserAccountDto());
             return "accounts";
         }
-        return "redirect:/dashboard";
-    }
-
-    @PostMapping
-    public String makeTransaction(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto,
-                                  @RequestParam(name = "kindTransaction") String kindTransaction, ModelMap modelMap) {
-            if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction)) {
-                try {
-                    modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
-                } catch (Exception e) {
-                    modelMap.put("error", "There was an error fetching your accounts");
-                }
-                modelMap.put("quickTransfer", new TransferDto());
-                return "dashboard";
-            }
         return "redirect:/dashboard";
     }
 }

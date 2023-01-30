@@ -20,6 +20,11 @@ public class UserAccountDto implements Comparable<UserAccountDto>{
     private String currencySymbol;
 
     @Override
+    public String toString() {
+        return ", currency='" + currency + '\'';
+    }
+
+    @Override
     public int compareTo(final UserAccountDto o) {
         return this.id.compareTo(o.getId());
     }

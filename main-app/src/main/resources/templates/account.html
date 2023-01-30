@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title>Bank Web Application</title>
+    <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="card text-bg-light mb-3" style="width: 25rem; margin-left: 3em">
+    <h3 class="card-header" th:text="${userAccount.accountName}">Account name</h3>
+    <div class="card-body">
+        <h6 class="card-subtitle" th:text="${userAccount.currency}">Currency account</h6>
+        <h6 style="margin-bottom: 0.7em" class="card-subtitle" th:text="|Account nr ${userAccount.number}|">Currency
+            number</h6>
+        <h6 style="margin-bottom: 0.7em" class="card-subtitle"
+            th:text="|Balance ${userAccount.balance} ${userAccount.currencySymbol}|">Currency number</h6>
+    </div>
+</div>
+<h3 style="margin-top: 7em;margin-left: 2.3em">Quick Transfer</h3>
 
-siemankooooo
-
+<form action="" method="post" style="margin-left: 3em">
+    <fieldset>
+        <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${errorTransfer}"></div>
+        <div class="form-group">
+            <label>
+                <label for="nrAccount" class="form-label">Nr account</label>
+                <input type="text" class="form-control" th:field="${quickTransfer.userAccountNumber}" required>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
+            </label>
+        </div>
+        <button type="submit" name="kindTransaction" value="transfer" class="btn">Submit</button>
+    </fieldset>
+</form>
 </body>
 </html>
