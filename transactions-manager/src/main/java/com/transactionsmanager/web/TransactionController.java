@@ -28,5 +28,4 @@ public class TransactionController {
                 (transactionService.openTransaction
                         (userId, kindTransaction, transferDto)));
     }
-
 }

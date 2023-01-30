@@ -1,5 +1,6 @@
 package com.transactionsmanager.service;
 
+import com.transactionsmanager.repository.adapter.AdapterTransactionRepository;
 import com.transactionsmanager.service.data.Transaction;
 import com.transactionsmanager.service.mapper.TransactionMapper;
 import com.transactionsmanager.web.dto.TransferDto;
@@ -16,12 +17,15 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class TransactionService {
     private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final TransactionMapper transactionMapper;
+    private final AdapterTransactionRepository adapterTransactionRepository;
 
     public Transaction openTransaction(final Long userId, final String kindTransaction, final TransferDto transferDto) {
+        log.info("should be id 1: "+transferDto.getUserReceiveId());
         log.info("open transaction");
         Transaction transaction = new Transaction();
         if (kindTransaction.equals("transfer")) {
-            transaction = moneyTransfer(userId, transferDto);
+            transaction = moneyTransfer(userId, transferDto, kindTransaction);
             if (transaction.getKindTransaction().equals("error")) {
                 log.info("something is wrong with returning transaction");
                 transaction.setDescription(transaction.getDescription());
@@ -36,25 +40,37 @@ public class TransactionService {
     }
 
     @Transactional
-    protected Transaction moneyTransfer(final Long userId, final TransferDto transferDto) {
+    protected Transaction moneyTransfer(final Long userDecreaseId, final TransferDto transferDto, final String kindTransaction) {
         Transaction error = new Transaction();
         error.setKindTransaction("error");
+        log.info("should be id 1 " + transferDto.getUserReceiveId());
+
+        TransferDto returnTransferDto;
         try {
-            TransferDto returningTransfer = feignServiceAccountsManager.quickTransfer(userId,transferDto);
-            if (returningTransfer.getAmount().equals(new BigDecimal(-1))){
-                error.setDescription(returningTransfer.getUserAccountNumber());
+            returnTransferDto = feignServiceAccountsManager.quickTransfer(userDecreaseId, transferDto);
+            if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
+                error.setDescription(returnTransferDto.getUserAccountNumber());
                 return error;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
-        return closeTransaction();
+        return createMoneyTransferHistory(userDecreaseId, returnTransferDto, kindTransaction);
     }
 
-    private Transaction closeTransaction() {
-        Transaction transaction = new Transaction();
-        transaction.setKindTransaction("ok");
-        return transaction;
+    private Transaction createMoneyTransferHistory(final Long userDecreaseId, final TransferDto returnedTransferDto, final String kindTransaction) {
+        Transaction transactionForDecreaseUser = new Transaction();
+        transactionForDecreaseUser.setUserId(userDecreaseId);
+        transactionForDecreaseUser.setKindTransaction(kindTransaction);
+        transactionForDecreaseUser.setDescription("Outgoing transfer");
+        adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForDecreaseUser));
+
+        Transaction transactionForIncreaseUser = new Transaction();
+        transactionForIncreaseUser.setUserId(returnedTransferDto.getUserReceiveId());
+        transactionForIncreaseUser.setKindTransaction(kindTransaction);
+        transactionForIncreaseUser.setDescription("Incoming transfer");
+        adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForIncreaseUser));
+        return transactionForDecreaseUser;
     }
 }

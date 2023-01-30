@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "transactions_db")
 public class TransactionEntity {
@@ -22,4 +21,11 @@ public class TransactionEntity {
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
+
+    public TransactionEntity(final Long userId, final String description, final String kindTransaction) {
+        this.userId = userId;
+        this.description = description;
+        this.kindTransaction = kindTransaction;
+        this.transactionDate = LocalDate.now();
+    }
 }

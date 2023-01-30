@@ -1,5 +1,6 @@
 package com.transactionsmanager.service.mapper;
 
+import com.transactionsmanager.domain.TransactionEntity;
 import com.transactionsmanager.service.data.Transaction;
 import com.transactionsmanager.web.dto.TransactionDto;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,14 @@ public class TransactionMapper {
                 transaction.getDescription(),
                 transaction.getKindTransaction(),
                 transaction.getTransactionDate()
+        );
+    }
+
+    public TransactionEntity mapToTransactionEntityFromTransaction(final Transaction transaction) {
+        return new TransactionEntity(
+                transaction.getUserId(),
+                transaction.getDescription(),
+                transaction.getKindTransaction()
         );
     }
 }

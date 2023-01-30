@@ -39,10 +39,10 @@ public class UserAccountService {
 
 
     private UserAccount prepareAccountData(final UserAccount userAccount) {
-        log.info("money before depositMoney: "+userAccount.getBalance());
+        log.info("money before depositMoney: " + userAccount.getBalance());
         //start money
         userAccount.setBalance(depositMoney(new BigDecimal(10000)));
-        log.info("money after depositMoney: "+userAccount.getBalance());
+        log.info("money after depositMoney: " + userAccount.getBalance());
         return createNumberForAccount(userAccount);
     }
 
@@ -111,20 +111,24 @@ public class UserAccountService {
             transfer.setUserAccountNumber("You don't have enough money");
             return transfer;
         }
-
-        createTransaction(userId, transfer);
-        return transfer;
+        return createTransaction(userId, transfer);
     }
 
     @Transactional
-    protected void createTransaction(final Long userId, final Transfer transfer) {
-        increaseMoney(transfer);
-        decreaseMoney(userId, transfer.getAmount());
-    }
-
-    private void increaseMoney(final Transfer transfer) {
+    protected Transfer createTransaction(final Long userId, final Transfer transfer) {
         UserAccount userAccountToReceiveMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
                 (adapterUserAccountRepository.findByNumber(transfer.getUserAccountNumber()));
+        UserAccount userAccountToSpendMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
+                (adapterUserAccountRepository.findByUserId(userId));
+
+        increaseMoney(transfer, userAccountToReceiveMoney);
+        decreaseMoney(userAccountToSpendMoney, transfer.getAmount());
+        transfer.setUserReceiveId(userAccountToReceiveMoney.getUserId());
+        log.info("should be user id 1: " + transfer.getUserReceiveId());
+        return transfer;
+    }
+
+    protected void increaseMoney(final Transfer transfer, final UserAccount userAccountToReceiveMoney) {
         log.info("balance before increase: " + userAccountToReceiveMoney.getBalance());
         BigDecimal amountAfterIncrease = userAccountToReceiveMoney.getBalance().add(transfer.getAmount());
         log.info("balance after increase: " + amountAfterIncrease);
@@ -132,9 +136,7 @@ public class UserAccountService {
         adapterUserAccountRepository.save(userAccountsMapper.updateUserAccountEntityFromUserAccount(userAccountToReceiveMoney));
     }
 
-    private void decreaseMoney(final Long userId, final BigDecimal amountToSubtract) {
-        UserAccount userAccountToSpendMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
-                (adapterUserAccountRepository.findByUserId(userId));
+    protected void decreaseMoney(final UserAccount userAccountToSpendMoney, final BigDecimal amountToSubtract) {
         log.info("balance before decrease: " + userAccountToSpendMoney.getBalance());
         BigDecimal amountAfterDecrease = userAccountToSpendMoney.getBalance().subtract(amountToSubtract);
         log.info("balance after decrease: " + amountAfterDecrease);
