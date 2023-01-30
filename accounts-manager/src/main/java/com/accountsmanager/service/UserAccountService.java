@@ -31,7 +31,7 @@ public class UserAccountService {
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         userAccount.setUserId(userId);
         userAccount.setNumber(prepareAccountData(userAccount).getNumber());
-        log.info("wyjeżdża z currency: "+userAccount.getNumber());
+        log.info("wyjeżdża z currency: " + userAccount.getNumber());
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         adapterUserAccountRepository.save(accountEntity);
         return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
@@ -39,9 +39,15 @@ public class UserAccountService {
 
 
     private UserAccount prepareAccountData(final UserAccount userAccount) {
-        log.info("wjechał z currency: "+userAccount.getCurrency());
+        //start money
+        log.info("money before depositMoney: "+userAccount.getBalance());
+        userAccount.setBalance(depositMoney(10000));
+        log.info("money after depositMoney: "+userAccount.getBalance());
+        return createNumberForAccount(userAccount);
+    }
+
+    private UserAccount createNumberForAccount(final UserAccount userAccount) {
         String symbol = "";
-        userAccount.setBalance(new BigDecimal(10000));
         switch (userAccount.getCurrency()) {
             case "USD" -> {
                 symbol = "US77";
@@ -72,6 +78,14 @@ public class UserAccountService {
         }
         userAccount.setNumber(b.toString());
         return userAccount;
+    }
+
+    private BigDecimal depositMoney(final int moneyToDeposit) {
+        return new BigDecimal(moneyToDeposit);
+    }
+
+    private BigDecimal withdrawMoney(final int moneyToWithdraw) {
+        return new BigDecimal(moneyToWithdraw);
     }
 
     public List<UserAccount> getAllUserAccounts(final Long userId) {
@@ -127,6 +141,7 @@ public class UserAccountService {
         userAccountToSpendMoney.setBalance(amountAfterDecrease);
         adapterUserAccountRepository.save(userAccountsMapper.updateUserAccountEntityFromUserAccount(userAccountToSpendMoney));
     }
+
     private UserAccount createMainAccount(final Long userId, final UserAccount userAccount) {
         userAccount.setUserId(userId);
         userAccount.setAccountName("Main account");
