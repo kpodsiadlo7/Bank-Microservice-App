@@ -96,9 +96,9 @@ public class MainService {
         log.info("Kind transaction: " + kindTransaction);
         try {
             TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(accountToWithdrawId, kindTransaction, transferDto);
-            log.info("returningDto "+returningTransactionDto.toString());
+            log.info("returningDto "+returningTransactionDto.getDescription());
             if (returningTransactionDto.getKindTransaction().equals("error")) {
-                modelMap.put("errorTransfer", returningTransactionDto.getDescription());
+                modelMap.put("error", returningTransactionDto.getDescription());
                 return false;
             }
         } catch (Exception e) {

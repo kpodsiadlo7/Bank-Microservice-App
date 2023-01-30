@@ -106,20 +106,22 @@ public class UserAccountService {
             transfer.setUserAccountNumber("User with this number doesn't exist!");
             return transfer;
         }
-        if (adapterUserAccountRepository.findByUserId(userDecreaseId).getBalance().compareTo(transfer.getAmount()) < 0) {
+        if (adapterUserAccountRepository.findById(userDecreaseId).getBalance().compareTo(transfer.getAmount()) < 0) {
             transfer.setAmount(new BigDecimal(-1));
             transfer.setUserAccountNumber("You don't have enough money");
             return transfer;
         }
+        log.info("account id should be 2 "+userDecreaseId+"\naccount id should be still null "+transfer.getUserReceiveId());
         return createTransaction(userDecreaseId, transfer);
     }
 
     @Transactional
-    protected Transfer createTransaction(final Long userId, final Transfer transfer) {
+    protected Transfer createTransaction(final Long userDecreaseId, final Transfer transfer) {
         UserAccount userAccountToReceiveMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
                 (adapterUserAccountRepository.findByNumber(transfer.getUserAccountNumber()));
+        log.info("should be 2:" +userDecreaseId);
         UserAccount userAccountToSpendMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
-                (adapterUserAccountRepository.findByUserId(userId));
+                (adapterUserAccountRepository.findById(userDecreaseId));
 
         increaseMoney(transfer, userAccountToReceiveMoney);
         decreaseMoney(userAccountToSpendMoney, transfer.getAmount());

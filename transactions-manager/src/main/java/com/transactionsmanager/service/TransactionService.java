@@ -21,7 +21,7 @@ public class TransactionService {
     private final AdapterTransactionRepository adapterTransactionRepository;
 
     public Transaction openTransaction(final Long userDecreaseId, final String kindTransaction, final TransferDto transferDto) {
-        log.info("should be id 1: "+transferDto.getUserReceiveId());
+        log.info("should be some id: "+transferDto.getUserReceiveId());
         log.info("open transaction");
         Transaction transaction = new Transaction();
         if (kindTransaction.equals("transfer")) {
