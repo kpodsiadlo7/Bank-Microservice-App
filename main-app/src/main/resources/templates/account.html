@@ -6,8 +6,22 @@
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#backBtn").click(function () {
+                window.location.href = '/dashboard';
+            });
+        });
+    </script>
 </head>
 <body>
+<div class="row">
+    <div class="col-6">
+        <button id="backBtn" type="button" style="margin-left: 2em; margin-bottom: 7em"
+                class="btn btn-primary">Back to dashboard
+        </button>
+    </div>
+</div>
 <div class="card text-bg-light mb-3" style="width: 25rem; margin-left: 3em">
     <h3 class="card-header" th:text="${userAccount.accountName}">Account name</h3>
     <div class="card-body">

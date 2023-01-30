@@ -95,7 +95,7 @@ public class UserAccountService {
         return userAccountsMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
     }
 
-    public Transfer validateDataBeforeTransaction(final Long userId, final Transfer transfer) {
+    public Transfer validateDataBeforeTransaction(final Long userDecreaseId, final Transfer transfer) {
         if (transfer.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             transfer.setUserAccountNumber("Minimum amount must be over 0");
             transfer.setAmount(new BigDecimal(-1));
@@ -106,12 +106,12 @@ public class UserAccountService {
             transfer.setUserAccountNumber("User with this number doesn't exist!");
             return transfer;
         }
-        if (adapterUserAccountRepository.findByUserId(userId).getBalance().compareTo(transfer.getAmount()) < 0) {
+        if (adapterUserAccountRepository.findByUserId(userDecreaseId).getBalance().compareTo(transfer.getAmount()) < 0) {
             transfer.setAmount(new BigDecimal(-1));
             transfer.setUserAccountNumber("You don't have enough money");
             return transfer;
         }
-        return createTransaction(userId, transfer);
+        return createTransaction(userDecreaseId, transfer);
     }
 
     @Transactional

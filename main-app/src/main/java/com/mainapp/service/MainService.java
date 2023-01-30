@@ -91,10 +91,11 @@ public class MainService {
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }
 
-    public boolean quickTransferMoney(final User user, final TransferDto transferDto, final ModelMap modelMap, final String kindTransaction) {
+    public boolean quickTransferMoney(final User user, final TransferDto transferDto, final ModelMap modelMap,
+                                      final String kindTransaction, final Long accountToWithdrawId) {
         log.info("Kind transaction: " + kindTransaction);
         try {
-            TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
+            TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(accountToWithdrawId, kindTransaction, transferDto);
             log.info("returningDto "+returningTransactionDto.toString());
             if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("errorTransfer", returningTransactionDto.getDescription());

@@ -24,10 +24,6 @@ public class TransactionController {
     @GetMapping("{accountId}")
     public String test(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
-        UserAccountDto userAccountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
-        modelMap.put("userAccount",userAccountDto);
-        log.info(userAccountDto.toString());
-        /*
         try {
             UserAccountDto userAccountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
             modelMap.put("userAccount", userAccountDto);
@@ -36,17 +32,15 @@ public class TransactionController {
             modelMap.put("error", "Failed with loading your account");
             modelMap.put("userAccount", new UserAccountDto());
         }
-
-         */
         return "account";
     }
 
     @PostMapping("{accountId}")
-    public String testing(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
+    public String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
                           @RequestParam(name = "kindTransaction") String kindTransaction, ModelMap modelMap){
-        if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction)) {
+        if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction,accountId)) {
             try {
-                modelMap.put("userBankAccount", feignServiceAccountsManager.getAccountByAccountId(accountId));
+                modelMap.put("userAccount", feignServiceAccountsManager.getAccountByAccountId(accountId));
             } catch (Exception e) {
                 modelMap.put("error", "There was an error fetching your accounts");
             }

@@ -20,12 +20,12 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
     private final AdapterTransactionRepository adapterTransactionRepository;
 
-    public Transaction openTransaction(final Long userId, final String kindTransaction, final TransferDto transferDto) {
+    public Transaction openTransaction(final Long userDecreaseId, final String kindTransaction, final TransferDto transferDto) {
         log.info("should be id 1: "+transferDto.getUserReceiveId());
         log.info("open transaction");
         Transaction transaction = new Transaction();
         if (kindTransaction.equals("transfer")) {
-            transaction = moneyTransfer(userId, transferDto, kindTransaction);
+            transaction = moneyTransfer(userDecreaseId, transferDto, kindTransaction);
             if (transaction.getKindTransaction().equals("error")) {
                 log.info("something is wrong with returning transaction");
                 transaction.setDescription(transaction.getDescription());

@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FeignServiceAccountsManager {
 
     @PostMapping("/quick-transfer")
-    TransferDto quickTransfer(@RequestParam Long userId,
+    TransferDto quickTransfer(@RequestParam Long userDecreaseId,
                               @RequestBody TransferDto transferDto);
 }

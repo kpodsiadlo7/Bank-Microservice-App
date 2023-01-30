@@ -40,10 +40,10 @@ public class UserAccountController {
     }
 
     @PostMapping("/quick-transfer")
-    public ResponseEntity<TransferDto> quickTransfer(@RequestParam Long userId,
+    public ResponseEntity<TransferDto> quickTransfer(@RequestParam Long userDecreaseId,
                                                      @RequestBody TransferDto transferDto){
         return ResponseEntity.ok(transferMapper.mapToUserTransferDtoFromUserTransfer
                 (userAccountService.validateDataBeforeTransaction
-                        (userId,transferMapper.mapToTransferFromTransferDto(transferDto))));
+                        (userDecreaseId,transferMapper.mapToTransferFromTransferDto(transferDto))));
     }
 }
