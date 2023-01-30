@@ -15,6 +15,6 @@ public class TransactionDto {
     private Long id;
     private Long userId;
     private String description;
-    private String kindTransfer;
+    private String kindTransaction;
     private LocalDate transactionDate;
 }

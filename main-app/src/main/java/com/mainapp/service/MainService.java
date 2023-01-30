@@ -95,7 +95,8 @@ public class MainService {
         log.info("Kind transaction: " + kindTransaction);
         try {
             TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
-            if (returningTransactionDto.getKindTransfer().equals("error")) {
+            log.info("returningDto "+returningTransactionDto.toString());
+            if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("errorTransfer", returningTransactionDto.getDescription());
                 return false;
             }
@@ -107,16 +108,6 @@ public class MainService {
                 modelMap.put("error", "There was an error fetching your accounts");
             }
             modelMap.put("quickTransfer", new TransferDto());
-            return false;
-        }
-        return true;
-    }
-
-    public boolean quickTransferToUserByAccountNumber(final User user, final TransferDto transferDto, final ModelMap modelMap, final String kindTransaction) {
-        log.info("Kind transaction: " + kindTransaction);
-        TransferDto returningTransferFromAccountsManager = feignServiceAccountsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
-        if (returningTransferFromAccountsManager.getAmount().equals(new BigDecimal(-1))) {
-            modelMap.put("errorTransfer", returningTransferFromAccountsManager.getUserAccountNumber());
             return false;
         }
         return true;

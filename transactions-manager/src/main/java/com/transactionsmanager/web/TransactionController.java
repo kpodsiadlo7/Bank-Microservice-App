@@ -1,6 +1,9 @@
 package com.transactionsmanager.web;
 
+import com.transactionsmanager.service.TransactionService;
+import com.transactionsmanager.service.mapper.TransactionMapper;
 import com.transactionsmanager.web.dto.TransactionDto;
+import com.transactionsmanager.web.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TransactionController {
 
+    private final TransactionService transactionService;
+    private final TransactionMapper transactionMapper;
+
     @PostMapping
     public ResponseEntity<TransactionDto> quickTransferTransaction(@RequestParam Long userId,
                                                                    @RequestParam String kindTransaction,
-                                                                   @RequestBody TransactionDto transactionDto) {
-        log.info("User id: " +userId);
-        log.info("Kind transaction: " +kindTransaction);
-        return ResponseEntity.ok().build();
+                                                                   @RequestBody TransferDto transferDto) {
+        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoFromTransaction
+                (transactionService.openTransaction
+                        (userId, kindTransaction, transferDto)));
     }
 
 }
