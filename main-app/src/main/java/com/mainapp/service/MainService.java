@@ -93,9 +93,20 @@ public class MainService {
 
     public boolean quickTransferMoney(final User user, final TransferDto transferDto, final ModelMap modelMap, final String kindTransaction) {
         log.info("Kind transaction: " + kindTransaction);
-        TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
-        if (returningTransactionDto.getKindTransfer().equals("error")) {
-            modelMap.put("errorTransfer", returningTransactionDto.getDescription());
+        try {
+            TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
+            if (returningTransactionDto.getKindTransfer().equals("error")) {
+                modelMap.put("errorTransfer", returningTransactionDto.getDescription());
+                return false;
+            }
+        } catch (Exception e) {
+            modelMap.put("error", "There was an error with trying to connect with transactional service");
+            try {
+                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
+            } catch (Exception b) {
+                modelMap.put("error", "There was an error fetching your accounts");
+            }
+            modelMap.put("quickTransfer", new TransferDto());
             return false;
         }
         return true;

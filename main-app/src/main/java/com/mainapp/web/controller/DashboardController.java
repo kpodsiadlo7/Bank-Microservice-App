@@ -71,7 +71,6 @@ public class DashboardController {
     @PostMapping
     public String makeTransaction(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "kindTransaction") String kindTransaction, ModelMap modelMap) {
-        try {
             if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction)) {
                 try {
                     modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
@@ -81,16 +80,6 @@ public class DashboardController {
                 modelMap.put("quickTransfer", new TransferDto());
                 return "dashboard";
             }
-        } catch (Exception e) {
-            modelMap.put("error", "There was an error with trying to connect with transactional service");
-            try {
-                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
-            } catch (Exception b) {
-                modelMap.put("error", "There was an error fetching your accounts");
-            }
-            modelMap.put("quickTransfer", new TransferDto());
-            return "dashboard";
-        }
         return "redirect:/dashboard";
     }
 }
