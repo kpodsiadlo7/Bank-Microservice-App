@@ -39,9 +39,9 @@ public class UserAccountService {
 
 
     private UserAccount prepareAccountData(final UserAccount userAccount) {
-        //start money
         log.info("money before depositMoney: "+userAccount.getBalance());
-        userAccount.setBalance(depositMoney(10000));
+        //start money
+        userAccount.setBalance(depositMoney(new BigDecimal(10000)));
         log.info("money after depositMoney: "+userAccount.getBalance());
         return createNumberForAccount(userAccount);
     }
@@ -80,12 +80,12 @@ public class UserAccountService {
         return userAccount;
     }
 
-    private BigDecimal depositMoney(final int moneyToDeposit) {
-        return new BigDecimal(moneyToDeposit);
+    private BigDecimal depositMoney(final BigDecimal moneyToDeposit) {
+        return moneyToDeposit;
     }
 
-    private BigDecimal withdrawMoney(final int moneyToWithdraw) {
-        return new BigDecimal(moneyToWithdraw);
+    private BigDecimal withdrawMoney(final BigDecimal moneyToWithdraw) {
+        return moneyToWithdraw;
     }
 
     public List<UserAccount> getAllUserAccounts(final Long userId) {
@@ -128,7 +128,7 @@ public class UserAccountService {
         log.info("balance before increase: " + userAccountToReceiveMoney.getBalance());
         BigDecimal amountAfterIncrease = userAccountToReceiveMoney.getBalance().add(transfer.getAmount());
         log.info("balance after increase: " + amountAfterIncrease);
-        userAccountToReceiveMoney.setBalance(amountAfterIncrease);
+        userAccountToReceiveMoney.setBalance(depositMoney(amountAfterIncrease));
         adapterUserAccountRepository.save(userAccountsMapper.updateUserAccountEntityFromUserAccount(userAccountToReceiveMoney));
     }
 
@@ -138,7 +138,7 @@ public class UserAccountService {
         log.info("balance before decrease: " + userAccountToSpendMoney.getBalance());
         BigDecimal amountAfterDecrease = userAccountToSpendMoney.getBalance().subtract(amountToSubtract);
         log.info("balance after decrease: " + amountAfterDecrease);
-        userAccountToSpendMoney.setBalance(amountAfterDecrease);
+        userAccountToSpendMoney.setBalance(withdrawMoney(amountAfterDecrease));
         adapterUserAccountRepository.save(userAccountsMapper.updateUserAccountEntityFromUserAccount(userAccountToSpendMoney));
     }
 
