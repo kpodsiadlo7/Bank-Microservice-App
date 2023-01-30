@@ -25,6 +25,12 @@
                 window.location.href = '/dashboard/create-account';
             });
         });
+        $(function () {
+            $("button[id*='account-']").click(function () {
+                var accountId = $(this).prop('id').split('-')[1];
+                window.location.href = '/dashboard/account/'+accountId;
+            });
+        });
     </script>
     <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
 </head>
@@ -42,13 +48,22 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em" class="btn btn-primary">Add new account</button>
+            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em"
+                    class="btn btn-primary">Add new account
+            </button>
         </div>
     </div>
     <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row"
          style="margin-bottom: 2em; margin-left: 2em; margin-right: 2em">
         <div class="col-sm" th:if="${index < userBankAccounts.size()}">
-            <h5 class="card-header" th:text="${userBankAccounts[index].accountName}">Account name</h5>
+            <div class="card-header">
+                <div class="row">
+                    <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
+                    <div style="margin-left: auto">
+                        <button th:id="|account-${userBankAccounts[index].id}|" type="button" class="btn btn-dark">Quick transaction</button>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">Currency
                     account</h6>
@@ -60,7 +75,14 @@
             </div>
         </div>
         <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
-            <h5 class="card-header" th:text="${userBankAccounts[index+1].accountName}">Account name</h5>
+            <div class="card-header">
+                <div class="row">
+                    <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name</div>
+                    <div style="margin-left: auto">
+                        <button th:id="|account-${userBankAccounts[index].id}|" type="button" class="btn btn-dark">Quick transaction</button>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index+1].currency}">Currency
                     account</h6>

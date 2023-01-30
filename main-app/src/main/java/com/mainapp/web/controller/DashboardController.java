@@ -52,7 +52,7 @@ public class DashboardController {
     @GetMapping("/create-account")
     public String getAccount(ModelMap modelMap) {
         modelMap.put("userAccount", new UserAccountDto());
-        return "account";
+        return "accounts";
     }
 
     @PostMapping("/create-account")
@@ -63,7 +63,7 @@ public class DashboardController {
         } catch (Exception e) {
             modelMap.put("error", "Failed with creating account");
             modelMap.put("userAccount", new UserAccountDto());
-            return "account";
+            return "accounts";
         }
         return "redirect:/dashboard";
     }

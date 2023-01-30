@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,15 +18,5 @@ public class TransactionDto {
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
-
-    @Override
-    public String toString() {
-        return "TransactionDto{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", description='" + description + '\'' +
-                ", kindTransaction='" + kindTransaction + '\'' +
-                ", transactionDate=" + transactionDate +
-                '}';
-    }
+    private String value;
 }

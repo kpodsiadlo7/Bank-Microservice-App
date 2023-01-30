@@ -1,6 +1,5 @@
 package com.transactionsmanager.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,11 +20,13 @@ public class TransactionEntity {
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
+    private String value;
 
-    public TransactionEntity(final Long userId, final String description, final String kindTransaction) {
+    public TransactionEntity(final Long userId, final String description, final String kindTransaction, final String value) {
         this.userId = userId;
         this.description = description;
         this.kindTransaction = kindTransaction;
         this.transactionDate = LocalDate.now();
+        this.value = value;
     }
 }

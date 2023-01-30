@@ -56,20 +56,23 @@ public class TransactionService {
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
-        return createMoneyTransferHistory(userDecreaseId, returnTransferDto, kindTransaction);
+        return createMoneyTransferHistory(userDecreaseId, returnTransferDto, kindTransaction,transferDto.getAmount());
     }
 
-    private Transaction createMoneyTransferHistory(final Long userDecreaseId, final TransferDto returnedTransferDto, final String kindTransaction) {
+    private Transaction createMoneyTransferHistory(final Long userDecreaseId, final TransferDto returnedTransferDto,
+                                                   final String kindTransaction, final BigDecimal amount) {
         Transaction transactionForDecreaseUser = new Transaction();
         transactionForDecreaseUser.setUserId(userDecreaseId);
         transactionForDecreaseUser.setKindTransaction(kindTransaction);
         transactionForDecreaseUser.setDescription("Outgoing transfer");
+        transactionForDecreaseUser.setValue("-"+amount);
         adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForDecreaseUser));
 
         Transaction transactionForIncreaseUser = new Transaction();
         transactionForIncreaseUser.setUserId(returnedTransferDto.getUserReceiveId());
         transactionForIncreaseUser.setKindTransaction(kindTransaction);
         transactionForIncreaseUser.setDescription("Incoming transfer");
+        transactionForIncreaseUser.setValue("+"+amount);
         adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForIncreaseUser));
         return transactionForDecreaseUser;
     }

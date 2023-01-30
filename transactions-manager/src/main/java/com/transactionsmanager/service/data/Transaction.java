@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,4 +18,5 @@ public class Transaction {
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
+    private String value;
 }

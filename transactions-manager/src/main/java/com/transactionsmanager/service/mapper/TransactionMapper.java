@@ -14,7 +14,8 @@ public class TransactionMapper {
                 transaction.getUserId(),
                 transaction.getDescription(),
                 transaction.getKindTransaction(),
-                transaction.getTransactionDate()
+                transaction.getTransactionDate(),
+                transaction.getValue()
         );
     }
 
@@ -22,7 +23,8 @@ public class TransactionMapper {
         return new TransactionEntity(
                 transaction.getUserId(),
                 transaction.getDescription(),
-                transaction.getKindTransaction()
+                transaction.getKindTransaction(),
+                transaction.getValue()
         );
     }
 }
