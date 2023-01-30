@@ -6,6 +6,7 @@ import com.mainapp.service.data.User;
 import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
+import com.mainapp.web.dto.TransactionDto;
 import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import com.mainapp.web.feign.FeignServiceTransactionsManager;
@@ -90,11 +91,21 @@ public class MainService {
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }
 
-    public boolean quickTransferToUserByAccountNumber(final User user, final TransferDto transferDto, final ModelMap modelMap) {
-        log.info(feignServiceTransactionsManager.test());
-        TransferDto returningTransferFromAccountsManager = feignServiceAccountsManager.quickTransfer(user.getId(),transferDto);
+    public boolean quickTransferMoney(final User user, final TransferDto transferDto, final ModelMap modelMap, final String kindTransaction) {
+        log.info("Kind transaction: " + kindTransaction);
+        TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
+        if (returningTransactionDto.getKindTransfer().equals("error")) {
+            modelMap.put("errorTransfer", returningTransactionDto.getDescription());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean quickTransferToUserByAccountNumber(final User user, final TransferDto transferDto, final ModelMap modelMap, final String kindTransaction) {
+        log.info("Kind transaction: " + kindTransaction);
+        TransferDto returningTransferFromAccountsManager = feignServiceAccountsManager.quickTransfer(user.getId(), kindTransaction, transferDto);
         if (returningTransferFromAccountsManager.getAmount().equals(new BigDecimal(-1))) {
-            modelMap.put("errorTransfer",returningTransferFromAccountsManager.getUserAccountNumber());
+            modelMap.put("errorTransfer", returningTransferFromAccountsManager.getUserAccountNumber());
             return false;
         }
         return true;

@@ -31,7 +31,7 @@ public class UserAccountService {
     private UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
         userAccount.setUserId(userId);
         userAccount.setNumber(prepareAccountData(userAccount).getNumber());
-        log.info("wyjeżdża z currency: " + userAccount.getNumber());
+        log.info("wyjeżdża z currency: " + userAccount.getCurrency());
         UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
         adapterUserAccountRepository.save(accountEntity);
         return userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);

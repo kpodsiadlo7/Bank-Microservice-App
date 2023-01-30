@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 @Slf4j
@@ -32,7 +34,7 @@ public class DashboardController {
             if (accounts.size() == 0) {
                 try {
                     mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(new UserAccountDto()));
-                    modelMap.put("quickTransfer",new TransferDto());
+                    modelMap.put("quickTransfer", new TransferDto());
                     return "redirect:/dashboard";
                 } catch (Exception e) {
                     modelMap.put("error", "Failed with loading your accounts");
@@ -43,7 +45,7 @@ public class DashboardController {
             modelMap.put("error", "Failed with loading your accounts");
             modelMap.put("userBankAccounts", new TreeSet<UserAccountDto>());
         }
-        modelMap.put("quickTransfer",new TransferDto());
+        modelMap.put("quickTransfer", new TransferDto());
         return "dashboard";
     }
 
@@ -55,30 +57,38 @@ public class DashboardController {
 
     @PostMapping("/create-account")
     public String postAccount(@AuthenticationPrincipal User user, @ModelAttribute UserAccountDto userAccountDto, ModelMap modelMap) {
-        log.info("paczka "+userAccountDto.getCurrency());
+        log.info("paczka " + userAccountDto.getCurrency());
         try {
             mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccountDto));
         } catch (Exception e) {
             modelMap.put("error", "Failed with creating account");
-            modelMap.put("userAccount",new UserAccountDto());
+            modelMap.put("userAccount", new UserAccountDto());
             return "account";
         }
         return "redirect:/dashboard";
     }
+
     @PostMapping
-    public String quickTransfer(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto, ModelMap modelMap){
+    public String makeTransaction(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto,
+                                  @RequestParam(name = "kindTransaction") String kindTransaction, ModelMap modelMap) {
         try {
-            if (!mainService.quickTransferToUserByAccountNumber(user,transferDto,modelMap)) {
+            if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction)) {
                 try {
-                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
-                } catch (Exception e){
-                    modelMap.put("error","There was an error fetching your accounts");
+                    modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
+                } catch (Exception e) {
+                    modelMap.put("error", "There was an error fetching your accounts");
                 }
                 modelMap.put("quickTransfer", new TransferDto());
                 return "dashboard";
             }
-        } catch (Exception e){
-            modelMap.put("error","There was an error creating transaction");
+        } catch (Exception e) {
+            modelMap.put("error", "There was an error with trying to connect with transactional service");
+            try {
+                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
+            } catch (Exception b) {
+                modelMap.put("error", "There was an error fetching your accounts");
+            }
+            modelMap.put("quickTransfer", new TransferDto());
             return "dashboard";
         }
         return "redirect:/dashboard";

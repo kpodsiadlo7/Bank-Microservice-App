@@ -17,4 +17,15 @@ public class TransactionDto {
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
+
+    @Override
+    public String toString() {
+        return "TransactionDto{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", description='" + description + '\'' +
+                ", kindTransaction='" + kindTransaction + '\'' +
+                ", transactionDate=" + transactionDate +
+                '}';
+    }
 }

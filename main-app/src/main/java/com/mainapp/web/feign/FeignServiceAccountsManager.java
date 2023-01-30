@@ -21,5 +21,6 @@ public interface FeignServiceAccountsManager {
 
     @PostMapping("/quick-transfer")
     TransferDto quickTransfer(@RequestParam Long userId,
+                              @RequestParam String kindTransaction,
                               @RequestBody TransferDto transferDto);
 }
