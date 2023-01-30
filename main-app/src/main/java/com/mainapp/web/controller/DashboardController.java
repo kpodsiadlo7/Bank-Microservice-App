@@ -69,11 +69,17 @@ public class DashboardController {
     public String quickTransfer(@AuthenticationPrincipal User user, @ModelAttribute TransferDto transferDto, ModelMap modelMap){
         try {
             if (!mainService.quickTransferToUserByAccountNumber(user,transferDto,modelMap)) {
+                try {
+                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
+                } catch (Exception e){
+                    modelMap.put("error","There was an error fetching your accounts");
+                }
                 modelMap.put("quickTransfer", new TransferDto());
                 return "dashboard";
             }
         } catch (Exception e){
             modelMap.put("error","There was an error creating transaction");
+            return "dashboard";
         }
         return "redirect:/dashboard";
     }
