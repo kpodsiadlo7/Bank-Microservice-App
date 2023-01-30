@@ -28,7 +28,7 @@
         $(function () {
             $("button[id*='account-']").click(function () {
                 var accountId = $(this).prop('id').split('-')[1];
-                window.location.href = '/dashboard/account/'+accountId;
+                window.location.href = '/dashboard/account/' + accountId;
             });
         });
     </script>
@@ -46,56 +46,89 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em"
-                    class="btn btn-primary">Add new account
-            </button>
-        </div>
-    </div>
-    <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row"
-         style="margin-bottom: 2em; margin-left: 2em; margin-right: 2em">
-        <div class="col-sm" th:if="${index < userBankAccounts.size()}">
-            <div class="card-header">
-                <div class="row">
-                    <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
-                    <div style="margin-left: auto">
-                        <button th:id="|account-${userBankAccounts[index].id}|" type="button" class="btn btn-dark">Quick transaction</button>
+    <div>
+        <div class="row gx-2">
+            <div class="col-2">
+                <div class="p-1">
+                    <div class="d-grid gap-2">
+                        <div class="p-1">
+                            <h2 style="margin-left: 3.7em; margin-bottom: 3em">Menu</h2>
+                            <div class="d-grid gap-2">
+                                <a href="/transactions" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 6.5em">Transactions</a><br>
+                                <a href="/exchange" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 7.2em">Exchange</a><br>
+                                <a href="/options" class="btn btn-outline-dark" style="margin-top: 7em; margin-left: 7.8em">Options</a><br>
+                                <a href="/close-account" class="btn btn-outline-danger" style="margin-top: 7px; margin-bottom: 2em; margin-left: 6.5em">Close account</a><br>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">Currency
-                    account</h6>
-                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index].number}|">Currency number</h6>
-                <h6 class="card-subtitle"
-                    th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
-                    Currency balance</h6>
-                <a th:id="view+${index}" class="card-link">Card link</a>
-            </div>
-        </div>
-        <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
-            <div class="card-header">
-                <div class="row">
-                    <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name</div>
-                    <div style="margin-left: auto">
-                        <button th:id="|account-${userBankAccounts[index+1].id}|" type="button" class="btn btn-dark">Quick transaction</button>
+            <div class="col-10">
+                <div class="p-1">
+                    <div class="row">
+                        <div class="col-6">
+                            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em"
+                                    class="btn btn-primary">Add new account
+                            </button>
+                        </div>
+                    </div>
+                    <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row"
+                         style="margin-bottom: 2em; margin-left: 2em; margin-right: 2em">
+                        <div class="col-sm" th:if="${index < userBankAccounts.size()}">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
+                                    <div style="margin-left: auto">
+                                        <button th:id="|account-${userBankAccounts[index].id}|" type="button"
+                                                class="btn btn-dark">Quick
+                                            transaction
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">
+                                    Currency
+                                    account</h6>
+                                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index].number}|">
+                                    Currency number</h6>
+                                <h6 class="card-subtitle"
+                                    th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
+                                    Currency balance</h6>
+                                <a th:id="view+${index}" class="card-link">Card link</a>
+                            </div>
+                        </div>
+                        <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name
+                                    </div>
+                                    <div style="margin-left: auto">
+                                        <button th:id="|account-${userBankAccounts[index+1].id}|" type="button"
+                                                class="btn btn-dark">
+                                            Quick transaction
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"
+                                    th:text="${userBankAccounts[index+1].currency}">Currency
+                                    account</h6>
+                                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index+1].number}|">
+                                    Currency
+                                    number</h6>
+                                <h6 class="card-subtitle"
+                                    th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
+                                    Currency balance</h6>
+                                <a th:id="view+${index}" class="card-link">Card link</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index+1].currency}">Currency
-                    account</h6>
-                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index+1].number}|">Currency
-                    number</h6>
-                <h6 class="card-subtitle"
-                    th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
-                    Currency balance</h6>
-                <a th:id="view+${index}" class="card-link">Card link</a>
-            </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>

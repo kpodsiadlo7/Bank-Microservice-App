@@ -20,42 +20,66 @@
     </script>
 </head>
 <body>
-<div class="row">
-    <div class="col-6">
-        <button id="backBtn" type="button" style="margin-left: 2em; margin-bottom: 7em"
-                class="btn btn-primary">Back to dashboard
-        </button>
+<div class="card">
+    <div class="card-header" style="margin-bottom: 3em">
+        <div class="row">
+            <div class="h2 col-11">
+                Microservices Bank Application
+            </div>
+            <div class="col-1">
+                <button id="backBtn" type="button" class="btn btn-primary">Back</button>
+            </div>
+        </div>
     </div>
-</div>
-<div class="card text-bg-light mb-3" style="width: 25rem; margin-left: 3em">
-    <h3 class="card-header" th:text="${userAccount.accountName}">Account name</h3>
-    <div class="card-body">
-        <h6 class="card-subtitle" th:text="${userAccount.currency}">Currency account</h6>
-        <h6 style="margin-bottom: 0.7em" class="card-subtitle" th:text="|Account nr ${userAccount.number}|">Currency
-            number</h6>
-        <h6 style="margin-bottom: 0.7em" class="card-subtitle"
-            th:text="|Balance ${userAccount.balance} ${userAccount.currencySymbol}|">Currency number</h6>
-    </div>
-</div>
-<h3 style="margin-top: 7em;margin-left: 2.3em">Quick Transfer</h3>
+    <div>
+        <div class="row gx-2">
+            <div class="col-3">
+                <div class="p-1">
+                    <div class="card">
+                        <div class="card text-bg-light mb-3" style="width: auto">
+                            <h3 class="card-header" th:text="${userAccount.accountName}">Account name</h3>
+                            <div class="card-body">
+                                <h6 class="card-subtitle" th:text="${userAccount.currency}">Currency account</h6>
+                                <h6 style="margin-bottom: 0.7em" class="card-subtitle"
+                                    th:text="|Account nr ${userAccount.number}|">Currency number</h6>
+                                <h6 style="margin-bottom: 0.7em" class="card-subtitle"
+                                    th:text="|Balance ${userAccount.balance} ${userAccount.currencySymbol}|">Currency
+                                    number</h6>
+                            </div>
+                        </div>
+                        <h3 style="margin-top: 2em;margin-left: 4.4em">Quick Transfer</h3>
 
-<form action="" method="post" style="margin-left: 3em">
-    <fieldset>
-        <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
-        <div class="form-group">
-            <label>
-                <label for="nrAccount" class="form-label">Nr account</label>
-                <input type="text" class="form-control" th:field="${quickTransfer.userAccountNumber}" required>
-            </label>
+                        <form action="" method="post" style="margin-left: 1.7em">
+                            <fieldset>
+                                <div id="errorTrans" class="alert alert-danger d-none" role="alert"
+                                     th:text="${error}"></div>
+                                <div class="form-group">
+                                    <label>
+                                        <label for="nrAccount" class="form-label">Nr account</label>
+                                        <input type="text" class="form-control" style="width: 25em"
+                                               th:field="${quickTransfer.userAccountNumber}" required>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <label for="amount" class="form-label">Amount</label>
+                                        <input type="number" class="form-control" th:field="${quickTransfer.amount}"
+                                               required>
+                                    </label>
+                                </div>
+                                <button type="submit" name="kindTransaction" style="margin-bottom: 1.3em"
+                                        value="transfer" class="btn">Submit
+                                </button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="p-1">Custom column padding</div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>
-                <label for="amount" class="form-label">Amount</label>
-                <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
-            </label>
-        </div>
-        <button type="submit" name="kindTransaction" value="transfer" class="btn">Submit</button>
-    </fieldset>
-</form>
+    </div>
+</div>
 </body>
 </html>

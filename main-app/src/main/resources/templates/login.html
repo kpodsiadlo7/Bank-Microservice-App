@@ -14,26 +14,49 @@
 </head>
 <body>
 <div class="card">
-    <h2>Please login or register</h2>
-    <div class="card-body">
-        <form action="" method="post">
-            <fieldset>
-                <div class="form-group">
-                    <label>
-                        <label for="username" class="form-label">Login</label>
-                        <input type="text" class="form-control" th:field="${userDto.username}">
-                    </label>
+    <div class="card-header" style="margin-bottom: 3em">
+        <div class="row">
+            <div class="h2 col-11">
+                Microservices Bank Application
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row gx-2">
+            <div class="col-3">
+                <div class="p-1">
+                    <div class="card">
+                        <div class="card">
+                            <h2 style="margin: auto; margin-top: 0.3em">Please login or register</h2>
+                            <div class="card-body">
+                                <form action="" method="post">
+                                    <fieldset style="margin-left: 5.5em">
+                                        <div class="form-group">
+                                            <label>
+                                                <label for="username" class="form-label">Login</label>
+                                                <input type="text" class="form-control" th:field="${userDto.username}">
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>
+                                                <label for="password" class="form-label">Password</label>
+                                                <input type="text" class="form-control" th:field="${userDto.password}">
+                                            </label>
+                                        </div>
+                                        <button type="submit" class="btn">Login</button>
+                                        <button id="registerBtn" type="button" class="btn btn-primary">Register Page
+                                        </button>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control" th:field="${userDto.password}">
-                    </label>
-                </div>
-                <button type="submit" class="btn">Login</button>
-                <button id="registerBtn" type="button" class="btn btn-primary">Register Page</button>
-            </fieldset>
-        </form>
+            </div>
+            <div class="col-9">
+                <div class="p-1">Custom column padding</div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
