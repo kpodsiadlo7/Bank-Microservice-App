@@ -20,34 +20,45 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
     private final AdapterTransactionRepository adapterTransactionRepository;
 
-    public Transaction openTransaction(final Long userDecreaseId, final String kindTransaction, final TransferDto transferDto) {
-        log.info("should be some id: "+transferDto.getUserReceiveId());
+    public Transaction openTransaction(final Long thisAccountId, final String descriptionTransaction, final TransferDto transferDto) {
+        log.info("should be some id: " + transferDto.getUserReceiveId());
         log.info("open transaction");
         Transaction transaction = new Transaction();
-        if (kindTransaction.equals("transfer")) {
-            transaction = moneyTransfer(userDecreaseId, transferDto, kindTransaction);
-            if (transaction.getKindTransaction().equals("error")) {
-                log.info("something is wrong with returning transaction");
-                transaction.setDescription(transaction.getDescription());
-                return transaction;
-            }
-            return transaction;
-        }
+        Transaction error = new Transaction();
+        if (descriptionTransaction.equals("transfer money"))
+            return moneyTransfer(thisAccountId, transferDto, descriptionTransaction, error);
+        /*
+        if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw"))
+            return depositOrWithdraw();
+
+         */
+
+
         log.info("wrong kind of transaction");
         transaction.setKindTransaction("error");
-        transaction.setDescription("Wrong kind of transaction");
+        transaction.setDescription("Wrong kind of transaction transactions-manager");
         return transaction;
     }
 
     @Transactional
-    protected Transaction moneyTransfer(final Long userDecreaseId, final TransferDto transferDto, final String kindTransaction) {
-        Transaction error = new Transaction();
-        error.setKindTransaction("error");
-        log.info("should be id 1 " + transferDto.getUserReceiveId());
+    protected Transaction moneyTransfer(final Long thisAccountId, final TransferDto transferDto,
+                                        final String descriptionTransaction, Transaction error) {
 
+        error.setKindTransaction("error");
+        Transaction transaction = makeMoneyTransfer(thisAccountId, transferDto, descriptionTransaction, error);
+        if (transaction.getKindTransaction().equals("error")) {
+            log.info("something is wrong with returning transaction");
+            transaction.setDescription(transaction.getDescription());
+            return transaction;
+        }
+        return transaction;
+    }
+
+    private Transaction makeMoneyTransfer(final Long thisAccountId, final TransferDto transferDto,
+                                          final String descriptionTransaction, final Transaction error) {
         TransferDto returnTransferDto;
         try {
-            returnTransferDto = feignServiceAccountsManager.quickTransfer(userDecreaseId, transferDto);
+            returnTransferDto = feignServiceAccountsManager.quickTransfer(thisAccountId, transferDto);
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
                 error.setDescription(returnTransferDto.getUserAccountNumber());
                 return error;
@@ -56,24 +67,37 @@ public class TransactionService {
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
-        return createMoneyTransferHistory(userDecreaseId, returnTransferDto, kindTransaction,transferDto.getAmount());
+        return closeMoneyTransferTransaction(thisAccountId, returnTransferDto, descriptionTransaction, transferDto.getAmount());
     }
 
-    private Transaction createMoneyTransferHistory(final Long userDecreaseId, final TransferDto returnedTransferDto,
-                                                   final String kindTransaction, final BigDecimal amount) {
-        Transaction transactionForDecreaseUser = new Transaction();
-        transactionForDecreaseUser.setUserId(userDecreaseId);
-        transactionForDecreaseUser.setKindTransaction(kindTransaction);
-        transactionForDecreaseUser.setDescription("Outgoing transfer");
-        transactionForDecreaseUser.setValue("-"+amount);
-        adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForDecreaseUser));
+    private Transaction closeMoneyTransferTransaction(final Long thisAccountId, final TransferDto returnedTransferDto,
+                                         final String descriptionTransaction, final BigDecimal amount) {
+        inComingTransaction(returnedTransferDto.getUserReceiveId(), descriptionTransaction, amount);
+        return outGoingTransaction(thisAccountId, descriptionTransaction, amount);
+    }
 
+    private Transaction inComingTransaction(final Long userId, final String descriptionTransaction, final BigDecimal amount) {
         Transaction transactionForIncreaseUser = new Transaction();
-        transactionForIncreaseUser.setUserId(returnedTransferDto.getUserReceiveId());
-        transactionForIncreaseUser.setKindTransaction(kindTransaction);
-        transactionForIncreaseUser.setDescription("Incoming transfer");
-        transactionForIncreaseUser.setValue("+"+amount);
-        adapterTransactionRepository.save(transactionMapper.mapToTransactionEntityFromTransaction(transactionForIncreaseUser));
-        return transactionForDecreaseUser;
+        transactionForIncreaseUser.setUserId(userId);
+        transactionForIncreaseUser.setValue("+" + amount);
+        transactionForIncreaseUser.setKindTransaction("Incoming");
+        transactionForIncreaseUser.setDescription(descriptionTransaction);
+        return transactionMapper.mapToTransactionFromTransactionEntity
+                (adapterTransactionRepository.save
+                        (transactionMapper.mapToTransactionEntityFromTransaction
+                                (transactionForIncreaseUser)));
     }
+
+    private Transaction outGoingTransaction(final Long userId, final String descriptionTransaction, final BigDecimal amount) {
+        Transaction transactionForDecreaseUser = new Transaction();
+        transactionForDecreaseUser.setUserId(userId);
+        transactionForDecreaseUser.setValue("-" + amount);
+        transactionForDecreaseUser.setKindTransaction("Outgoing");
+        transactionForDecreaseUser.setDescription(descriptionTransaction);
+        return transactionMapper.mapToTransactionFromTransactionEntity
+                (adapterTransactionRepository.save
+                        (transactionMapper.mapToTransactionEntityFromTransaction
+                                (transactionForDecreaseUser)));
+    }
+
 }

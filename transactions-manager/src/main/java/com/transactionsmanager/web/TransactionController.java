@@ -21,11 +21,11 @@ public class TransactionController {
     private final TransactionMapper transactionMapper;
 
     @PostMapping
-    public ResponseEntity<TransactionDto> quickTransferTransaction(@RequestParam Long accountToWithdrawId,
-                                                                   @RequestParam String kindTransaction,
-                                                                   @RequestBody TransferDto transferDto) {
+    public ResponseEntity<TransactionDto> makeTransaction(@RequestParam Long thisAccountId,
+                                                          @RequestParam String descriptionTransaction,
+                                                          @RequestBody TransferDto transferDto) {
         return ResponseEntity.ok(transactionMapper.mapToTransactionDtoFromTransaction
                 (transactionService.openTransaction
-                        (accountToWithdrawId, kindTransaction, transferDto)));
+                        (thisAccountId, descriptionTransaction, transferDto)));
     }
 }

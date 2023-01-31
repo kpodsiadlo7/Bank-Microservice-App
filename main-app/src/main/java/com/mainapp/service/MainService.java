@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Slf4j
@@ -91,12 +90,12 @@ public class MainService {
                 (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
     }
 
-    public boolean quickTransferMoney(final User user, final TransferDto transferDto, final ModelMap modelMap,
-                                      final String kindTransaction, final Long accountToWithdrawId) {
-        log.info("Kind transaction: " + kindTransaction);
+    public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
+                                   final String descriptionTransaction, final Long thisAccountId) {
+        log.info("Kind transaction: " + descriptionTransaction);
         try {
-            TransactionDto returningTransactionDto = feignServiceTransactionsManager.quickTransfer(accountToWithdrawId, kindTransaction, transferDto);
-            log.info("returningDto "+returningTransactionDto.getDescription());
+            TransactionDto returningTransactionDto = feignServiceTransactionsManager.makeTransaction(thisAccountId, descriptionTransaction, transferDto);
+            log.info("returningDto " + returningTransactionDto.getDescription());
             if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("error", returningTransactionDto.getDescription());
                 return false;

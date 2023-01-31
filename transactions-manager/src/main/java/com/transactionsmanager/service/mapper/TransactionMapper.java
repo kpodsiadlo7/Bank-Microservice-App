@@ -27,4 +27,15 @@ public class TransactionMapper {
                 transaction.getValue()
         );
     }
+
+    public Transaction mapToTransactionFromTransactionEntity(final TransactionEntity transactionEntity) {
+        return new Transaction(
+                transactionEntity.getId(),
+                transactionEntity.getUserId(),
+                transactionEntity.getDescription(),
+                transactionEntity.getKindTransaction(),
+                transactionEntity.getTransactionDate(),
+                transactionEntity.getValue()
+        );
+    }
 }

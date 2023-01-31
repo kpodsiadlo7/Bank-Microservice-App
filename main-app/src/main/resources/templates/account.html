@@ -47,17 +47,30 @@
                                     number</h6>
                             </div>
                         </div>
-                        <h3 style="margin-top: 2em;margin-left: 4.4em">Quick Transfer</h3>
-
+                        <h3 style="margin-left: 1.3em">Deposit or withdraw money</h3>
                         <form action="" method="post" style="margin-left: 1.7em">
                             <fieldset>
-                                <div id="errorTrans" class="alert alert-danger d-none" role="alert"
-                                     th:text="${error}"></div>
+                                <div id="errorDeposit" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
+                                <div class="form-group">
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <label for="amount" class="form-label">Amount</label>
+                                        <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
+                                    </label>
+                                </div>
+                                <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="deposit" class="btn">Deposit</button>
+                                <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="withdraw" class="btn">Withdraw</button>
+                            </fieldset>
+                        </form>
+                        <h3 style="margin-top: 2em;margin-left: 4.4em">Quick Transfer</h3>
+                        <form action="" method="post" style="margin-left: 1.7em">
+                            <fieldset>
+                                <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
                                 <div class="form-group">
                                     <label>
                                         <label for="nrAccount" class="form-label">Nr account</label>
-                                        <input type="text" class="form-control" style="width: 25em"
-                                               th:field="${quickTransfer.userAccountNumber}" required>
+                                        <input type="text" class="form-control" style="width: 25em" th:field="${quickTransfer.userAccountNumber}" required>
                                     </label>
                                 </div>
                                 <div class="form-group">
@@ -67,9 +80,7 @@
                                                required>
                                     </label>
                                 </div>
-                                <button type="submit" name="kindTransaction" style="margin-bottom: 1.3em"
-                                        value="transfer" class="btn">Submit
-                                </button>
+                                <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="transfer money" class="btn">Submit</button>
                             </fieldset>
                         </form>
                     </div>

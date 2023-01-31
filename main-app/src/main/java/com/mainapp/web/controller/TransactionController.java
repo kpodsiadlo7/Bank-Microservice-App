@@ -37,9 +37,9 @@ public class TransactionController {
 
     @PostMapping("{accountId}")
     public String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
-                                  @RequestParam(name = "kindTransaction") String kindTransaction, ModelMap modelMap) {
+                                  @RequestParam(name = "descriptionTransaction") String kindTransaction, ModelMap modelMap) {
         log.info("id to withdraw: " + accountId);
-        if (!mainService.quickTransferMoney(user, transferDto, modelMap, kindTransaction, accountId)) {
+        if (!mainService.makeTransaction(user, transferDto, modelMap, kindTransaction, accountId)) {
             try {
                 modelMap.put("userAccount", feignServiceAccountsManager.getAccountByAccountId(accountId));
             } catch (Exception e) {

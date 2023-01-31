@@ -43,7 +43,7 @@ public class UserAccountController {
     public ResponseEntity<TransferDto> quickTransfer(@RequestParam Long userDecreaseId,
                                                      @RequestBody TransferDto transferDto){
         return ResponseEntity.ok(transferMapper.mapToUserTransferDtoFromUserTransfer
-                (userAccountService.validateDataBeforeTransaction
+                (userAccountService.moneyTransferFromUserToUser
                         (userDecreaseId,transferMapper.mapToTransferFromTransferDto(transferDto))));
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Slf4j
@@ -95,6 +96,12 @@ public class UserAccountService {
         return userAccountsMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
     }
 
+    public Transfer moneyTransferFromUserToUser(final Long userDecreaseId, final Transfer transfer) {
+        if (!Objects.equals(validateDataBeforeTransaction(userDecreaseId, transfer).getAmount(), new BigDecimal(-1)))
+            return createTransaction(userDecreaseId, transfer);
+        return transfer;
+    }
+
     public Transfer validateDataBeforeTransaction(final Long userDecreaseId, final Transfer transfer) {
         if (transfer.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             transfer.setUserAccountNumber("Minimum amount must be over 0");
@@ -111,15 +118,15 @@ public class UserAccountService {
             transfer.setUserAccountNumber("You don't have enough money");
             return transfer;
         }
-        log.info("account id should be 2 "+userDecreaseId+"\naccount id should be still null "+transfer.getUserReceiveId());
-        return createTransaction(userDecreaseId, transfer);
+        log.info("account id should be 2 " + userDecreaseId + "\naccount id should be still null " + transfer.getUserReceiveId());
+        return transfer;
     }
 
     @Transactional
     protected Transfer createTransaction(final Long userDecreaseId, final Transfer transfer) {
         UserAccount userAccountToReceiveMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
                 (adapterUserAccountRepository.findByNumber(transfer.getUserAccountNumber()));
-        log.info("should be 2:" +userDecreaseId);
+        log.info("should be 2:" + userDecreaseId);
         UserAccount userAccountToSpendMoney = userAccountsMapper.mapToUserAccountFromUserAccountEntity
                 (adapterUserAccountRepository.findById(userDecreaseId));
 
@@ -157,7 +164,7 @@ public class UserAccountService {
 
     public UserAccount getAccountByAccountId(final Long accountId) {
         UserAccount userAccount = userAccountsMapper.mapToUserAccountFromUserAccountEntity(adapterUserAccountRepository.findById(accountId));
-        log.info("user account "+userAccount.toString());
+        log.info("user account " + userAccount.toString());
         return userAccount;
     }
 }
