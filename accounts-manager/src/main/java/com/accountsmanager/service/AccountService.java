@@ -112,14 +112,9 @@ public class AccountService {
             transfer.setAmount(new BigDecimal(-1));
             return transfer;
         }
-        if (transfer.getUserAccountNumber().equals("deposit") || transfer.getUserAccountNumber().equals("withdraw"))
-            return transfer;
-        if (!adapterAccountRepository.existsByNumber(transfer.getUserAccountNumber())) {
-            transfer.setAmount(new BigDecimal(-1));
-            transfer.setUserAccountNumber("User with this number doesn't exist!");
-            return transfer;
-        }
         if (adapterAccountRepository.findById(thisAccountId).getBalance().compareTo(transfer.getAmount()) < 0) {
+            if (transfer.getUserAccountNumber().equals("deposit"))
+                return transfer;
             transfer.setAmount(new BigDecimal(-1));
             transfer.setUserAccountNumber("You don't have enough money");
             return transfer;
@@ -127,6 +122,14 @@ public class AccountService {
         if (adapterAccountRepository.findById(thisAccountId).getNumber().equals(transfer.getUserAccountNumber())) {
             transfer.setAmount(new BigDecimal(-1));
             transfer.setUserAccountNumber("You can't send money to account which from you send");
+            return transfer;
+        }
+        if (!adapterAccountRepository.existsByNumber(transfer.getUserAccountNumber())) {
+            if (transfer.getUserAccountNumber().equals("deposit") ||
+                    transfer.getUserAccountNumber().equals("withdraw"))
+                return transfer;
+            transfer.setAmount(new BigDecimal(-1));
+            transfer.setUserAccountNumber("User with this number doesn't exist!");
             return transfer;
         }
         return transfer;
