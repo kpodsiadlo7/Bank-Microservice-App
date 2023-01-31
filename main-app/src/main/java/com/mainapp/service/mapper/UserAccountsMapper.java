@@ -1,29 +1,26 @@
 package com.mainapp.service.mapper;
 
-import com.mainapp.service.data.UserAccount;
-import com.mainapp.web.dto.UserAccountDto;
+import com.mainapp.service.data.Account;
+import com.mainapp.web.dto.AccountDto;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserAccountsMapper {
 
 
-    public UserAccountDto mapToUserAccountDtoFromUserAccount(final UserAccount userAccount) {
-        return new UserAccountDto(
-                userAccount.getId(),
-                userAccount.getAccountName(),
-                userAccount.getBalance(),
-                userAccount.getNumber(),
-                userAccount.getCurrency(),
-                userAccount.getCurrencySymbol()
+    public AccountDto mapToUserAccountDtoFromUserAccount(final Account account) {
+        return new AccountDto(
+                account.getId(),
+                account.getAccountName(),
+                account.getBalance(),
+                account.getNumber(),
+                account.getCurrency(),
+                account.getCurrencySymbol()
         );
     }
 
-    public UserAccount mapToUserAccountFromUserAccountDto(final UserAccountDto accountForUser) {
-        return new UserAccount(
+    public Account mapToUserAccountFromUserAccountDto(final AccountDto accountForUser) {
+        return new Account(
                 accountForUser.getId(),
                 accountForUser.getAccountName(),
                 accountForUser.getBalance(),

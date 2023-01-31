@@ -1,8 +1,8 @@
 package com.mainapp.service.mapper;
 
 import com.mainapp.MainAppApplication;
-import com.mainapp.service.data.UserAccount;
-import com.mainapp.web.dto.UserAccountDto;
+import com.mainapp.service.data.Account;
+import com.mainapp.web.dto.AccountDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = MainAppApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserAccountMapperTestSuite {
+public class AccountMapperTestSuite {
 
     @Autowired
     private UserAccountsMapper accountsMapper;
@@ -24,7 +24,7 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountDtoFromUserAccount(){
         //given
-        UserAccount userAccount = new UserAccount(
+        Account account = new Account(
                 7L,
                 "account name",
                 new BigDecimal(23333),
@@ -33,7 +33,7 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccountDto userAfterMapper = accountsMapper.mapToUserAccountDtoFromUserAccount(userAccount);
+        AccountDto userAfterMapper = accountsMapper.mapToUserAccountDtoFromUserAccount(account);
         //then
         Assertions.assertEquals(7,userAfterMapper.getId());
         Assertions.assertEquals("account name",userAfterMapper.getAccountName());
@@ -46,7 +46,7 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountFromUserAccountDto(){
         //given
-        UserAccountDto accountDto = new UserAccountDto(
+        AccountDto accountDto = new AccountDto(
                 7L,
                 "account name",
                 new BigDecimal(23333),
@@ -55,7 +55,7 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccount userAfterMapper = accountsMapper.mapToUserAccountFromUserAccountDto(accountDto);
+        Account userAfterMapper = accountsMapper.mapToUserAccountFromUserAccountDto(accountDto);
         //then
         Assertions.assertEquals(7,userAfterMapper.getId());
         Assertions.assertEquals("account name",userAfterMapper.getAccountName());

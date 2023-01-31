@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class TransactionDto {
     private Long id;
     private Long userId;
+    private Long accountId;
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;

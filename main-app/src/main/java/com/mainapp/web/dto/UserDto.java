@@ -1,7 +1,7 @@
 package com.mainapp.web.dto;
 
 import com.mainapp.security.AuthorityEntity;
-import com.mainapp.service.data.UserAccount;
+import com.mainapp.service.data.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class UserDto {
     private String confirmPassword;
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
-    private Set<UserAccount> accounts = new TreeSet<>();
+    private Set<Account> accounts = new TreeSet<>();
 
     @Override
     public String toString() {

@@ -20,19 +20,18 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
     private final AdapterTransactionRepository adapterTransactionRepository;
 
-    public Transaction openTransaction(final Long thisAccountId, final String descriptionTransaction, final TransferDto transferDto) {
-        log.info("should be some id: " + transferDto.getUserReceiveId());
+    public Transaction openTransaction(final Long userId, final Long thisAccountId,
+                                       final String descriptionTransaction, final TransferDto transferDto) {
         log.info("open transaction");
         Transaction transaction = new Transaction();
         Transaction error = new Transaction();
+        error.setKindTransaction("error");
         if (descriptionTransaction.equals("transfer money"))
-            return moneyTransfer(thisAccountId, transferDto, descriptionTransaction, error);
-        /*
-        if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw"))
-            return depositOrWithdraw();
+            return moneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error, transaction);
 
-         */
-
+        if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw")) {
+            return depositOrWithdraw(userId, thisAccountId, transferDto, descriptionTransaction, error);
+        }
 
         log.info("wrong kind of transaction");
         transaction.setKindTransaction("error");
@@ -40,12 +39,52 @@ public class TransactionService {
         return transaction;
     }
 
-    @Transactional
-    protected Transaction moneyTransfer(final Long thisAccountId, final TransferDto transferDto,
-                                        final String descriptionTransaction, Transaction error) {
+    private Transaction depositOrWithdraw(final Long userId, final Long thisAccountId, final TransferDto transferDto,
+                                          final String descriptionTransaction, Transaction error) {
+        log.info("open transaction for deposit or withdraw money");
+        if (descriptionTransaction.equals("deposit"))
+            return depositMoney(userId, thisAccountId, transferDto, descriptionTransaction, error);
+        return withdrawMoney(userId, thisAccountId, transferDto, descriptionTransaction, error);
+    }
 
-        error.setKindTransaction("error");
-        Transaction transaction = makeMoneyTransfer(thisAccountId, transferDto, descriptionTransaction, error);
+    private Transaction depositMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
+                                     final String descriptionTransaction, Transaction error) {
+        try {
+            transferDto.setUserAccountNumber("deposit");
+            final TransferDto returnTransferDto = feignServiceAccountsManager.depositMoney(thisAccountId, transferDto);
+            if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
+                error.setDescription(returnTransferDto.getUserAccountNumber());
+                return error;
+            }
+        } catch (Exception e) {
+            error.setDescription("Failed connecting with accounts manager");
+            return error;
+        }
+        return inComingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
+    }
+
+    private Transaction withdrawMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
+                                      final String descriptionTransaction, Transaction error) {
+        try {
+            transferDto.setUserAccountNumber("withdraw");
+            final TransferDto returnTransferDto = feignServiceAccountsManager.withdrawMoney(thisAccountId, transferDto);
+            if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
+                error.setDescription(returnTransferDto.getUserAccountNumber());
+                return error;
+            }
+        } catch (Exception e) {
+            error.setDescription("Failed connecting with accounts manager");
+            return error;
+        }
+        return outGoingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
+    }
+
+
+    @Transactional
+    protected Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
+                                        final String descriptionTransaction, Transaction error,
+                                        Transaction transaction) {
+        transaction = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
         if (transaction.getKindTransaction().equals("error")) {
             log.info("something is wrong with returning transaction");
             transaction.setDescription(transaction.getDescription());
@@ -54,7 +93,7 @@ public class TransactionService {
         return transaction;
     }
 
-    private Transaction makeMoneyTransfer(final Long thisAccountId, final TransferDto transferDto,
+    private Transaction makeMoneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                           final String descriptionTransaction, final Transaction error) {
         TransferDto returnTransferDto;
         try {
@@ -67,19 +106,21 @@ public class TransactionService {
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
-        return closeMoneyTransferTransaction(thisAccountId, returnTransferDto, descriptionTransaction, transferDto.getAmount());
+        log.info("should be id 1 "+returnTransferDto.getAccountReceiveId());
+        return closeMoneyTransferTransaction(userId, thisAccountId, returnTransferDto, descriptionTransaction, transferDto.getAmount());
     }
 
-    private Transaction closeMoneyTransferTransaction(final Long thisAccountId, final TransferDto returnedTransferDto,
-                                         final String descriptionTransaction, final BigDecimal amount) {
-        inComingTransaction(returnedTransferDto.getUserReceiveId(), descriptionTransaction, amount);
-        return outGoingTransaction(thisAccountId, descriptionTransaction, amount);
+    private Transaction closeMoneyTransferTransaction(final Long userId, final Long thisAccountId, final TransferDto returnedTransferDto,
+                                                      final String descriptionTransaction, final BigDecimal amount) {
+        inComingTransaction(userId, returnedTransferDto.getAccountReceiveId(), descriptionTransaction, amount);
+        return outGoingTransaction(userId,thisAccountId, descriptionTransaction, amount);
     }
 
-    private Transaction inComingTransaction(final Long userId, final String descriptionTransaction, final BigDecimal amount) {
+    private Transaction inComingTransaction(final Long userId, final Long thisAccountId, final String descriptionTransaction, final BigDecimal amount) {
         Transaction transactionForIncreaseUser = new Transaction();
         transactionForIncreaseUser.setUserId(userId);
         transactionForIncreaseUser.setValue("+" + amount);
+        transactionForIncreaseUser.setAccountId(thisAccountId);
         transactionForIncreaseUser.setKindTransaction("Incoming");
         transactionForIncreaseUser.setDescription(descriptionTransaction);
         return transactionMapper.mapToTransactionFromTransactionEntity
@@ -88,10 +129,11 @@ public class TransactionService {
                                 (transactionForIncreaseUser)));
     }
 
-    private Transaction outGoingTransaction(final Long userId, final String descriptionTransaction, final BigDecimal amount) {
+    private Transaction outGoingTransaction(final Long userId, final Long thisAccountId, final String descriptionTransaction, final BigDecimal amount) {
         Transaction transactionForDecreaseUser = new Transaction();
         transactionForDecreaseUser.setUserId(userId);
         transactionForDecreaseUser.setValue("-" + amount);
+        transactionForDecreaseUser.setAccountId(thisAccountId);
         transactionForDecreaseUser.setKindTransaction("Outgoing");
         transactionForDecreaseUser.setDescription(descriptionTransaction);
         return transactionMapper.mapToTransactionFromTransactionEntity

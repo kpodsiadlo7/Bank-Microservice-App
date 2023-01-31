@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "accounts_db")
-public class UserAccountEntity {
+public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class UserAccountEntity {
     private String currency;
     private String currencySymbol;
 
-    public UserAccountEntity(final Long userId, final String accountName, final BigDecimal balance, final String number, final String currency, final String currencySymbol) {
+    public AccountEntity(final Long userId, final String accountName, final BigDecimal balance, final String number, final String currency, final String currencySymbol) {
         this.userId = userId;
         this.accountName = accountName;
         this.balance = balance;

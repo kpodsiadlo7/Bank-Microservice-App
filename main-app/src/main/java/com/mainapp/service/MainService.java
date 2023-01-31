@@ -2,8 +2,8 @@ package com.mainapp.service;
 
 import com.mainapp.repository.adapter.AdapterAuthorityRepository;
 import com.mainapp.security.AuthorityEntity;
+import com.mainapp.service.data.Account;
 import com.mainapp.service.data.User;
-import com.mainapp.service.data.UserAccount;
 import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.web.dto.TransactionDto;
@@ -54,7 +54,7 @@ public class MainService {
 
         try {
             //creating, returning and set main account for new user using external application accounts-manager
-            userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new UserAccount())));
+            userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new Account())));
         } catch (Exception e) {
             modelMap.put("error", "Error with creating account");
         }
@@ -85,16 +85,16 @@ public class MainService {
         return userFromUserManager;
     }
 
-    public UserAccount createAccountForUser(final Long userId, final UserAccount userAccount) {
+    public Account createAccountForUser(final Long userId, final Account account) {
         return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
-                (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount)));
+                (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(account)));
     }
 
     public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
                                    final String descriptionTransaction, final Long thisAccountId) {
         log.info("Kind transaction: " + descriptionTransaction);
         try {
-            TransactionDto returningTransactionDto = feignServiceTransactionsManager.makeTransaction(thisAccountId, descriptionTransaction, transferDto);
+            TransactionDto returningTransactionDto = feignServiceTransactionsManager.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);
             log.info("returningDto " + returningTransactionDto.getDescription());
             if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("error", returningTransactionDto.getDescription());

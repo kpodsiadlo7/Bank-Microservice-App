@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FeignServiceTransactionsManager {
 
     @PostMapping
-    TransactionDto makeTransaction(@RequestParam Long thisAccountId,
+    TransactionDto makeTransaction(@RequestParam Long userId,
+                                   @RequestParam Long thisAccountId,
                                    @RequestParam String descriptionTransaction,
                                    @RequestBody TransferDto transferDto);
 }

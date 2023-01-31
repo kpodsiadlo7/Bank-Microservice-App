@@ -37,13 +37,13 @@
                 <div class="p-1">
                     <div class="card">
                         <div class="card text-bg-light mb-3" style="width: auto">
-                            <h3 class="card-header" th:text="${userAccount.accountName}">Account name</h3>
+                            <h3 class="card-header" th:text="${account.accountName}">Account name</h3>
                             <div class="card-body">
-                                <h6 class="card-subtitle" th:text="${userAccount.currency}">Currency account</h6>
+                                <h6 class="card-subtitle" th:text="${account.currency}">Currency account</h6>
                                 <h6 style="margin-bottom: 0.7em" class="card-subtitle"
-                                    th:text="|Account nr ${userAccount.number}|">Currency number</h6>
+                                    th:text="|Account nr ${account.number}|">Currency number</h6>
                                 <h6 style="margin-bottom: 0.7em" class="card-subtitle"
-                                    th:text="|Balance ${userAccount.balance} ${userAccount.currencySymbol}|">Currency
+                                    th:text="|Balance ${account.balance} ${account.currencySymbol}|">Currency
                                     number</h6>
                             </div>
                         </div>

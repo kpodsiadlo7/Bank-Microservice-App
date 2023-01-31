@@ -3,7 +3,7 @@ package com.mainapp.web.controller;
 import com.mainapp.service.MainService;
 import com.mainapp.service.data.User;
 import com.mainapp.web.dto.TransferDto;
-import com.mainapp.web.dto.UserAccountDto;
+import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +25,12 @@ public class TransactionController {
     public String test(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
-            UserAccountDto userAccountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
-            modelMap.put("userAccount", userAccountDto);
+            AccountDto accountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
+            modelMap.put("account", accountDto);
 
         } catch (Exception e) {
             modelMap.put("error", "Failed with loading your account");
-            modelMap.put("userAccount", new UserAccountDto());
+            modelMap.put("account", new AccountDto());
         }
         return "account";
     }
@@ -41,7 +41,7 @@ public class TransactionController {
         log.info("id to withdraw: " + accountId);
         if (!mainService.makeTransaction(user, transferDto, modelMap, kindTransaction, accountId)) {
             try {
-                modelMap.put("userAccount", feignServiceAccountsManager.getAccountByAccountId(accountId));
+                modelMap.put("account", feignServiceAccountsManager.getAccountByAccountId(accountId));
             } catch (Exception e) {
                 modelMap.put("error", "There was an error fetching your accounts");
             }

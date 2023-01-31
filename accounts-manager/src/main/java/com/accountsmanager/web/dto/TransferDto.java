@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransferDto {
     private Long userReceiveId;
+    private Long accountReceiveId;
     private BigDecimal amount;
     private String userAccountNumber;
 }

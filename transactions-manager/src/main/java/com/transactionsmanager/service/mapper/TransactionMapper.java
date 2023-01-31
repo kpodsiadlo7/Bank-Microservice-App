@@ -11,6 +11,7 @@ public class TransactionMapper {
     public TransactionDto mapToTransactionDtoFromTransaction(final Transaction transaction) {
         return new TransactionDto(
                 transaction.getId(),
+                transaction.getAccountId(),
                 transaction.getUserId(),
                 transaction.getDescription(),
                 transaction.getKindTransaction(),
@@ -22,6 +23,7 @@ public class TransactionMapper {
     public TransactionEntity mapToTransactionEntityFromTransaction(final Transaction transaction) {
         return new TransactionEntity(
                 transaction.getUserId(),
+                transaction.getAccountId(),
                 transaction.getDescription(),
                 transaction.getKindTransaction(),
                 transaction.getValue()
@@ -31,6 +33,7 @@ public class TransactionMapper {
     public Transaction mapToTransactionFromTransactionEntity(final TransactionEntity transactionEntity) {
         return new Transaction(
                 transactionEntity.getId(),
+                transactionEntity.getAccountId(),
                 transactionEntity.getUserId(),
                 transactionEntity.getDescription(),
                 transactionEntity.getKindTransaction(),

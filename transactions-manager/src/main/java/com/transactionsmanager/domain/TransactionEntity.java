@@ -17,13 +17,15 @@ public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
+    private Long accountId;
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
     private String value;
 
-    public TransactionEntity(final Long userId, final String description, final String kindTransaction, final String value) {
+    public TransactionEntity(final Long userId, final Long accountId, final String description, final String kindTransaction, final String value) {
         this.userId = userId;
+        this.accountId = accountId;
         this.description = description;
         this.kindTransaction = kindTransaction;
         this.transactionDate = LocalDate.now();

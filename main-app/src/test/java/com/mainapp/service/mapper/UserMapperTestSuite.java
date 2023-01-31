@@ -3,7 +3,7 @@ package com.mainapp.service.mapper;
 import com.mainapp.MainAppApplication;
 import com.mainapp.security.AuthorityEntity;
 import com.mainapp.service.data.User;
-import com.mainapp.service.data.UserAccount;
+import com.mainapp.service.data.Account;
 import com.mainapp.web.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @ActiveProfiles("test")
@@ -34,7 +33,7 @@ public class UserMapperTestSuite {
                 "password",
                 "confirmpassword",
                 Set.of(new AuthorityEntity()),
-                Set.of(new UserAccount())
+                Set.of(new Account())
         );
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
@@ -58,7 +57,7 @@ public class UserMapperTestSuite {
                 "password",
                 "confirmpassword",
                 Set.of(new AuthorityEntity()),
-                Set.of(new UserAccount())
+                Set.of(new Account())
         );
         //when
         UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);

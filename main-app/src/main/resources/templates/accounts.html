@@ -27,16 +27,16 @@
                 <div class="form-group">
                     <label for="accountName">Account</label>
                     <select name="accountName">
-                        <option value="Business Account" th:selected="${userAccount.accountName}">Business Account</option>
-                        <option value="Savings Account" th:selected="${userAccount.accountName}">Savings Account</option>
+                        <option value="Business Account" th:selected="${account.accountName}">Business Account</option>
+                        <option value="Savings Account" th:selected="${account.accountName}">Savings Account</option>
                     </select>
                 </div>
                     <div class="form-group">
                         <label for="currency">Currency</label>
                         <select name="currency">
-                            <option value="USD" th:selected="${userAccount.currency}">USD</option>
-                            <option value="EUR" th:selected="${userAccount.currency}">EUR</option>
-                            <option value="GBP" th:selected="${userAccount.currency}">GBP</option>
+                            <option value="USD" th:selected="${account.currency}">USD</option>
+                            <option value="EUR" th:selected="${account.currency}">EUR</option>
+                            <option value="GBP" th:selected="${account.currency}">GBP</option>
                         </select>
                     </div>
                 <button id="backToDashboard" type="button" class="btn">Back to dashboard</button>

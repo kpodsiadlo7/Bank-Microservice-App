@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface FeignServiceAccountsManager {
 
     @PostMapping("/quick-transfer")
-    TransferDto quickTransfer(@RequestParam Long userDecreaseId,
+    TransferDto quickTransfer(@RequestParam Long thisAccountId,
                               @RequestBody TransferDto transferDto);
+
+    @PostMapping("/deposit-money")
+    TransferDto depositMoney(@RequestParam Long thisAccountId,
+                             @RequestBody TransferDto transferDto);
+    @PostMapping("/withdraw-money")
+    TransferDto withdrawMoney(@RequestParam Long thisAccountId,
+                             @RequestBody TransferDto transferDto);
 }

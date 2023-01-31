@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount implements Comparable<UserAccount>{
+public class Account implements Comparable<Account>{
     private Long id;
     private String accountName;
     private BigDecimal balance;
@@ -20,7 +20,7 @@ public class UserAccount implements Comparable<UserAccount>{
     private String currencySymbol;
 
     @Override
-    public int compareTo(final UserAccount o) {
+    public int compareTo(final Account o) {
         return this.id.compareTo(o.getId());
     }
 }

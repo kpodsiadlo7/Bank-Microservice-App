@@ -23,7 +23,7 @@ public class User {
     private String confirmPassword;
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
-    private Set<UserAccount> accounts = new TreeSet<>();
+    private Set<Account> accounts = new TreeSet<>();
 
     @Override
     public String toString() {

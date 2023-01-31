@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount {
+public class Account {
     private Long id;
     private Long userId;
     private String accountName;
@@ -22,7 +22,7 @@ public class UserAccount {
 
     @Override
     public String toString() {
-        return "UserAccount{" +
+        return "Account{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", accountName='" + accountName + '\'' +

@@ -1,0 +1,1 @@
+alter table transactions_db add column account_id bigint;

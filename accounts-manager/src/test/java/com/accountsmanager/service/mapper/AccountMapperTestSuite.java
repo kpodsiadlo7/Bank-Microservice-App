@@ -1,10 +1,10 @@
 package com.accountsmanager.service.mapper;
 
 import com.accountsmanager.AccountsManagerApplication;
-import com.accountsmanager.domain.UserAccountEntity;
-import com.accountsmanager.repository.adapter.AdapterUserAccountRepository;
-import com.accountsmanager.service.data.UserAccount;
-import com.accountsmanager.web.dto.UserAccountDto;
+import com.accountsmanager.domain.AccountEntity;
+import com.accountsmanager.repository.adapter.AdapterAccountRepository;
+import com.accountsmanager.service.data.Account;
+import com.accountsmanager.web.dto.AccountDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,22 +17,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountsManagerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserAccountMapperTestSuite {
+public class AccountMapperTestSuite {
 
     @Autowired
-    private UserAccountsMapper userAccountsMapper;
+    private AccountMapper accountMapper;
     @Autowired
-    private AdapterUserAccountRepository adapterUserAccountRepository;
+    private AdapterAccountRepository adapterAccountRepository;
 
     @Test
     void mapToUserAccountDtoFromUserAccount() {
         //given
-        UserAccount userAccount = new UserAccount(
+        Account account = new Account(
                 null,
                 3L,
                 "account name",
@@ -42,7 +40,7 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccountDto accountAfterMapper = userAccountsMapper.mapToUserAccountDtoFromUserAccount(userAccount);
+        AccountDto accountAfterMapper = accountMapper.mapToUserAccountDtoFromUserAccount(account);
         //then
         Assertions.assertEquals(3, accountAfterMapper.getUserId());
         Assertions.assertNull(accountAfterMapper.getId());
@@ -56,7 +54,7 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountFromUserAccountDto() {
         //given
-        UserAccountDto userAccount = new UserAccountDto(
+        AccountDto userAccount = new AccountDto(
                 null,
                 3L,
                 "account name",
@@ -66,7 +64,7 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccount accountAfterMapper = userAccountsMapper.mapToUserAccountFromUserAccountDto(userAccount);
+        Account accountAfterMapper = accountMapper.mapToUserAccountFromUserAccountDto(userAccount);
         //then
         Assertions.assertNull(accountAfterMapper.getId());
         Assertions.assertEquals(3, accountAfterMapper.getUserId());
@@ -80,7 +78,7 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountEntityFromUserAccountAndSaveToDb() {
         //given
-        UserAccount userAccount = new UserAccount(
+        Account account = new Account(
                 null,
                 3L,
                 "account name",
@@ -90,8 +88,8 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccountEntity accountAfterMapper = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
-        adapterUserAccountRepository.save(accountAfterMapper);
+        AccountEntity accountAfterMapper = accountMapper.mapToUserAccountEntityFromUserAccount(account);
+        adapterAccountRepository.save(accountAfterMapper);
         //then
         Assertions.assertNotEquals(7, accountAfterMapper.getId());
         Assertions.assertNotNull(accountAfterMapper.getId());
@@ -106,7 +104,7 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountFromUserAccountEntityAndSaveToDb() {
         //given
-        UserAccount userAccount = new UserAccount(
+        Account account = new Account(
                 null,
                 3L,
                 "account name",
@@ -116,10 +114,10 @@ public class UserAccountMapperTestSuite {
                 "zł"
         );
         //when
-        UserAccountEntity accountEntity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(userAccount);
-        adapterUserAccountRepository.save(accountEntity);
+        AccountEntity accountEntity = accountMapper.mapToUserAccountEntityFromUserAccount(account);
+        adapterAccountRepository.save(accountEntity);
         //and
-        UserAccount accountAfterMapper = userAccountsMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
+        Account accountAfterMapper = accountMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
         //then
         Assertions.assertNotEquals(7, accountAfterMapper.getId());
         Assertions.assertNotNull(accountAfterMapper.getId());
@@ -134,24 +132,24 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountListFromUserAccountEntityListAndSaveToDb() {
         //given
-        List<UserAccountEntity> entityAccountList = new ArrayList<>();
-        UserAccount account1ToEntity = new UserAccount(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
-        UserAccount account2ToEntity = new UserAccount(null, 55L, "account", new BigDecimal(30020), "444", "EUR", "€");
+        List<AccountEntity> entityAccountList = new ArrayList<>();
+        Account account1ToEntity = new Account(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
+        Account account2ToEntity = new Account(null, 55L, "account", new BigDecimal(30020), "444", "EUR", "€");
         //and
-        UserAccountEntity account1Entity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(account1ToEntity);
-        UserAccountEntity account2Entity = userAccountsMapper.mapToUserAccountEntityFromUserAccount(account2ToEntity);
-        adapterUserAccountRepository.save(account1Entity);
-        adapterUserAccountRepository.save(account2Entity);
+        AccountEntity account1Entity = accountMapper.mapToUserAccountEntityFromUserAccount(account1ToEntity);
+        AccountEntity account2Entity = accountMapper.mapToUserAccountEntityFromUserAccount(account2ToEntity);
+        adapterAccountRepository.save(account1Entity);
+        adapterAccountRepository.save(account2Entity);
         //and
         entityAccountList.add(account1Entity);
         entityAccountList.add(account2Entity);
         //when
-        List<UserAccount> accountListAfterMapper = userAccountsMapper.mapToUserAccountListFromUserAccountEntityList(entityAccountList);
+        List<Account> accountListAfterMapper = accountMapper.mapToUserAccountListFromUserAccountEntityList(entityAccountList);
         //then
         Assertions.assertEquals(2, accountListAfterMapper.size());
 
         Assertions.assertNotNull(accountListAfterMapper.stream()
-                .filter(f->f.getUserId().equals(3L)).map(UserAccount::getId));
+                .filter(f->f.getUserId().equals(3L)).map(Account::getId));
 
         Assertions.assertTrue(accountListAfterMapper.stream()
                 .anyMatch(userId -> userId.getUserId().equals(3L)));
@@ -175,14 +173,14 @@ public class UserAccountMapperTestSuite {
     @Test
     void mapToUserAccountDtoListFromUserAccountList() {
         //given
-        List<UserAccount> userAccountList = new ArrayList<>();
-        UserAccount account1 = new UserAccount(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
-        UserAccount account2 = new UserAccount(null, 7L, "account", new BigDecimal(333000), "221", "EUR", "€");
+        List<Account> accountList = new ArrayList<>();
+        Account account1 = new Account(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
+        Account account2 = new Account(null, 7L, "account", new BigDecimal(333000), "221", "EUR", "€");
         //and
-        userAccountList.add(account1);
-        userAccountList.add(account2);
+        accountList.add(account1);
+        accountList.add(account2);
         //when
-        List<UserAccountDto> accountListAfterMapper = userAccountsMapper.mapToUserAccountDtoListFromUserAccountList(userAccountList);
+        List<AccountDto> accountListAfterMapper = accountMapper.mapToUserAccountDtoListFromUserAccountList(accountList);
         //then
         Assertions.assertEquals(2, accountListAfterMapper.size());
 
