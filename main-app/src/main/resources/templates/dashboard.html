@@ -137,7 +137,7 @@
                                             <form class="dropdown-menu p-4" action="" method="post">
                                                 <div class="mb-3">
                                                     <input type="hidden" name="accountId"
-                                                           th:value="${userBankAccounts[index].id}">
+                                                           th:value="${userBankAccounts[index+1].id}">
                                                     <label for="nrAccount" class="form-label">Nr account</label>
                                                     <input type="text" class="form-control" style="width: 25em"
                                                            th:field="${quickTransfer.userAccountNumber}" required>
@@ -149,7 +149,7 @@
                                                 </div>
                                                 <button type="submit" name="descriptionTransaction"
                                                         style="margin-bottom: 1.3em" value="transfer money"
-                                                        class="btn">Send Money
+                                                        class="btn btn-success">Send Money
                                                 </button>
                                             </form>
                                         </div>
