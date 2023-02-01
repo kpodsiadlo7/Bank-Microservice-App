@@ -1,5 +1,5 @@
 ﻿# Microservices Bank Application
-#Spring boot #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
+#Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
 
 # Available
