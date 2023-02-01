@@ -49,6 +49,10 @@ public class TransactionService {
 
     private Transaction depositMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                      final String descriptionTransaction, Transaction error) {
+        if (transferDto.getAmount().compareTo(BigDecimal.valueOf(15000)) > 0){
+            error.setDescription("Limit for this kind of transaction is 15000");
+            return error;
+        }
         try {
             transferDto.setUserAccountNumber("deposit");
             final TransferDto returnTransferDto = feignServiceAccountsManager.depositMoney(thisAccountId, transferDto);
@@ -65,6 +69,10 @@ public class TransactionService {
 
     private Transaction withdrawMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                       final String descriptionTransaction, Transaction error) {
+        if (transferDto.getAmount().compareTo(BigDecimal.valueOf(5000)) > 0){
+            error.setDescription("Limit for this kind of transaction is 5000");
+            return error;
+        }
         try {
             transferDto.setUserAccountNumber("withdraw");
             final TransferDto returnTransferDto = feignServiceAccountsManager.withdrawMoney(thisAccountId, transferDto);
@@ -84,6 +92,11 @@ public class TransactionService {
     protected Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                         final String descriptionTransaction, Transaction error,
                                         Transaction transaction) {
+
+        if (transferDto.getAmount().compareTo(BigDecimal.valueOf(20000)) > 0){
+            error.setDescription("Limit for this kind of transaction is 20000");
+            return error;
+        }
         transaction = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
         if (transaction.getKindTransaction().equals("error")) {
             log.info("something is wrong with returning transaction");

@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/dashboard/account/")
+@RequestMapping("/dashboard/account")
 public class TransactionController {
 
     private final MainService mainService;
     private final FeignServiceAccountsManager feignServiceAccountsManager;
 
+    @GetMapping("credit")
+    public String credit(){
+        return "credit";
+    }
+
     @GetMapping("{accountId}")
-    public String test(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
+    public String quickTransfer(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
             AccountDto accountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
