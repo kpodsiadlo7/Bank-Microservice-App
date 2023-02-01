@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Bank Web Application</title>
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <script type="text/javascript">
         $(function () {
             if ($("#errorMsg").text() != "") {
@@ -52,12 +55,13 @@
                 <div class="p-1">
                     <div class="d-grid gap-2">
                         <div class="p-1">
-                            <h2 style="margin-left: 3.7em; margin-bottom: 3em">Menu</h2>
+                            <h2 style="margin-left: 3.7em; margin-bottom: 1em">Menu</h2>
                             <div class="d-grid gap-2">
-                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 6.5em">Transactions</a><br>
-                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 7.2em">Exchange</a><br>
-                                <a href="" class="btn btn-outline-dark" style="margin-top: 7em; margin-left: 7.8em">Options</a><br>
-                                <a href="" class="btn btn-outline-danger" style="margin-top: 7px; margin-bottom: 2em; margin-left: 6.5em">Close account</a><br>
+                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 5em">Transactions</a><br>
+                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 5.5em">Exchange</a><br>
+                                <a href="" class="btn btn-outline-dark" style="margin-top: 7em; margin-left: 7.2em">Options</a><br>
+                                <a href="" class="btn btn-outline-danger"
+                                   style="margin-top: 7px; margin-bottom: 2em; margin-left: 6.5em">Close account</a><br>
                             </div>
                         </div>
                     </div>
@@ -79,10 +83,30 @@
                                 <div class="row">
                                     <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
                                     <div style="margin-left: auto">
-                                        <button th:id="|account-${userBankAccounts[index].id}|" type="button"
-                                                class="btn btn-dark">Quick
-                                            transaction
-                                        </button>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    data-bs-auto-close="outside">
+                                                Quick Transfer
+                                            </button>
+                                            <form class="dropdown-menu p-4" action="" method="post">
+                                                <div class="mb-3">
+                                                    <input type="hidden" name="accountId" th:value="${userBankAccounts[index].id}">
+                                                    <label for="nrAccount" class="form-label">Nr account</label>
+                                                    <input type="text" class="form-control" style="width: 25em"
+                                                           th:field="${quickTransfer.userAccountNumber}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="amount" class="form-label">Amount</label>
+                                                    <input type="number" class="form-control"
+                                                           th:field="${quickTransfer.amount}" required>
+                                                </div>
+                                                <button type="submit" name="descriptionTransaction"
+                                                        style="margin-bottom: 1.3em" value="transfer money"
+                                                        class="btn btn-success">Send Money
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -104,10 +128,31 @@
                                     <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name
                                     </div>
                                     <div style="margin-left: auto">
-                                        <button th:id="|account-${userBankAccounts[index+1].id}|" type="button"
-                                                class="btn btn-dark">
-                                            Quick transaction
-                                        </button>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    data-bs-auto-close="outside">
+                                                Quick Transfer
+                                            </button>
+                                            <form class="dropdown-menu p-4" action="" method="post">
+                                                <div class="mb-3">
+                                                    <input type="hidden" name="accountId"
+                                                           th:value="${userBankAccounts[index].id}">
+                                                    <label for="nrAccount" class="form-label">Nr account</label>
+                                                    <input type="text" class="form-control" style="width: 25em"
+                                                           th:field="${quickTransfer.userAccountNumber}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="amount" class="form-label">Amount</label>
+                                                    <input type="number" class="form-control"
+                                                           th:field="${quickTransfer.amount}" required>
+                                                </div>
+                                                <button type="submit" name="descriptionTransaction"
+                                                        style="margin-bottom: 1.3em" value="transfer money"
+                                                        class="btn">Send Money
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
