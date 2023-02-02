@@ -1,8 +1,6 @@
 package com.mainapp.web.controller;
 
-import com.mainapp.service.LoginService;
-import com.mainapp.service.MainService;
-import com.mainapp.service.mapper.UserMapper;
+import com.mainapp.service.controller.LoginService;
 import com.mainapp.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

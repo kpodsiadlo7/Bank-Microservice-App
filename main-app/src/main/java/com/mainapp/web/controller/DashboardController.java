@@ -1,20 +1,15 @@
 package com.mainapp.web.controller;
 
-import com.mainapp.service.DashboardService;
-import com.mainapp.service.MainService;
+import com.mainapp.service.controller.DashboardService;
 import com.mainapp.service.data.User;
-import com.mainapp.service.mapper.UserAccountsMapper;
 import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.dto.TransferDto;
-import com.mainapp.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.TreeSet;
 
 @Slf4j
 @Controller

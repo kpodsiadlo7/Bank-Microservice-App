@@ -1,5 +1,6 @@
-package com.mainapp.service;
+package com.mainapp.service.controller;
 
+import com.mainapp.service.MainService;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;

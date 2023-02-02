@@ -1,7 +1,7 @@
 package com.mainapp.web.controller;
 
-import com.mainapp.service.DashboardService;
-import com.mainapp.service.TransactionService;
+import com.mainapp.service.controller.DashboardService;
+import com.mainapp.service.controller.TransactionService;
 import com.mainapp.service.data.User;
 import com.mainapp.web.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +25,15 @@ public class TransactionController {
     }
 
     @GetMapping("{accountId}")
-    public String quickTransfer(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
-        return transactionService.quickTransfer(accountId, modelMap);
+    public String getAccounts(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
+        return transactionService.getAccounts(accountId, modelMap);
     }
 
     @PostMapping("{accountId}")
     public String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
         if (!dashboardService.makeTransaction(user, accountId, transferDto, descriptionTransaction, modelMap))
-            return dashboardService.fetchAllAccounts(user, modelMap);
+            return "account";
 
         return "redirect:/dashboard/account/" + accountId;
     }

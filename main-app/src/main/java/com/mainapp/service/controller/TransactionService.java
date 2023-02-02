@@ -1,4 +1,4 @@
-package com.mainapp.service;
+package com.mainapp.service.controller;
 
 import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.dto.TransferDto;
@@ -14,7 +14,7 @@ public class TransactionService {
     private final FeignServiceAccountsManager feignServiceAccountsManager;
 
 
-    public String quickTransfer(final Long accountId, final ModelMap modelMap) {
+    public String getAccounts(final Long accountId, final ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
             AccountDto accountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);

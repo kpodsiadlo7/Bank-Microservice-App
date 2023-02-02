@@ -39,7 +39,7 @@
 </head>
 <body>
 <div class="card">
-    <div class="card-header" style="margin-bottom: 3em">
+    <div class="card-header" style="margin-bottom: 1em">
         <div class="row">
             <div class="h2 col-11">
                 Microservices Bank Application
@@ -50,20 +50,29 @@
         </div>
     </div>
     <div>
-        <div class="row gx-2">
+        <div class="row gx-lg-0">
             <div class="col-2">
-                <div class="p-1">
-                    <div class="d-grid gap-2">
-                        <div class="p-1">
-                            <h2 style="margin-left: 3.7em; margin-bottom: 1em">Menu</h2>
-                            <div class="d-grid gap-2">
-                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 5em">Transactions</a><br>
-                                <a href="" class="btn btn-outline-dark" style="margin-bottom: 7px; margin-left: 5.5em">Exchange</a><br>
-                                <a href="" class="btn btn-outline-dark" style="margin-top: 7em; margin-left: 7.2em">Options</a><br>
-                                <a href="" class="btn btn-outline-danger"
-                                   style="margin-top: 7px; margin-bottom: 2em; margin-left: 6.5em">Close account</a><br>
-                            </div>
+                <div class="d-grid gap-2">
+                    <div class="card-header" style="margin-left: 2em;">
+                        <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">All
+                            Transactions</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">Exchange</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">Mortgage loan</a><br>
+                        <div class="dropdown">
+                            <button style="margin-left: 6.3em" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Need money?
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/dashboard/credit">For a car?</a></li>
+                                <li><a class="dropdown-item" href="/dashboard/credit">For a house staff?</a></li>
+                                <li><a class="dropdown-item" href="/dashboard/credit">For something?</a></li>
+                            </ul>
                         </div>
+                        <a href="" class="btn btn-outline-danger"
+                           style="margin-left: 2em; margin-top: 7em">Options</a><br>
                     </div>
                 </div>
             </div>
@@ -72,7 +81,7 @@
                     <div class="row">
                         <div class="col-6">
                             <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em"
-                                    class="btn btn-primary">Add new account
+                                    class="btn btn-outline-primary">Add new account
                             </button>
                         </div>
                     </div>
@@ -84,7 +93,8 @@
                                     <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
                                     <div style="margin-left: auto">
                                         <div class="dropdown">
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                            <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index].id})}" class="btn btn-outline-primary">View account</a>
+                                            <button type="button" style="margin-left: 27em" class="btn btn-primary dropdown-toggle"
                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                     data-bs-auto-close="outside">
                                                 Quick Transfer
@@ -103,7 +113,7 @@
                                                 </div>
                                                 <button type="submit" name="descriptionTransaction"
                                                         style="margin-bottom: 1.3em" value="transfer money"
-                                                        class="btn btn-success">Send Money
+                                                        class="btn btn-outline-success">Send Money
                                                 </button>
                                             </form>
                                         </div>
@@ -129,7 +139,8 @@
                                     </div>
                                     <div style="margin-left: auto">
                                         <div class="dropdown">
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                            <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index+1].id})}" class="btn btn-outline-primary">View account</a>
+                                            <button type="button" style="margin-left: 27em" class="btn btn-primary dropdown-toggle"
                                                     data-bs-toggle="dropdown" aria-expanded="false"
                                                     data-bs-auto-close="outside">
                                                 Quick Transfer
@@ -149,7 +160,7 @@
                                                 </div>
                                                 <button type="submit" name="descriptionTransaction"
                                                         style="margin-bottom: 1.3em" value="transfer money"
-                                                        class="btn btn-success">Send Money
+                                                        class="btn btn-outline-success">Send Money
                                                 </button>
                                             </form>
                                         </div>
