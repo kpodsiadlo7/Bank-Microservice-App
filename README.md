@@ -3,6 +3,18 @@
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
 
 # Available
+
+### *Credit Logic
+* Before taking credit we have to fill proposal
+* There are several simple validation e.g. if commission is more than we have
+  money on account we can't approve a credit proposal, 
+  also if we already have that kind of credit in our account
+* If everything is alright we are redirected to next view in which we have a choice
+to approve or cancel our proposal, there are detailed information about the credit 
+e.g. interest, monthly fee etc.
+* Even if we cancel proposal, every attempt are stored in the database
+* At any time we can come back to a request that we did not approve for some reason
+
 ### Login and Register system
 * Checking before register by 'login' if user already exist
 * Password encoding
@@ -24,7 +36,6 @@ you will still get the main account after runs again)
 #
 ## still in progress... 
 #### Exchange system
-#### *Credit system
 #### Close account
 #### Admin Panel
 #### Spending money system
