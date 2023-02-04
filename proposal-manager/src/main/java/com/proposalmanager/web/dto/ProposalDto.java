@@ -29,5 +29,6 @@ public class ProposalDto {
     private String purpose;
     private String proposalNumber;
     private LocalDate applicationDate;
+    private boolean acceptStatement;
     private StatusProposal statusProposal;
 }

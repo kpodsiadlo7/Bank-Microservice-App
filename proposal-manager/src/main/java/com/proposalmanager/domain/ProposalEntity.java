@@ -1,5 +1,6 @@
 package com.proposalmanager.domain;
 
+import com.proposalmanager.domain.enums.DescriptionRejected;
 import com.proposalmanager.domain.enums.StatusProposal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,9 @@ public class ProposalEntity {
     private String purpose;
     private String proposalNumber;
     private LocalDate applicationDate;
+    private boolean acceptStatement;
     @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;
+    @Enumerated(EnumType.STRING)
+    private DescriptionRejected descriptionRejected;
 }

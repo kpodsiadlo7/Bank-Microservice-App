@@ -24,6 +24,7 @@ public class ProposalMapper {
                 proposal.getPurpose(),
                 proposal.getProposalNumber(),
                 proposal.getApplicationDate(),
+                proposal.isAcceptStatement(),
                 proposal.getStatusProposal()
         );
     }
@@ -45,6 +46,7 @@ public class ProposalMapper {
                 proposalDto.getPurpose(),
                 proposalDto.getProposalNumber(),
                 proposalDto.getApplicationDate(),
+                proposalDto.isAcceptStatement(),
                 proposalDto.getStatusProposal()
         );
     }
