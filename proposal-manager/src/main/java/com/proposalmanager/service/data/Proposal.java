@@ -1,6 +1,6 @@
 package com.proposalmanager.service.data;
 
-import com.proposalmanager.domain.enums.StatusApplication;
+import com.proposalmanager.domain.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,5 +29,5 @@ public class Proposal {
     private String purpose;
     private String applicationNumber;
     private LocalDate applicationDate;
-    private StatusApplication statusApplication;
+    private StatusProposal statusProposal;
 }

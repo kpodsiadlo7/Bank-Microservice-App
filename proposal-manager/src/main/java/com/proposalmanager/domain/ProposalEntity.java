@@ -1,6 +1,6 @@
 package com.proposalmanager.domain;
 
-import com.proposalmanager.domain.enums.StatusApplication;
+import com.proposalmanager.domain.enums.StatusProposal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +33,5 @@ public class ProposalEntity {
     private String applicationNumber;
     private LocalDate applicationDate;
     @Enumerated(EnumType.STRING)
-    private StatusApplication statusApplication;
+    private StatusProposal statusProposal;
 }

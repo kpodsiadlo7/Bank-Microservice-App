@@ -1,6 +1,6 @@
-package com.proposalmanager.web.dto;
+package com.mainapp.service.data;
 
-import com.proposalmanager.domain.enums.StatusProposal;
+import com.mainapp.service.data.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProposalDto {
+public class Proposal {
     private Long id;
     private Long userId;
     private Long accountId;

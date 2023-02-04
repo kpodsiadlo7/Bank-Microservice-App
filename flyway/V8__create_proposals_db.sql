@@ -1,4 +1,4 @@
-create type status_application as enum ('ACCEPT','REQUEST','REJECTED');
+create type status_proposal as enum ('ACCEPT','REQUEST','REJECTED');
 
 create table proposals_db
 (
@@ -17,5 +17,5 @@ create table proposals_db
     purpose            varchar(255),
     application_number varchar(20),
     application_date   date,
-    status_application status_application
+    status_proposal    status_proposal
 )

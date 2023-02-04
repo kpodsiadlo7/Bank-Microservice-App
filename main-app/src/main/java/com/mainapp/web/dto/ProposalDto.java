@@ -1,6 +1,6 @@
-package com.proposalmanager.web.dto;
+package com.mainapp.web.dto;
 
-import com.proposalmanager.domain.enums.StatusProposal;
+import com.mainapp.service.data.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

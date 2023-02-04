@@ -1,6 +1,6 @@
 package com.proposalmanager.domain.enums;
 
-public enum StatusApplication {
+public enum StatusProposal {
     ACCEPT,
     REQUEST,
     REJECTED
