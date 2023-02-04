@@ -1,10 +1,7 @@
 server:
-  port: 8080
+  port: 8500
 spring:
   flyway:
-    user: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_DATABASE_URL}
     baseline-on-migrate: true
   datasource:
     url: ${POSTGRES_DATABASE_URL}
@@ -15,6 +12,3 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-url:
-  bandit: siemanko

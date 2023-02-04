@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/user-manager/pom.xml" />
         <option value="$PROJECT_DIR$/accounts-manager/pom.xml" />
         <option value="$PROJECT_DIR$/transactions-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/proposal-manager/pom.xml" />
       </list>
     </option>
   </component>

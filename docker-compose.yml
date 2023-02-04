@@ -65,3 +65,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8010:8010
+
+  proposal-manager:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres
+    restart: always
+    build:
+      context: proposal-manager
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500

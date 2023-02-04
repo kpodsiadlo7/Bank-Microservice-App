@@ -10,6 +10,7 @@
         <module name="main-app" />
         <module name="accounts-manager" />
         <module name="transactions-manager" />
+        <module name="proposal-manager" />
         <module name="user-manager" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
       <module name="accounts-manager" target="17" />
       <module name="authentication-manager" target="17" />
       <module name="main-app" target="17" />
+      <module name="proposal-manager" target="17" />
       <module name="transactions-app" target="17" />
       <module name="transactions-manager" target="17" />
       <module name="user-manage" target="17" />
@@ -28,6 +30,7 @@
       <module name="accounts-manager" options="-parameters" />
       <module name="authentication-manager" options="-parameters" />
       <module name="main-app" options="-parameters" />
+      <module name="proposal-manager" options="-parameters" />
       <module name="transactions-app" options="-parameters" />
       <module name="transactions-manager" options="-parameters" />
       <module name="user-manage" options="-parameters" />
