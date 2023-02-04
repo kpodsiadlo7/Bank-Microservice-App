@@ -27,7 +27,7 @@ public class ProposalDto {
     private String currencySymbol;
     private String username;
     private String purpose;
-    private String applicationNumber;
+    private String proposalNumber;
     private LocalDate applicationDate;
     private StatusProposal statusProposal;
 }

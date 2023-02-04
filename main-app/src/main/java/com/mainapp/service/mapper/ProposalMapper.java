@@ -22,9 +22,30 @@ public class ProposalMapper {
                 proposal.getCurrencySymbol(),
                 proposal.getUsername(),
                 proposal.getPurpose(),
-                proposal.getApplicationNumber(),
+                proposal.getProposalNumber(),
                 proposal.getApplicationDate(),
                 proposal.getStatusProposal()
+        );
+    }
+
+    public Proposal mapToProposalFromProposalDto(final ProposalDto proposalDto) {
+        return new Proposal(
+                proposalDto.getId(),
+                proposalDto.getUserId(),
+                proposalDto.getAccountId(),
+                proposalDto.getAmountOfCredit(),
+                proposalDto.getMonth(),
+                proposalDto.getSalary(),
+                proposalDto.getInterest(),
+                proposalDto.getCommission(),
+                proposalDto.getMonthlyFee(),
+                proposalDto.getCurrency(),
+                proposalDto.getCurrencySymbol(),
+                proposalDto.getUsername(),
+                proposalDto.getPurpose(),
+                proposalDto.getProposalNumber(),
+                proposalDto.getApplicationDate(),
+                proposalDto.getStatusProposal()
         );
     }
 }

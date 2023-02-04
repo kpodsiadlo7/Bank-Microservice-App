@@ -30,7 +30,7 @@ public class ProposalEntity {
     private String currencySymbol;
     private String username;
     private String purpose;
-    private String applicationNumber;
+    private String proposalNumber;
     private LocalDate applicationDate;
     @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;

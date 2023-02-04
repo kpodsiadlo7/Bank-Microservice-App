@@ -1,6 +1,7 @@
 package com.mainapp.service.controller;
 
 import com.mainapp.service.data.Proposal;
+import com.mainapp.service.data.User;
 import com.mainapp.service.mapper.ProposalMapper;
 import com.mainapp.web.dto.ProposalDto;
 import com.mainapp.web.feign.FeignServiceProposalManager;
@@ -25,5 +26,21 @@ public class ProposalService {
         }
         modelMap.put("proposalDto",proposalMapper.mapToProposalDtoFromProposal(returningProposal));
         return "credit";
+    }
+
+    public String validateBeforePostAndPost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap) {
+        Proposal returningProposal;
+        try {
+            returningProposal = feignServiceProposalManager.validateProposalBeforePost(user,proposal,accountId);
+            if (returningProposal.getCurrency().equals("error")){
+                modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));
+                modelMap.put("error",returningProposal.getProposalNumber());
+                return "credit";
+            }
+        } catch (Exception e){
+            modelMap.put("error","There is a problem with connecting to proposal-manager");
+            return "credit";
+        }
+        return "redirect:/dashboard/credit/"+returningProposal.getProposalNumber();
     }
 }
