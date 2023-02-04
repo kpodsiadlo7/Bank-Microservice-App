@@ -18,7 +18,7 @@ public class ProposalService {
     public String getProposal(final String proposalNumber, ModelMap modelMap) {
         Proposal returningProposal;
         try {
-            returningProposal = feignServiceProposalManager.getProposalByNumber(proposalNumber);
+            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.getProposalByNumber(proposalNumber));
         } catch (Exception e){
             modelMap.put("proposalDto", new ProposalDto());
             modelMap.put("error","There is a problem with fetching your proposal");
@@ -31,7 +31,7 @@ public class ProposalService {
     public String validateBeforePostAndPost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap) {
         Proposal returningProposal;
         try {
-            returningProposal = feignServiceProposalManager.validateProposalBeforePost(user,proposal,accountId);
+            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.validateProposalBeforePost(user,proposal,accountId));
             if (returningProposal.getCurrency().equals("error")){
                 modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));
                 modelMap.put("error",returningProposal.getProposalNumber());
