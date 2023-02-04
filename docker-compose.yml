@@ -77,3 +77,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8500:8500
+
+  credit-manager:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE_URL=jdbc:postgresql://postgres:5432/postgres?stringtype=unspecified
+    restart: always
+    build:
+      context: credit-manager
+      dockerfile: Dockerfile
+    ports:
+      - 8700:8700
