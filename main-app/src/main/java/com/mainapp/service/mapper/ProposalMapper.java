@@ -25,7 +25,9 @@ public class ProposalMapper {
                 proposal.getProposalNumber(),
                 proposal.getApplicationDate(),
                 proposal.isAcceptStatement(),
-                proposal.getStatusProposal()
+                proposal.getStatusProposal(),
+                proposal.getDescriptionRejected(),
+                proposal.getCreditKind()
         );
     }
 
@@ -47,7 +49,9 @@ public class ProposalMapper {
                 proposalDto.getProposalNumber(),
                 proposalDto.getApplicationDate(),
                 proposalDto.isAcceptStatement(),
-                proposalDto.getStatusProposal()
+                proposalDto.getStatusProposal(),
+                proposalDto.getDescriptionRejected(),
+                proposalDto.getCreditKind()
         );
     }
 }

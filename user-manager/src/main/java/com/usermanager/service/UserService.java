@@ -51,4 +51,8 @@ public class UserService {
         adapterUserRepository.save(userEntity);
         return userMapper.mapToUserFromUserEntity(userEntity);
     }
+
+    public User getUserById(final Long userId) {
+        return userMapper.mapToUserFromUserEntity(adapterUserRepository.findById(userId));
+    }
 }

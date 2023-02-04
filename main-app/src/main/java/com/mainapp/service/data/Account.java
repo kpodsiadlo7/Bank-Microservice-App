@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Account implements Comparable<Account>{
     private Long id;
+    private Long userId;
     private String accountName;
     private BigDecimal balance;
     private String number;

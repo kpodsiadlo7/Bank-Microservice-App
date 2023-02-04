@@ -24,7 +24,7 @@ you will still get the main account after runs again)
 #
 ## still in progress... 
 #### Exchange system
-#### Credit system
+#### *Credit system
 #### Close account
 #### Admin Panel
 #### Spending money system

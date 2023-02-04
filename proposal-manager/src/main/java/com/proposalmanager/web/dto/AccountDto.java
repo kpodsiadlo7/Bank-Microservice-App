@@ -1,4 +1,4 @@
-package com.mainapp.web.dto;
+package com.proposalmanager.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto implements Comparable<AccountDto>{
+public class AccountDto {
     private Long id;
     private Long userId;
     private String accountName;
@@ -19,9 +19,4 @@ public class AccountDto implements Comparable<AccountDto>{
     private String number;
     private String currency;
     private String currencySymbol;
-
-    @Override
-    public int compareTo(final AccountDto o) {
-        return this.id.compareTo(o.getId());
-    }
 }

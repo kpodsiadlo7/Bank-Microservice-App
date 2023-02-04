@@ -4,7 +4,7 @@ import com.mainapp.repository.adapter.AdapterAuthorityRepository;
 import com.mainapp.security.AuthorityEntity;
 import com.mainapp.service.data.Account;
 import com.mainapp.service.data.User;
-import com.mainapp.service.mapper.UserAccountsMapper;
+import com.mainapp.service.mapper.AccountMapper;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.web.dto.TransactionDto;
 import com.mainapp.web.dto.TransferDto;
@@ -33,7 +33,7 @@ public class MainService {
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final AdapterAuthorityRepository adapterAuthorityRepository;
     private final UserMapper userMapper;
-    private final UserAccountsMapper userAccountsMapper;
+    private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -86,8 +86,8 @@ public class MainService {
     }
 
     public Account createAccountForUser(final Long userId, final Account account) {
-        return userAccountsMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
-                (userId, userAccountsMapper.mapToUserAccountDtoFromUserAccount(account)));
+        return accountMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
+                (userId, accountMapper.mapToUserAccountDtoFromUserAccount(account)));
     }
 
     public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
@@ -103,7 +103,7 @@ public class MainService {
         } catch (Exception e) {
             modelMap.put("error", "There was an error with trying to connect with transactional service");
             try {
-                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId()));
+                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllAccountsByUserId(user.getId()));
             } catch (Exception b) {
                 modelMap.put("error", "There was an error fetching your accounts");
             }

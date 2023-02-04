@@ -2,7 +2,7 @@ package com.mainapp.service.controller;
 
 import com.mainapp.service.MainService;
 import com.mainapp.service.data.User;
-import com.mainapp.service.mapper.UserAccountsMapper;
+import com.mainapp.service.mapper.AccountMapper;
 import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
@@ -18,7 +18,7 @@ public class DashboardService {
 
     private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final MainService mainService;
-    private final UserAccountsMapper userAccountsMapper;
+    private final AccountMapper accountMapper;
 
     public boolean makeTransaction(final User user, final Long accountId, final TransferDto transferDto, final String kindTransaction, final ModelMap modelMap) {
         if (!mainService.makeTransaction(user, transferDto, modelMap, kindTransaction, accountId)) {
@@ -36,10 +36,10 @@ public class DashboardService {
     public String fetchAllAccounts(final User user, final ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
-            TreeSet<AccountDto> accounts = feignServiceAccountsManager.getAllUserAccountsByUserId(user.getId());
+            TreeSet<AccountDto> accounts = feignServiceAccountsManager.getAllAccountsByUserId(user.getId());
             if (accounts.size() == 0) {
                 try {
-                    mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(new AccountDto()));
+                    mainService.createAccountForUser(user.getId(), accountMapper.mapToUserAccountFromUserAccountDto(new AccountDto()));
                     modelMap.put("quickTransfer", new TransferDto());
                     return "redirect:/dashboard";
                 } catch (Exception e) {
@@ -56,7 +56,7 @@ public class DashboardService {
 
     public String createAccount(final User user, final AccountDto accountDto, ModelMap modelMap) {
         try {
-            mainService.createAccountForUser(user.getId(), userAccountsMapper.mapToUserAccountFromUserAccountDto(accountDto));
+            mainService.createAccountForUser(user.getId(), accountMapper.mapToUserAccountFromUserAccountDto(accountDto));
         } catch (Exception e) {
             modelMap.put("error", "Failed with creating account");
             modelMap.put("account", new AccountDto());

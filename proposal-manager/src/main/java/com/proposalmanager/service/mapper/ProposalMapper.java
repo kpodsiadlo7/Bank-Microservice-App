@@ -26,7 +26,9 @@ public class ProposalMapper {
                 proposal.getProposalNumber(),
                 proposal.getApplicationDate(),
                 proposal.isAcceptStatement(),
-                proposal.getStatusProposal()
+                proposal.getStatusProposal(),
+                proposal.getDescriptionRejected(),
+                proposal.getCreditKind()
         );
     }
 
@@ -48,7 +50,56 @@ public class ProposalMapper {
                 proposalEntity.getProposalNumber(),
                 proposalEntity.getApplicationDate(),
                 proposalEntity.isAcceptStatement(),
-                proposalEntity.getStatusProposal()
+                proposalEntity.getStatusProposal(),
+                proposalEntity.getDescriptionRejected(),
+                proposalEntity.getCreditKind()
+        );
+    }
+
+    public Proposal mapToProposalFromProposalDto(final ProposalDto proposalDto){
+        return new Proposal(
+                proposalDto.getId(),
+                proposalDto.getUserId(),
+                proposalDto.getAccountId(),
+                proposalDto.getAmountOfCredit(),
+                proposalDto.getMonth(),
+                proposalDto.getSalary(),
+                proposalDto.getInterest(),
+                proposalDto.getCommission(),
+                proposalDto.getMonthlyFee(),
+                proposalDto.getCurrency(),
+                proposalDto.getCurrencySymbol(),
+                proposalDto.getUsername(),
+                proposalDto.getPurpose(),
+                proposalDto.getProposalNumber(),
+                proposalDto.getApplicationDate(),
+                proposalDto.isAcceptStatement(),
+                proposalDto.getStatusProposal(),
+                proposalDto.getDescriptionRejected(),
+                proposalDto.getCreditKind()
+        );
+    }
+
+    public ProposalEntity mapToProposalEntityFromProposal(final Proposal proposal) {
+        return new ProposalEntity(
+                proposal.getUserId(),
+                proposal.getAccountId(),
+                proposal.getAmountOfCredit(),
+                proposal.getMonth(),
+                proposal.getSalary(),
+                proposal.getInterest(),
+                proposal.getCommission(),
+                proposal.getMonthlyFee(),
+                proposal.getCurrency(),
+                proposal.getCurrencySymbol(),
+                proposal.getUsername(),
+                proposal.getPurpose(),
+                proposal.getProposalNumber(),
+                proposal.getApplicationDate(),
+                proposal.isAcceptStatement(),
+                proposal.getStatusProposal(),
+                proposal.getDescriptionRejected(),
+                proposal.getCreditKind()
         );
     }
 }

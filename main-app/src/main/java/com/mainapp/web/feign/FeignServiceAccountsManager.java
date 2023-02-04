@@ -14,7 +14,7 @@ import java.util.TreeSet;
 public interface FeignServiceAccountsManager {
 
     @GetMapping("/get-accounts")
-    TreeSet<AccountDto> getAllUserAccountsByUserId(@RequestParam Long userId);
+    TreeSet<AccountDto> getAllAccountsByUserId(@RequestParam Long userId);
     @GetMapping("/get-account")
     AccountDto getAccountByAccountId(@RequestParam Long accountId);
 

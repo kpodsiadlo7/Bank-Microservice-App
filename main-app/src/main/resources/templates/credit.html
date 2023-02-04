@@ -14,6 +14,11 @@
             window.location.href = '/dashboard';
         });
     });
+    $(function () {
+        if ($("#errorMsg").text() != "") {
+            $("#errorMsg").removeClass("d-none");
+        }
+    });
 </script>
 <body>
 <div class="card">
@@ -37,36 +42,43 @@
                     <div class="d-grid gap-1">
                         <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Q&A</a><br>
                         <a href="" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
-                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 14em">About us</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 14em">About
+                            us</a><br>
                         <a href="/dashboard" class="btn btn-outline-danger" style="margin-left: 2em;">Cancel</a><br>
                     </div>
                 </div>
             </div>
             <div class="col-5">
                 <div class="p1" style="margin-left: 3em">
-                    <form>
+                    <form action="" method="post">
+                        <input name="creditKind" value="CASH" hidden>
                         <h2>Cash credit</h2>
                         <h6><i>minimum formalities maximum benefits</i></h6>
+                        <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
                         <div class="form-row" style="margin-top: 2em">
                             <div class="form-group col-md-6">
-                                <input type="number" class="form-control" id="inputSalary" placeholder="Your salary"
-                                       required>
+                                <input type="text" class="form-control" th:field="${proposalDto.purpose}" placeholder="Purpose" required>
                             </div>
                             <div class="form-group col-md-3">
-                                <select class="form-select mb-3" required>
-                                    <option selected>Loan term</option>
-                                    <option value="1">3 Month</option>
-                                    <option value="1">6 Month</option>
-                                    <option value="1">12 Month</option>
-                                    <option value="2">24 Month</option>
-                                    <option value="3">48 Month</option>
+                                <select class="form-select mb-3" name="month" required>
+                                    <option selected value="3" th:selected="${proposalDto.month}">3 Month</option>
+                                    <option value="6" th:selected="${proposalDto.month}">6 Month</option>
+                                    <option value="12" th:selected="${proposalDto.month}">12 Month</option>
+                                    <option value="24" th:selected="${proposalDto.month}">24 Month</option>
+                                    <option value="48" th:selected="${proposalDto.month}">48 Month</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="inputPurpose" placeholder="Purpose"
-                                       required>
+                            <div class="form-group col-md-4">
+                            <div>Your salary</div>
+                                <input type="number" class="form-control" th:field="${proposalDto.salary}"
+                                       placeholder="Your salary" required>
+                            </div>
+                            <div class="form-group col-md-5">
+                            <div>Amount of credit</div>
+                                <input type="number" class="form-control" th:field="${proposalDto.amountOfCredit}"
+                                       placeholder="Credit amount" required>
                             </div>
                         </div>
                         <div>
@@ -74,8 +86,10 @@
                         </div>
                         <div class="form-row" style="margin-top: 0.3em">
                             <div class="form-group col-md-6">
-                                <select class="form-select mb-3">
-                                    <option selected>option1</option>
+                                <select class="form-select mb-3" name="accountId">
+                                    <option th:each="account : ${accountsDto}" th:value="${account.id}">
+                                        <div th:text="${account.accountName}"></div>
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -83,7 +97,7 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="acceptPolicy" required>
                                 <label>Accept policy</label>
-                                <div class="form-text">*actually you don't have a choice</div>
+                                <div class="form-text">*actually you do not have a choice</div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-outline-success"

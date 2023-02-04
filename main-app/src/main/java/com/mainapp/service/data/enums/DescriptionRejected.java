@@ -1,4 +1,4 @@
-package com.proposalmanager.domain.enums;
+package com.mainapp.service.data.enums;
 
 public enum DescriptionRejected {
     OPEN,

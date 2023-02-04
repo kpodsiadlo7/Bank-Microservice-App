@@ -28,10 +28,11 @@ public class ProposalService {
         return "credit";
     }
 
-    public String validateBeforePostAndPost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap) {
+    public String validateBeforePostAndPost(final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind) {
         Proposal returningProposal;
+            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.validateProposalBeforePost(
+                    proposalMapper.mapToProposalDtoFromProposal(proposal),accountId,creditKind));
         try {
-            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.validateProposalBeforePost(user,proposal,accountId));
             if (returningProposal.getCurrency().equals("error")){
                 modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));
                 modelMap.put("error",returningProposal.getProposalNumber());

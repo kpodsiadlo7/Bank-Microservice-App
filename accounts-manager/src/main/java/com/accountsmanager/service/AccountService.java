@@ -28,6 +28,11 @@ public class AccountService {
             return createMainAccount(userId, account);
         return createAccountForUser(userId, account);
     }
+    public Account getAccountByAccountId(final Long accountId) {
+        Account account = accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
+        log.info("user account " + account.toString());
+        return account;
+    }
 
     private Account createAccountForUser(final Long userId, final Account account) {
         account.setUserId(userId);
@@ -178,9 +183,4 @@ public class AccountService {
         return account;
     }
 
-    public Account getAccountByAccountId(final Long accountId) {
-        Account account = accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
-        log.info("user account " + account.toString());
-        return account;
-    }
 }

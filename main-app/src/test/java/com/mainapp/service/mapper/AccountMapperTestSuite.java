@@ -19,13 +19,14 @@ import java.math.BigDecimal;
 public class AccountMapperTestSuite {
 
     @Autowired
-    private UserAccountsMapper accountsMapper;
+    private AccountMapper accountsMapper;
 
     @Test
     void mapToUserAccountDtoFromUserAccount(){
         //given
         Account account = new Account(
                 7L,
+                6L,
                 "account name",
                 new BigDecimal(23333),
                 "123",
@@ -48,6 +49,7 @@ public class AccountMapperTestSuite {
         //given
         AccountDto accountDto = new AccountDto(
                 7L,
+                6L,
                 "account name",
                 new BigDecimal(23333),
                 "123",

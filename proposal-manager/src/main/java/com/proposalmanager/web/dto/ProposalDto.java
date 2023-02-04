@@ -1,12 +1,15 @@
 package com.proposalmanager.web.dto;
 
+import com.proposalmanager.domain.enums.CreditKind;
+import com.proposalmanager.domain.enums.DescriptionRejected;
 import com.proposalmanager.domain.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDate;
 
 @Getter
@@ -17,12 +20,12 @@ public class ProposalDto {
     private Long id;
     private Long userId;
     private Long accountId;
-    private float amountOfCredit;
+    private double amountOfCredit;
     private int month;
-    private float salary;
+    private double salary;
     private double interest;
     private double commission;
-    private BigDecimal monthlyFee;
+    private double monthlyFee;
     private String currency;
     private String currencySymbol;
     private String username;
@@ -30,5 +33,10 @@ public class ProposalDto {
     private String proposalNumber;
     private LocalDate applicationDate;
     private boolean acceptStatement;
+    @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;
+    @Enumerated(EnumType.STRING)
+    private DescriptionRejected descriptionRejected;
+    @Enumerated(EnumType.STRING)
+    private CreditKind creditKind;
 }
