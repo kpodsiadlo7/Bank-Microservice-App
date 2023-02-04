@@ -25,7 +25,7 @@ public class CreditController {
     @GetMapping
     public String getCredit(@AuthenticationPrincipal User user,
                             ModelMap modelMap) {
-        return creditService.getCredit(user,modelMap);
+        return creditService.getCredit(user, modelMap);
     }
 
     @GetMapping("{proposalNumber}")
@@ -34,11 +34,12 @@ public class CreditController {
     }
 
     @PostMapping
-    public String postProposal(@ModelAttribute ProposalDto proposalDto,
+    public String postProposal(@AuthenticationPrincipal User user,
+                               @ModelAttribute ProposalDto proposalDto,
                                @RequestParam(name = "accountId") Long accountId, ModelMap modelMap,
                                @RequestParam(name = "creditKind") String creditKind) {
-        log.info("should be 3 "+proposalDto.getMonth());
-        return proposalService.validateBeforePostAndPost(
-                proposalMapper.mapToProposalFromProposalDto(proposalDto),accountId,modelMap,creditKind);
+        log.info("should be 3 " + proposalDto.getMonth());
+        return proposalService.validateBeforePostAndPost(user,
+                proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, modelMap, creditKind);
     }
 }

@@ -5,9 +5,11 @@ import com.proposalmanager.domain.enums.DescriptionRejected;
 import com.proposalmanager.domain.enums.StatusProposal;
 import com.proposalmanager.repository.adapter.AdapterProposalEntityRepository;
 import com.proposalmanager.service.data.Account;
+import com.proposalmanager.service.data.Credit;
 import com.proposalmanager.service.data.Proposal;
 import com.proposalmanager.service.data.User;
 import com.proposalmanager.service.mapper.AccountMapper;
+import com.proposalmanager.service.mapper.CreditMapper;
 import com.proposalmanager.service.mapper.ProposalMapper;
 import com.proposalmanager.service.mapper.UserMapper;
 import com.proposalmanager.web.feign.FeignServiceAccountsManager;
@@ -30,6 +32,8 @@ public class ProposalService {
     private final FeignServiceUserManager feignServiceUserManager;
     private final ProposalMapper proposalMapper;
     private final AccountMapper accountMapper;
+    private final CreditService creditService;
+    private final CreditMapper creditMapper;
     private final UserMapper userMapper;
 
     public Proposal getProposalByNumber(final String proposalNumber) {
@@ -44,30 +48,45 @@ public class ProposalService {
     }
 
     public Proposal validateProposalBeforePost(final Proposal proposal, final Long accountId, final String creditKind) {
-        //validation in credit-manager if current account already have this kind of credit and more validation
+        Proposal error = new Proposal();
+        Account fetchingAccount = new Account();
+        Credit fetchingCredit = new Credit();
+        User fetchingUser = new User();
+        CreditKind kind = whatKindOfCredit(creditKind);
 
+
+        fetchingCredit = creditService.checkAccountAlreadyHaveThatKindCredit(accountId,kind,fetchingCredit);
+        if (fetchingCredit.getUserId() == -1){
+            error.setCurrency("error");
+            error.setProposalNumber(fetchingCredit.getProposalNumber());
+            return error;
+        }
+
+
+
+        /**
+         * needs to be refactored
+         */
         log.info("validate proposal before post method start");
-        Account fetchingAccount;
-        User fetchingUser;
         try {
             fetchingAccount = accountMapper.mapToUserAccountFromUserAccountDto
                     (feignServiceAccountsManager.getAccountByAccountId(accountId));
         } catch (Exception e) {
-            proposal.setCurrency("error");
-            proposal.setProposalNumber("There is a problem with connecting to account manager");
-            return proposal;
+            error.setCurrency("error");
+            error.setProposalNumber("There is a problem with connecting to account manager");
+            return error;
         }
 
         try {
             fetchingUser = userMapper.mapToUserFromUserDto(feignServiceUserManager.getUserById(fetchingAccount.getUserId()));
         } catch (Exception e){
-            proposal.setCurrency("error");
-            proposal.setProposalNumber("There is a problem with connecting to user manager");
-            return proposal;
+            error.setCurrency("error");
+            error.setProposalNumber("There is a problem with connecting to user manager");
+            return error;
         }
         log.info("validate proposal before post method before prepare proposal");
 
-        Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, whatKindOfCredit(creditKind));
+        Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind);
 
         return proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.save

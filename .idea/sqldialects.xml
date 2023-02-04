@@ -7,5 +7,6 @@
     <file url="file://$PROJECT_DIR$/flyway/V4__add_password_column_into_authorities_db.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/flyway/V5__create_transactions_db.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/flyway/V8__create_proposals_db.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/flyway/V9__create_credits_db.sql" dialect="PostgreSQL" />
   </component>
 </project>

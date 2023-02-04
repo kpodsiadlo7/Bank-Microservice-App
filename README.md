@@ -5,7 +5,7 @@
 # Available
 
 ### *Credit Logic
-* Before taking credit we have to fill proposal
+* Before taking credit we need to fill proposal
 * There are several simple validation e.g. if commission is more than we have
   money on account we can't approve a credit proposal, 
   also if we already have that kind of credit in our account
@@ -35,6 +35,7 @@ you will still get the main account after runs again)
 
 #
 ## still in progress... 
+#### *Credit Logic
 #### Exchange system
 #### Close account
 #### Admin Panel
