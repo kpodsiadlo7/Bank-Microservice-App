@@ -23,12 +23,6 @@ public class TransactionService {
     public Transaction openTransaction(final Long userId, final Long thisAccountId,
                                        final String descriptionTransaction, final TransferDto transferDto) {
         log.info("open transaction");
-        log.info("user should be 4 from request param " +userId);
-        log.info("user should be 4 from transferDto " +transferDto.getUserReceiveId());
-        log.info(transferDto.getAccountNumber());
-        log.info("account to increase money from transferDto "+transferDto.getAccountReceiveId());
-        log.info("account to increase money from transferDto from request param"+thisAccountId);
-        log.info("description should be credit "+descriptionTransaction);
         Transaction transaction = new Transaction();
         Transaction error = new Transaction();
         error.setKindTransaction("error");
@@ -51,6 +45,7 @@ public class TransactionService {
 
     private Transaction makeCredit(final TransferDto transferDto,final Long thisAccountId, final String descriptionTransaction,
                                    Transaction error) {
+        log.info("make credit");
         return depositMoney(transferDto.getUserReceiveId(), thisAccountId,
                 transferDto,descriptionTransaction,error);
     }
@@ -67,40 +62,50 @@ public class TransactionService {
 
     private Transaction depositMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                      final String descriptionTransaction, Transaction error) {
-        if (transferDto.getAmount().compareTo(BigDecimal.valueOf(15000)) > 0) {
+        log.info("deposit money");
+        if (!descriptionTransaction.equals("credit") &&
+                transferDto.getAmount().compareTo(BigDecimal.valueOf(15000)) > 0) {
+            log.warn("limit 15000");
             error.setDescription("Limit for this kind of transaction is 15000");
             return error;
         }
         try {
-            log.info("deposit money should be 7 "+thisAccountId);
             transferDto.setAccountNumber("credit");
             final TransferDto returnTransferDto = feignServiceAccountsManager.depositMoney(thisAccountId, transferDto);
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
+                log.warn("error "+returnTransferDto.getAccountNumber());
                 error.setDescription(returnTransferDto.getAccountNumber());
                 return error;
             }
         } catch (Exception e) {
+            log.warn("failed connecting with accounts manager");
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
+        log.info("successful receive transfer dto from accounts manager");
         return inComingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
     }
 
     private Transaction withdrawMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                       final String descriptionTransaction, Transaction error) {
+        log.info("withdraw money");
         if (transferDto.getAmount().compareTo(BigDecimal.valueOf(5000)) > 0) {
+            log.warn("limit 5000");
             error.setDescription("Limit for this kind of transaction is 5000");
             return error;
         }
         try {
             transferDto.setAccountNumber("withdraw");
             final TransferDto returnTransferDto = feignServiceAccountsManager.withdrawMoney(thisAccountId, transferDto);
+            log.info("successful receive transfer dto from transfer dto");
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
+                log.warn("error "+returnTransferDto.getAccountNumber());
                 error.setDescription(returnTransferDto.getAccountNumber());
                 return error;
             }
         } catch (Exception e) {
             error.setDescription("Failed connecting with accounts manager");
+            log.warn("failed connecting with accounts mangager");
             return error;
         }
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
@@ -111,14 +116,15 @@ public class TransactionService {
     protected Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                         final String descriptionTransaction, Transaction error,
                                         Transaction transaction) {
-
+        log.info("money transfer");
         if (transferDto.getAmount().compareTo(BigDecimal.valueOf(20000)) > 0) {
+            log.warn("limit 20000");
             error.setDescription("Limit for this kind of transaction is 20000");
             return error;
         }
         transaction = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
         if (transaction.getKindTransaction().equals("error")) {
-            log.info("something is wrong with returning transaction");
+            log.warn("something is wrong with returning transaction");
             transaction.setDescription(transaction.getDescription());
             return transaction;
         }
@@ -127,6 +133,7 @@ public class TransactionService {
 
     private Transaction makeMoneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                           final String descriptionTransaction, final Transaction error) {
+        log.info("make money transfer");
         TransferDto returnTransferDto;
         try {
             returnTransferDto = feignServiceAccountsManager.quickTransfer(thisAccountId, transferDto);
@@ -135,20 +142,23 @@ public class TransactionService {
                 return error;
             }
         } catch (Exception e) {
+            log.warn("failed connecting with account manager");
             error.setDescription("Failed connecting with accounts manager");
             return error;
         }
-        log.info("should be id 1 " + returnTransferDto.getAccountReceiveId());
+        log.info("successful receive transfer dto from accounts manager");
         return closeMoneyTransferTransaction(userId, thisAccountId, returnTransferDto, descriptionTransaction, transferDto.getAmount());
     }
 
     private Transaction closeMoneyTransferTransaction(final Long userId, final Long thisAccountId, final TransferDto returnedTransferDto,
                                                       final String descriptionTransaction, final BigDecimal amount) {
+        log.info("close money transfer transaction");
         inComingTransaction(userId, returnedTransferDto.getAccountReceiveId(), descriptionTransaction, amount);
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, amount);
     }
 
     private Transaction inComingTransaction(final Long userId, final Long thisAccountId, final String descriptionTransaction, final BigDecimal amount) {
+        log.info("incoming transaction");
         Transaction transactionForIncreaseUser = new Transaction();
         transactionForIncreaseUser.setUserId(userId);
         transactionForIncreaseUser.setValue("+" + amount);
@@ -162,6 +172,7 @@ public class TransactionService {
     }
 
     private Transaction outGoingTransaction(final Long userId, final Long thisAccountId, final String descriptionTransaction, final BigDecimal amount) {
+        log.info("outgoing transaction");
         Transaction transactionForDecreaseUser = new Transaction();
         transactionForDecreaseUser.setUserId(userId);
         transactionForDecreaseUser.setValue("-" + amount);

@@ -6,14 +6,11 @@ import com.proposalmanager.domain.enums.StatusProposal;
 import com.proposalmanager.repository.adapter.AdapterProposalEntityRepository;
 import com.proposalmanager.service.adapter.ProposalToTransfer;
 import com.proposalmanager.service.data.*;
-import com.proposalmanager.service.mapper.AccountMapper;
 import com.proposalmanager.service.mapper.ProposalMapper;
 import com.proposalmanager.service.mapper.TransferMapper;
-import com.proposalmanager.service.mapper.UserMapper;
 import com.proposalmanager.web.feign.FeignServiceAccountsManager;
 import com.proposalmanager.web.feign.FeignServiceCreditManager;
 import com.proposalmanager.web.feign.FeignServiceTransactionsManager;
-import com.proposalmanager.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,19 +27,20 @@ public class ProposalService {
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final FeignServiceCreditManager feignServiceCreditManager;
-    private final FeignServiceUserManager feignServiceUserManager;
     private final ProposalToTransfer proposalToTransfer;
+    private final AccountService accountService;
     private final ProposalMapper proposalMapper;
     private final TransferMapper transferMapper;
-    private final AccountMapper accountMapper;
     private final CreditService creditService;
-    private final UserMapper userMapper;
+    private final UserService userService;
 
     public void postProposal(final String proposalNumber) {
+        log.info("post proposal");
         Proposal proposal = proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.findByProposalNumber(proposalNumber));
 
         if (!feignServiceCreditManager.acceptCredit(proposal)) {
+            log.info("proposal rejected");
             rejectedProposal(proposal);
             return;
         }
@@ -56,26 +54,31 @@ public class ProposalService {
     }
 
     private void approveProposal(final Proposal proposalToApproved) {
+        log.info("approve proposal");
         Transfer transfer = proposalToTransfer.mapToTransferFromProposal(proposalToApproved);
-        log.info("should be 6 "+transfer.getAccountReceiveId());
         try {
             String accountNumber = feignServiceAccountsManager.getAccountByAccountId(transfer.getAccountReceiveId()).getNumber();
+            log.info("successful receive account from accounts manager");
             String descriptionTransaction = "credit";
             transfer.setAccountNumber(accountNumber);
 
-
             feignServiceTransactionsManager.makeTransaction(transfer.getUserReceiveId(), transfer.getAccountReceiveId(), descriptionTransaction,
                     transferMapper.mapToTransferDtoFromTransfer(transfer));
+            log.info("successful make transaction in transactions manager");
             proposalToApproved.setDescriptionRejected(DescriptionRejected.ACCEPT);
             proposalToApproved.setStatusProposal(StatusProposal.ACCEPT);
             proposalToApproved.setAcceptStatement(true);
             adapterProposalEntityRepository.save(proposalMapper.updateProposalEntity(proposalToApproved));
-        } catch (Exception ignored) {}
+            log.info("proposal successful saved");
+        } catch (Exception ignored) {
+        }
     }
 
     public Proposal getProposalByNumber(final String proposalNumber) {
+        log.info("get proposal by number");
         if (!adapterProposalEntityRepository.existsByProposalNumber(proposalNumber)) {
             Proposal error = new Proposal();
+            log.warn("proposal with given number doesn't exist");
             error.setCurrency("error");
             error.setProposalNumber("Proposal with given number doesn't exist!");
             return error;
@@ -85,44 +88,41 @@ public class ProposalService {
     }
 
     public Proposal validateProposalBeforePost(final Proposal proposal, final Long accountId, final String creditKind) {
+        log.info("validate proposal before past");
         Proposal error = new Proposal();
         Credit fetchingCredit = new Credit();
-        Account fetchingAccount;
-        User fetchingUser;
+        Account fetchingAccount = new Account();
+        User fetchingUser = new User();
         CreditKind kind = whatKindOfCredit(creditKind);
-
 
         fetchingCredit = creditService.checkAccountAlreadyHaveThatKindCredit(accountId, kind, fetchingCredit);
         if (fetchingCredit.getUserId() == -1) {
+            log.warn("error "+fetchingCredit.getProposalNumber());
             error.setCurrency("error");
             error.setProposalNumber(fetchingCredit.getProposalNumber());
             return error;
         }
+        log.info("successful checking account if already have that kind credit(not have)");
 
-        /**
-         * needs to be refactored
-         */
-        log.info("validate proposal before post method start");
-        try {
-            fetchingAccount = accountMapper.mapToUserAccountFromUserAccountDto
-                    (feignServiceAccountsManager.getAccountByAccountId(accountId));
-        } catch (Exception e) {
+        fetchingAccount = accountService.fetchAccountByAccountId(accountId, fetchingAccount);
+        if (fetchingAccount.getUserId() == -1) {
+            log.warn("error "+fetchingAccount.getAccountName());
             error.setCurrency("error");
-            error.setProposalNumber("There is a problem with connecting to account manager");
+            error.setProposalNumber(fetchingAccount.getAccountName());
             return error;
         }
+        log.info("successful fetching account by account id from accounts service");
 
-        try {
-            fetchingUser = userMapper.mapToUserFromUserDto(feignServiceUserManager.getUserById(fetchingAccount.getUserId()));
-        } catch (Exception e) {
+        fetchingUser = userService.fetchUserById(fetchingAccount.getUserId(), fetchingUser);
+        if (fetchingUser.getId() == -1) {
+            log.warn("error "+fetchingUser.getRealName());
             error.setCurrency("error");
-            error.setProposalNumber("There is a problem with connecting to user manager");
+            error.setProposalNumber(fetchingUser.getRealName());
             return error;
         }
-        log.info("validate proposal before post method before prepare proposal");
 
         Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind);
-
+        log.info("save proposal");
         return proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.save
                         (proposalMapper.mapToProposalEntityFromProposal(proposalToSaveAfterPrepare)));
@@ -130,6 +130,7 @@ public class ProposalService {
     }
 
     private CreditKind whatKindOfCredit(final String creditKind) {
+        log.info("what kind of credit");
         switch (creditKind) {
             case "MORTGAGE" -> {
                 return CreditKind.MORTGAGE;
@@ -178,12 +179,14 @@ public class ProposalService {
     }
 
     private String createApplicationNumber() {
+        log.info("create application number");
         Random random = new Random();
         StringBuilder b = new StringBuilder();
         for (int i = 0; i <= 20; i++) {
             b.append(random.nextInt(7));
         }
         if (adapterProposalEntityRepository.existsByProposalNumber(b.toString())) {
+            log.info("is not possible but it is, the random number exist in db :D");
             b.setLength(0);
             return createApplicationNumber();
         }
@@ -191,10 +194,12 @@ public class ProposalService {
     }
 
     private double createMonthlyFee(final double amountOfCredit, final int month, double interest) {
+        log.info("create monthly fee");
         return (amountOfCredit + interest) / month;
     }
 
     private double getCommission(final double amountOfCredit) {
+        log.info("get commission");
         double commission = amountOfCredit * 0.0024f;
         if (commission < 50)
             return 50f;
@@ -202,20 +207,20 @@ public class ProposalService {
     }
 
     private double createInterest(final double amountOfCredit, final int month, final String accountType) {
-        double interest = 0.f;
+        log.info("crete interest");
         if (accountType.equals("Student"))
             return 0f;
 
         if (month <= 24)
-            return interest = Math.ceil(amountOfCredit * (19.4f / 100));
+            return Math.ceil(amountOfCredit * (19.4f / 100));
         if (month <= 48)
-            return interest = Math.ceil(amountOfCredit * (30.3f / 100));
+            return Math.ceil(amountOfCredit * (30.3f / 100));
         if (month <= 60)
-            return interest = Math.ceil(amountOfCredit * (37.4f / 100));
+            return Math.ceil(amountOfCredit * (37.4f / 100));
         if (month <= 72)
-            return interest = Math.ceil(amountOfCredit * (55.9f / 100));
+            return Math.ceil(amountOfCredit * (55.9f / 100));
         if (month <= 120)
-            return interest = Math.ceil(amountOfCredit * (74.1f / 100));
+            return Math.ceil(amountOfCredit * (74.1f / 100));
 
         return Math.ceil(amountOfCredit * (139.7f / 100));
     }

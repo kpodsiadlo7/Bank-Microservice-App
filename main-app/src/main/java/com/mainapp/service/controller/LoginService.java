@@ -4,9 +4,11 @@ import com.mainapp.service.MainService;
 import com.mainapp.service.mapper.UserMapper;
 import com.mainapp.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginService {

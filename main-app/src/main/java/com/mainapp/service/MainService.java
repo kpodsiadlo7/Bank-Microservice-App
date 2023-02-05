@@ -38,37 +38,41 @@ public class MainService {
 
     @Transactional
     public boolean createUser(final User user, final ModelMap modelMap) {
+        log.info("create user");
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            log.info("wjechłem tutaj po error dla password");
+            log.warn("password doesnt match");
             modelMap.put("error", "Password doesn't match!");
             return false;
         }
 
-        //creating new user and returning him using external application user-manager
+        //creating new user and returning him
         User userFromUserManager = createAndReturnNewUser(user);
 
         if (userFromUserManager.getId() == null) {
+            log.warn("error "+userFromUserManager.getUsername());
             modelMap.put("error", userFromUserManager.getUsername());
             return false;
         }
 
         try {
-            //creating, returning and set main account for new user using external application accounts-manager
+            //creating, returning and set main account for new user
             userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new Account())));
         } catch (Exception e) {
+            log.warn("error with creating account");
             modelMap.put("error", "Error with creating account");
         }
 
         User afterAuthority = setAuthorityForUser(userFromUserManager);
-        log.info(afterAuthority.toString());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken
                 (afterAuthority, null, afterAuthority.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.info("successful create and authority for user");
         return true;
     }
 
     public User createAndReturnNewUser(final User user) {
+        log.info("create and return new user");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.mapToUserFromUserDto
                 (feignServiceUserManager.createUser(userMapper.mapToUserDtoFromUser(user)));
@@ -76,6 +80,7 @@ public class MainService {
 
 
     public User setAuthorityForUser(final User userFromUserManager) {
+        log.info("set authority for user");
         AuthorityEntity authorityEntity = new AuthorityEntity();
         authorityEntity.setAuthority("ROLE_USER");
         authorityEntity.setUserId(userFromUserManager.getId());
@@ -86,16 +91,17 @@ public class MainService {
     }
 
     public Account createAccountForUser(final Long userId, final Account account) {
+        log.info("create account for user");
         return accountMapper.mapToUserAccountFromUserAccountDto(feignServiceAccountsManager.createAccountForUser
                 (userId, accountMapper.mapToUserAccountDtoFromUserAccount(account)));
     }
 
     public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
                                    final String descriptionTransaction, final Long thisAccountId) {
-        log.info("Kind transaction: " + descriptionTransaction);
+        log.info("mage transaction");
         try {
-            TransactionDto returningTransactionDto = feignServiceTransactionsManager.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);
-            log.info("returningDto " + returningTransactionDto.getDescription());
+            TransactionDto returningTransactionDto =
+                    feignServiceTransactionsManager.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);
             if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("error", returningTransactionDto.getDescription());
                 return false;
@@ -110,6 +116,7 @@ public class MainService {
             modelMap.put("quickTransfer", new TransferDto());
             return false;
         }
+        log.info("successful make transaction");
         return true;
     }
 }

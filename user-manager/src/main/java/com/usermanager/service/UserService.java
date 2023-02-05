@@ -18,18 +18,22 @@ public class UserService {
     public User validateData(final User user){
         User errorUser = new User();
         if (user.getPassword() == null || user.getConfirmPassword() == null){
+            log.warn("error, field password");
             errorUser.setUsername("Fill password fields");
             return errorUser;
         }
         if (user.getRealName() == null){
+            log.warn("error, enter name");
             errorUser.setUsername("Enter name");
             return errorUser;
         }
         if (user.getUsername() == null){
+            log.warn("error, enter login");
             errorUser.setUsername("Enter login");
             return errorUser;
         }
         if (checkIfUserExistInDbWithThisUsername(user.getUsername())) {
+            log.warn("user exist");
             errorUser.setUsername("User already exist!");
             return errorUser;
         }
@@ -37,10 +41,12 @@ public class UserService {
     }
 
     public boolean checkIfUserExistInDbWithThisUsername(final String username) {
+        log.warn("check if user exist in db with this username");
         return adapterUserRepository.existsByUsername(username);
     }
 
     public User loginUser(final String username) {
+        log.warn("login user");
         UserEntity userFromDbByUsername = adapterUserRepository.findByUsername(username);
         return userMapper.mapToUserFromUserEntity(userFromDbByUsername);
     }
@@ -53,6 +59,7 @@ public class UserService {
     }
 
     public User getUserById(final Long userId) {
+        log.warn("get user by id");
         return userMapper.mapToUserFromUserEntity(adapterUserRepository.findById(userId));
     }
 }

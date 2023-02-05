@@ -24,21 +24,21 @@ public class AccountService {
     private final AdapterAccountRepository adapterAccountRepository;
 
     public Account validateData(final Long userId, final Account account) {
+        log.info("validate data");
         if (account.getCurrency() == null)
             return createMainAccount(userId, account);
         return createAccountForUser(userId, account);
     }
 
     public Account getAccountByAccountId(final Long accountId) {
-        Account account = accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
-        log.info("user account " + account.toString());
-        return account;
+        log.info("get account by id");
+        return accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
     }
 
     private Account createAccountForUser(final Long userId, final Account account) {
+        log.info("create account for user");
         account.setUserId(userId);
         account.setNumber(prepareAccountData(account).getNumber());
-        log.info("wyjeżdża z currency: " + account.getCurrency());
         AccountEntity accountEntity = accountMapper.mapToUserAccountEntityFromUserAccount(account);
         adapterAccountRepository.save(accountEntity);
         return accountMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
@@ -46,14 +46,14 @@ public class AccountService {
 
 
     private Account prepareAccountData(final Account account) {
-        log.info("money before depositMoney: " + account.getBalance());
+        log.info("prepare account data");
         //start money
         account.setBalance(new BigDecimal(10000));
-        log.info("money after depositMoney: " + account.getBalance());
         return createNumberForAccount(account);
     }
 
     private Account createNumberForAccount(final Account account) {
+        log.info("create number for account");
         String symbol = "";
         switch (account.getCurrency()) {
             case "USD" -> {
@@ -88,6 +88,7 @@ public class AccountService {
     }
 
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
+        log.info("deposit money before validation");
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
             increaseMoney(thisAccountId, transfer.getAmount());
         log.info("deposit money after validation");
@@ -95,19 +96,20 @@ public class AccountService {
     }
 
     public Transfer withdrawMoney(final Long thisAccountId, final Transfer transfer) {
+        log.info("withdraw money");
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
             decreaseMoney(thisAccountId, transfer.getAmount());
         return transfer;
     }
 
     public List<Account> getAllUserAccounts(final Long userId) {
-        log.info("get all user accounts start method and user id: " + userId);
+        log.info("get all user accounts");
         List<AccountEntity> accountEntities = adapterAccountRepository.findAllByUserId(userId);
-        log.info("quantity accounts from db: " + accountEntities.size());
         return accountMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
     }
 
     public Transfer moneyTransferFromUserToUser(final Long thisAccountId, final Transfer transfer) {
+        log.info("money transfer from user to user");
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
             return closeMoneyTransfer(thisAccountId, transfer);
         return transfer;
@@ -162,39 +164,37 @@ public class AccountService {
 
     @Transactional
     protected Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
+        log.info("close money transfer");
         Long accountIncreaseId = adapterAccountRepository.findByNumber(transfer.getAccountNumber()).getId();
-        log.info("should be 1 before set " + accountIncreaseId);
-        log.info("account nr " + transfer.getAccountNumber());
         increaseMoney(accountIncreaseId, transfer.getAmount());
         decreaseMoney(thisAccountId, transfer.getAmount());
 
         transfer.setAccountReceiveId(accountIncreaseId);
-        log.info("should be 1 after set " + transfer.getAccountReceiveId());
         return transfer;
     }
 
     protected void increaseMoney(final Long thisAccountId, final BigDecimal amount) {
+        log.info("increase money " +amount);
         Account accountToReceiveMoney = accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findById(thisAccountId));
-
-        log.info("balance before increase: " + accountToReceiveMoney.getBalance());
         BigDecimal amountAfterIncrease = accountToReceiveMoney.getBalance().add(amount);
-        log.info("balance after increase: " + amountAfterIncrease);
         accountToReceiveMoney.setBalance(amountAfterIncrease);
+        log.info("save account after increase money");
         adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToReceiveMoney));
     }
 
     protected void decreaseMoney(final Long thisAccountId, final BigDecimal amount) {
+        log.info("decrease money" +amount);
         Account accountToSpendMoney = accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findById(thisAccountId));
-        log.info("balance before decrease: " + accountToSpendMoney.getBalance());
         BigDecimal amountAfterDecrease = accountToSpendMoney.getBalance().subtract(amount);
-        log.info("balance after decrease: " + amountAfterDecrease);
         accountToSpendMoney.setBalance(amountAfterDecrease);
+        log.info("save account after decrease money");
         adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToSpendMoney));
     }
 
     private Account createMainAccount(final Long userId, final Account account) {
+        log.info("create main account");
         account.setUserId(userId);
         account.setAccountName("Main account");
         account.setCurrency("PLN");

@@ -64,7 +64,6 @@ public class AccountMapper {
         for (AccountEntity account : allUserAccounts) {
             accounts.add(mapToUserAccountFromUserAccountEntity(account));
         }
-        log.info("account after first mapper size: " + accounts.size());
         return accounts;
     }
 
@@ -73,7 +72,6 @@ public class AccountMapper {
         for (Account account : allAccounts) {
             accounts.add(mapToUserAccountDtoFromUserAccount(account));
         }
-        log.info("account after second mapper size: " + accounts.size());
         return accounts;
     }
 
