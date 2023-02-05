@@ -27,9 +27,6 @@ public class ProposalController {
     public ResponseEntity<ProposalDto> validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
                                                                   @RequestParam Long accountId,
                                                                   @RequestParam String creditKind) {
-        log.info("controller");
-        log.info("should be 'bo tak'" + proposalDto.getPurpose());
-        log.info("should be 1 " + accountId);
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
                 (proposalService.validateProposalBeforePost(proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, creditKind)));
     }

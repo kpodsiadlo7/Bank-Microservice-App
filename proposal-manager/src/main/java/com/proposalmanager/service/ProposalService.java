@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -59,11 +60,19 @@ public class ProposalService {
         try {
             String accountNumber = feignServiceAccountsManager.getAccountByAccountId(transfer.getAccountReceiveId()).getNumber();
             log.info("successful receive account from accounts manager");
+
+            //deposit money
             String descriptionTransaction = "credit";
             transfer.setAccountNumber(accountNumber);
-
             feignServiceTransactionsManager.makeTransaction(transfer.getUserReceiveId(), transfer.getAccountReceiveId(), descriptionTransaction,
                     transferMapper.mapToTransferDtoFromTransfer(transfer));
+
+            //reduce money by commission
+            descriptionTransaction = "commission";
+            transfer.setAmount(BigDecimal.valueOf(getCommission(proposalToApproved.getAmountOfCredit())));
+            feignServiceTransactionsManager.makeTransaction(transfer.getUserReceiveId(), transfer.getAccountReceiveId(), descriptionTransaction,
+                    transferMapper.mapToTransferDtoFromTransfer(transfer));
+
             log.info("successful make transaction in transactions manager");
             proposalToApproved.setDescriptionRejected(DescriptionRejected.ACCEPT);
             proposalToApproved.setStatusProposal(StatusProposal.ACCEPT);
@@ -97,7 +106,7 @@ public class ProposalService {
 
         fetchingCredit = creditService.checkAccountAlreadyHaveThatKindCredit(accountId, kind, fetchingCredit);
         if (fetchingCredit.getUserId() == -1) {
-            log.warn("error "+fetchingCredit.getProposalNumber());
+            log.warn("error " + fetchingCredit.getProposalNumber());
             error.setCurrency("error");
             error.setProposalNumber(fetchingCredit.getProposalNumber());
             return error;
@@ -106,20 +115,30 @@ public class ProposalService {
 
         fetchingAccount = accountService.fetchAccountByAccountId(accountId, fetchingAccount);
         if (fetchingAccount.getUserId() == -1) {
-            log.warn("error "+fetchingAccount.getAccountName());
+            log.warn("error " + fetchingAccount.getAccountName());
             error.setCurrency("error");
             error.setProposalNumber(fetchingAccount.getAccountName());
             return error;
         }
         log.info("successful fetching account by account id from accounts service");
 
+        //checking if we already have money on account for commission
+        BigDecimal commission = BigDecimal.valueOf(getCommission(proposal.getAmountOfCredit()));
+        if (fetchingAccount.getBalance().compareTo(commission) < 0) {
+            log.warn("don't enough money for paying commission");
+            error.setCurrency("error");
+            error.setProposalNumber("You don't have enough money for paying commission which is " + commission + " " + fetchingAccount.getCurrencySymbol());
+            return error;
+        }
+
         fetchingUser = userService.fetchUserById(fetchingAccount.getUserId(), fetchingUser);
         if (fetchingUser.getId() == -1) {
-            log.warn("error "+fetchingUser.getRealName());
+            log.warn("error " + fetchingUser.getRealName());
             error.setCurrency("error");
             error.setProposalNumber(fetchingUser.getRealName());
             return error;
         }
+
 
         Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind);
         log.info("save proposal");

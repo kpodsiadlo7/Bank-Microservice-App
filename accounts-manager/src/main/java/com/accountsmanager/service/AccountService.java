@@ -117,8 +117,7 @@ public class AccountService {
 
     public Transfer validateDataBeforeTransaction(final Long thisAccountId, final Transfer transfer) {
         //this case is for taking credit
-        log.info("should be credit "+transfer.getAccountNumber());
-        if (transfer.getAccountNumber().equals("credit"))
+        if (transfer.getAccountNumber().equals("credit") || transfer.getAccountNumber().equals("commission"))
             return transfer;
 
 

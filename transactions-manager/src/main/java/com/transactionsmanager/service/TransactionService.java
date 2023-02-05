@@ -33,21 +33,18 @@ public class TransactionService {
         if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw"))
             return depositOrWithdraw(userId, thisAccountId, transferDto, descriptionTransaction, error);
 
-
-        if (descriptionTransaction.equals("credit"))
-            return makeCredit(transferDto,thisAccountId, descriptionTransaction, error);
+        if (descriptionTransaction.equals("credit") || descriptionTransaction.equals("commission")) {
+            if (descriptionTransaction.equals("credit"))
+                return depositMoney(transferDto.getUserReceiveId(), thisAccountId,
+                        transferDto, descriptionTransaction, error);
+            return withdrawMoney(transferDto.getUserReceiveId(), thisAccountId,
+                    transferDto, descriptionTransaction, error);
+        }
 
         log.info("wrong kind of transaction");
         transaction.setKindTransaction("error");
         transaction.setDescription("Wrong kind of transaction transactions-manager");
         return transaction;
-    }
-
-    private Transaction makeCredit(final TransferDto transferDto,final Long thisAccountId, final String descriptionTransaction,
-                                   Transaction error) {
-        log.info("make credit");
-        return depositMoney(transferDto.getUserReceiveId(), thisAccountId,
-                transferDto,descriptionTransaction,error);
     }
 
     private Transaction depositOrWithdraw(final Long userId, final Long thisAccountId, final TransferDto transferDto,
@@ -73,7 +70,7 @@ public class TransactionService {
             transferDto.setAccountNumber("credit");
             final TransferDto returnTransferDto = feignServiceAccountsManager.depositMoney(thisAccountId, transferDto);
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
-                log.warn("error "+returnTransferDto.getAccountNumber());
+                log.warn("error " + returnTransferDto.getAccountNumber());
                 error.setDescription(returnTransferDto.getAccountNumber());
                 return error;
             }
@@ -89,7 +86,8 @@ public class TransactionService {
     private Transaction withdrawMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                       final String descriptionTransaction, Transaction error) {
         log.info("withdraw money");
-        if (transferDto.getAmount().compareTo(BigDecimal.valueOf(5000)) > 0) {
+        if (!descriptionTransaction.equals("commission") &&
+                transferDto.getAmount().compareTo(BigDecimal.valueOf(5000)) > 0) {
             log.warn("limit 5000");
             error.setDescription("Limit for this kind of transaction is 5000");
             return error;
@@ -99,7 +97,7 @@ public class TransactionService {
             final TransferDto returnTransferDto = feignServiceAccountsManager.withdrawMoney(thisAccountId, transferDto);
             log.info("successful receive transfer dto from transfer dto");
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
-                log.warn("error "+returnTransferDto.getAccountNumber());
+                log.warn("error " + returnTransferDto.getAccountNumber());
                 error.setDescription(returnTransferDto.getAccountNumber());
                 return error;
             }
