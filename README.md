@@ -4,7 +4,7 @@
 
 # Available
 
-### *Credit Logic
+### Credit Logic
 * Before taking credit we need to fill proposal
 * There are several simple validation e.g. if commission is more than we have
   money on account we can't approve a credit proposal, 
@@ -38,11 +38,9 @@ you will still get the main account after runs again)
 * Checking if we have enough money to withdraw
 
 #
-## still in progress... 
-#### *Deploying app to external servers
-#### Mortgage loan
+## still in progress...
+#### *Mortgage loan
 #### Close account
 #### Spending money system
-#### Exchange system
 
 #### ports: 5432 - 8080 - 8090 - 8000 - 8010

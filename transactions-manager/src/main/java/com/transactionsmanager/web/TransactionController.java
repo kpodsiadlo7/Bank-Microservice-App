@@ -7,10 +7,11 @@ import com.transactionsmanager.web.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Slf4j
 @RestController
@@ -28,5 +29,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionMapper.mapToTransactionDtoFromTransaction
                 (transactionService.openTransaction
                         (userId, thisAccountId, descriptionTransaction, transferDto)));
+    }
+
+    @GetMapping
+    public ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
+        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
+                (transactionService.getAllTransactionsByUserId(userId)));
     }
 }

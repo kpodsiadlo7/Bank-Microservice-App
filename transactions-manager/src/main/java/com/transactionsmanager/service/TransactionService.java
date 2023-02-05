@@ -1,5 +1,6 @@
 package com.transactionsmanager.service;
 
+import com.transactionsmanager.domain.TransactionEntity;
 import com.transactionsmanager.repository.adapter.AdapterTransactionRepository;
 import com.transactionsmanager.service.data.Transaction;
 import com.transactionsmanager.service.mapper.TransactionMapper;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Slf4j
 @Service
@@ -20,6 +24,10 @@ public class TransactionService {
     private final TransactionMapper transactionMapper;
     private final AdapterTransactionRepository adapterTransactionRepository;
 
+    public Set<Transaction> getAllTransactionsByUserId(final Long userId) {
+        return transactionMapper.mapToTransactionSetFromTransactionEntitySet
+                        (adapterTransactionRepository.findAllByUserId(userId));
+    }
     public Transaction openTransaction(final Long userId, final Long thisAccountId,
                                        final String descriptionTransaction, final TransferDto transferDto) {
         log.info("open transaction");
@@ -151,12 +159,13 @@ public class TransactionService {
     private Transaction closeMoneyTransferTransaction(final Long userId, final Long thisAccountId, final TransferDto returnedTransferDto,
                                                       final String descriptionTransaction, final BigDecimal amount) {
         log.info("close money transfer transaction");
-        inComingTransaction(userId, returnedTransferDto.getAccountReceiveId(), descriptionTransaction, amount);
+        inComingTransaction(returnedTransferDto.getUserReceiveId(), returnedTransferDto.getAccountReceiveId(), descriptionTransaction, amount);
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, amount);
     }
 
     private Transaction inComingTransaction(final Long userId, final Long thisAccountId, final String descriptionTransaction, final BigDecimal amount) {
         log.info("incoming transaction");
+        log.info("should be id "+thisAccountId);
         Transaction transactionForIncreaseUser = new Transaction();
         transactionForIncreaseUser.setUserId(userId);
         transactionForIncreaseUser.setValue("+" + amount);

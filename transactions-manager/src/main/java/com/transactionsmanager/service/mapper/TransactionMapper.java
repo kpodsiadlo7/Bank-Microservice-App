@@ -3,8 +3,12 @@ package com.transactionsmanager.service.mapper;
 import com.transactionsmanager.domain.TransactionEntity;
 import com.transactionsmanager.service.data.Transaction;
 import com.transactionsmanager.web.dto.TransactionDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
+@Slf4j
 @Service
 public class TransactionMapper {
 
@@ -40,5 +44,21 @@ public class TransactionMapper {
                 transactionEntity.getTransactionDate(),
                 transactionEntity.getValue()
         );
+    }
+
+    public Set<TransactionDto> mapToTransactionDtoSetFromTransactionSet(final Set<Transaction> transactions){
+        Set<TransactionDto> lists = new HashSet<>();
+        for (Transaction t: transactions){
+            lists.add(mapToTransactionDtoFromTransaction(t));
+        }
+        return lists;
+    }
+
+    public Set<Transaction> mapToTransactionSetFromTransactionEntitySet(final Set<TransactionEntity> transactionEntities) {
+        Set<Transaction> transactions = new HashSet<>();
+        for (TransactionEntity t: transactionEntities){
+            transactions.add(mapToTransactionFromTransactionEntity(t));
+        }
+        return transactions;
     }
 }

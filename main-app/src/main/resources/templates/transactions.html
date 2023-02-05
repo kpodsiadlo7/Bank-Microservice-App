@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Web Application</title>
+    <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+</head>
+<script type="text/javascript">
+    $(function () {
+        $("#backBtn").click(function () {
+            window.location.href = '/dashboard';
+        });
+    });
+    $(function () {
+        if ($("#errorMsg").text() != "") {
+            $("#errorMsg").removeClass("d-none");
+        }
+    });
+</script>
+<body>
+<div class="card">
+    <div class="card-header" style="margin-bottom: 1em">
+        <div class="row">
+            <div class="h2 col-11">
+                Microservices Bank Application
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row gx-lg-0">
+            <div class="col-2">
+                <div class="d-grid gap-2">
+                    <div class="card-header" style="margin-left: 2em;">
+                        <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Q&A</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 14em">About
+                            us</a><br>
+                        <a id="backBtn" class="btn btn-outline-primary" style="margin-left: 2em;">Back</a><br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="p1" style="margin-left: 3em">
+                    <form>
+                        <div class="h2" style="margin-left: 0.6em;">All transactions</div>
+                        <div data-bs-spy="scroll"data-bs-smooth-scroll="true" class="scrollspy-example" style="height: 30em" tabindex="1">
+                            <div class="card-body" style="margin-right: 3.2em">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Kind transaction</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="transaction : ${transactionsDto}">
+                                        <td th:text="${transaction.transactionDate}">dddd</td>
+                                        <td th:text="${transaction.kindTransaction}">ddd</td>
+                                        <td th:text="${transaction.description}">ddd</td>
+                                        <td th:text="${transaction.value}">$0.00</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

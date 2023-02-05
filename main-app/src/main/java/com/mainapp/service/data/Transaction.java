@@ -11,10 +11,16 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction {
+public class Transaction implements Comparable<Transaction>{
     private Long id;
     private Long userId;
     private String description;
     private String kindTransaction;
     private LocalDate transactionDate;
+    private String value;
+
+    @Override
+    public int compareTo(final Transaction o) {
+        return this.transactionDate.compareTo(o.getTransactionDate());
+    }
 }

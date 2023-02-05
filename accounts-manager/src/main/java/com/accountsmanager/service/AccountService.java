@@ -40,57 +40,6 @@ public class AccountService {
         return getAccountById(accountId);
     }
 
-    private Account createAccountForUser(final Long userId, final Account account) {
-        log.info("create account for user");
-        account.setUserId(userId);
-        account.setNumber(prepareAccountData(account).getNumber());
-        AccountEntity accountEntity = accountMapper.mapToUserAccountEntityFromUserAccount(account);
-        adapterAccountRepository.save(accountEntity);
-        return accountMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
-    }
-
-
-    private Account prepareAccountData(final Account account) {
-        log.info("prepare account data");
-        //start money
-        account.setBalance(new BigDecimal(10000));
-        return createNumberForAccount(account);
-    }
-
-    private Account createNumberForAccount(final Account account) {
-        log.info("create number for account");
-        String symbol = "";
-        switch (account.getCurrency()) {
-            case "USD" -> {
-                symbol = "US77";
-                account.setCurrencySymbol("$");
-            }
-            case "EUR" -> {
-                symbol = "EU49";
-                account.setCurrencySymbol("€");
-            }
-            case "GBP" -> {
-                symbol = "GB90";
-                account.setCurrencySymbol("£");
-            }
-            case "PLN" -> {
-                symbol = "PL55";
-                account.setCurrencySymbol("zł");
-            }
-        }
-        Random random = new Random();
-        StringBuilder b = new StringBuilder();
-        b.append(symbol);
-        for (int i = 0; i <= 20; i++) {
-            b.append(random.nextInt(7));
-        }
-        if (existByNumber(b.toString())) {
-            b.setLength(0);
-            return prepareAccountData(account);
-        }
-        account.setNumber(b.toString());
-        return account;
-    }
 
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
         log.info("deposit money before validation");
@@ -180,8 +129,27 @@ public class AccountService {
         exchangeCurrency(accountIncrease, accountToDecrease, transfer.getAmount());
 
         transfer.setAccountReceiveId(accountIncrease.getId());
+        transfer.setUserReceiveId(accountIncrease.getUserId());
         return transfer;
     }
+
+    private Account createAccountForUser(final Long userId, final Account account) {
+        log.info("create account for user");
+        account.setUserId(userId);
+        account.setNumber(prepareAccountData(account).getNumber());
+        AccountEntity accountEntity = accountMapper.mapToUserAccountEntityFromUserAccount(account);
+        adapterAccountRepository.save(accountEntity);
+        return accountMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
+    }
+
+
+    private Account prepareAccountData(final Account account) {
+        log.info("prepare account data");
+        //start money
+        account.setBalance(new BigDecimal(10000));
+        return createNumberForAccount(account);
+    }
+
 
     private void exchangeCurrency(final Account accountIncrease, final Account accountToDecrease, final BigDecimal amount) {
         String to = accountIncrease.getCurrency().toLowerCase();
@@ -190,24 +158,22 @@ public class AccountService {
         Currency currency = feignServiceExchangeCurrency.getRate(from, to);
         MathContext mc = new MathContext(4);
         BigDecimal rate = BigDecimal.valueOf(currency.getCurrency(to));
-        BigDecimal newAmount = rate.multiply(amount,mc);
+        BigDecimal newAmount = rate.multiply(amount, mc);
 
         increaseMoney(accountIncrease, newAmount);
     }
 
-    protected void increaseMoney(final Account accountToIncreaseMoney, final BigDecimal amount) {
+    private void increaseMoney(final Account accountToIncreaseMoney, final BigDecimal amount) {
         log.info("increase money " + amount);
         BigDecimal amountAfterIncrease = accountToIncreaseMoney.getBalance().add(amount);
         accountToIncreaseMoney.setBalance(amountAfterIncrease);
-        log.info("save account after increase money");
         adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToIncreaseMoney));
     }
 
-    protected void decreaseMoney(final Account accountToDecreaseMoney, final BigDecimal amount) {
+    private void decreaseMoney(final Account accountToDecreaseMoney, final BigDecimal amount) {
         log.info("decrease money" + amount);
         BigDecimal amountAfterDecrease = accountToDecreaseMoney.getBalance().subtract(amount);
         accountToDecreaseMoney.setBalance(amountAfterDecrease);
-        log.info("save account after decrease money");
         adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToDecreaseMoney));
     }
 
@@ -228,5 +194,40 @@ public class AccountService {
     private Account getAccountById(final Long accountId) {
         return accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findById(accountId));
+    }
+
+    private Account createNumberForAccount(final Account account) {
+        log.info("create number for account");
+        String symbol = "";
+        switch (account.getCurrency()) {
+            case "USD" -> {
+                symbol = "US77";
+                account.setCurrencySymbol("$");
+            }
+            case "EUR" -> {
+                symbol = "EU49";
+                account.setCurrencySymbol("€");
+            }
+            case "GBP" -> {
+                symbol = "GB90";
+                account.setCurrencySymbol("£");
+            }
+            case "PLN" -> {
+                symbol = "PL55";
+                account.setCurrencySymbol("zł");
+            }
+        }
+        Random random = new Random();
+        StringBuilder b = new StringBuilder();
+        b.append(symbol);
+        for (int i = 0; i <= 20; i++) {
+            b.append(random.nextInt(7));
+        }
+        if (existByNumber(b.toString())) {
+            b.setLength(0);
+            return prepareAccountData(account);
+        }
+        account.setNumber(b.toString());
+        return account;
     }
 }
