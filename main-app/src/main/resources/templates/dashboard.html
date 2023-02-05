@@ -44,9 +44,6 @@
             <div class="h2 col-11">
                 Microservices Bank Application
             </div>
-            <div class="col-1">
-                <button id="logoutBtn" type="button" class="btn btn-primary">Logout</button>
-            </div>
         </div>
     </div>
     <div>
@@ -59,8 +56,8 @@
                     <div class="d-grid gap-1">
                         <a href="/dashboard/transactions" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">All
                             Transactions</a><br>
-                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">Exchange</a><br>
                         <a href="" class="btn btn-outline-dark" style="margin-left: 2em">Mortgage loan</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
                         <div class="dropdown">
                             <button style="margin-left: 6.3em" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Need money?
@@ -71,8 +68,8 @@
                                 <li><a class="dropdown-item" href="/dashboard/credit">For something?</a></li>
                             </ul>
                         </div>
-                        <a href="" class="btn btn-outline-danger"
-                           style="margin-left: 2em; margin-top: 7em">Options</a><br>
+                        <a id="logoutBtn" type="button" class="btn btn-outline-primary"
+                           style="margin-left: 2em; margin-top: 7em">Logout</a><br>
                     </div>
                 </div>
             </div>
@@ -129,7 +126,6 @@
                                 <h6 class="card-subtitle"
                                     th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
                                     Currency balance</h6>
-                                <a th:id="view+${index}" class="card-link">Card link</a>
                             </div>
                         </div>
                         <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
@@ -177,7 +173,6 @@
                                 <h6 class="card-subtitle"
                                     th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
                                     Currency balance</h6>
-                                <a th:id="view+${index}" class="card-link">Card link</a>
                             </div>
                         </div>
                     </div>

@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <title>Bank Web Application</title>
     <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript">
-        $(function () {
-            $("#backBtn").click(function () {
-                window.location.href = '/dashboard';
-            });
-        });
-        $(function () {
-            if ($("#errorTrans").text() != "") {
-                $("#errorTrans").removeClass("d-none");
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
 </head>
+<script type="text/javascript">
+    $(function () {
+        $("#backBtn").click(function () {
+            window.location.href = '/dashboard';
+        });
+    });
+    $(function () {
+        if ($("#errorMsg").text() != "") {
+            $("#errorMsg").removeClass("d-none");
+        }
+    });
+</script>
 <body>
 <div class="card">
     <div class="card-header" style="margin-bottom: 1em">
@@ -26,48 +27,56 @@
             <div class="h2 col-11">
                 Microservices Bank Application
             </div>
-            <div class="col-1">
-                <button id="backBtn" type="button" class="btn btn-primary">Back</button>
-            </div>
+            <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
         </div>
     </div>
     <div>
-        <div class="row gx-2">
-            <div class="col-3">
-                <div class="p-1">
-                    <div class="card">
-                        <div class="card text-bg-light mb-3" style="width: auto">
-                            <h3 class="card-header" th:text="${account.accountName}">Account name</h3>
-                            <div class="card-body">
-                                <h6 class="card-subtitle" th:text="${account.currency}">Currency account</h6>
-                                <h6 style="margin-bottom: 0.7em" class="card-subtitle"
-                                    th:text="|Account nr ${account.number}|">Currency number</h6>
-                                <h6 style="margin-bottom: 0.7em" class="card-subtitle"
-                                    th:text="|Balance ${account.balance} ${account.currencySymbol}|">Currency
-                                    number</h6>
-                            </div>
-                        </div>
-                        <h3 style="margin-left: 1.3em">Deposit or withdraw money</h3>
-                        <form action="" method="post" style="margin-left: 1.7em">
-                            <fieldset>
-                                <div id="errorTrans" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
-                                <div class="form-group">
-                                </div>
-                                <div class="form-group">
-                                    <label>
-                                        <label for="amount" class="form-label">Amount</label>
-                                        <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
-                                    </label>
-                                </div>
-                                <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="deposit" class="btn">Deposit</button>
-                                <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="withdraw" class="btn">Withdraw</button>
-                            </fieldset>
-                        </form>
+        <div class="row gx-lg-0">
+            <div class="col-2">
+                <div class="d-grid gap-2">
+                    <div class="card-header" style="margin-left: 2em;">
+                        <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <a class="btn btn-outline-danger" style="margin-left: 2em; margin-top: 12em">CLOSE ACCOUNT</a><br>
+                        <a id="backBtn" class="btn btn-outline-primary" style="margin-left: 2em; margin-top: 1em">Back</a><br>
                     </div>
                 </div>
             </div>
-            <div class="col-9">
-                <div class="p-1">Custom column padding</div>
+            <div class="col-5">
+                <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
+                <div class="h2" style="margin-left: 1.6em">Account Details</div>
+                <div class="p1" style="margin-left: 3em; margin-right: 4em">
+                    <div class="card text-bg-light mb-3" style="width: auto">
+                        <h3 class="card-header" th:text="${account.accountName}">Account name</h3>
+                        <div class="card-body">
+                            <h6 class="card-subtitle" th:text="${account.currency}">Currency account</h6>
+                            <h6 style="margin-bottom: 0.7em" class="card-subtitle"
+                                th:text="|Account nr ${account.number}|">Currency number</h6>
+                            <h6 style="margin-bottom: 0.7em" class="card-subtitle"
+                                th:text="|Balance ${account.balance} ${account.currencySymbol}|">Currency
+                                number</h6>
+                        </div>
+                    </div>
+                    <h3 style="margin-left: 0.3em; margin-top: 2em">Deposit or withdraw money</h3>
+                    <form action="" method="post" style="margin-left: 1.7em">
+                        <fieldset>
+                            <div class="form-group">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <label for="amount" class="form-label">Amount</label>
+                                    <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
+                                </label>
+                            </div>
+                            <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="deposit" class="btn btn-outline-success">Deposit</button>
+                            <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="withdraw" class="btn btn-outline-dark">Withdraw</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="p1">img</div>
             </div>
         </div>
     </div>
