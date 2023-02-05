@@ -1,8 +1,8 @@
-package com.mainapp.web.dto;
+package com.creditmanager.service.data;
 
-import com.mainapp.service.data.enums.CreditKind;
-import com.mainapp.service.data.enums.DescriptionRejected;
-import com.mainapp.service.data.enums.StatusProposal;
+import com.creditmanager.domain.enums.CreditKind;
+import com.creditmanager.service.data.enums.DescriptionRejected;
+import com.creditmanager.service.data.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProposalDto {
+public class Proposal {
     private Long id;
     private Long userId;
     private Long accountId;
@@ -31,8 +31,7 @@ public class ProposalDto {
     private String username;
     private String purpose;
     private String proposalNumber;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+    private LocalDate applicationDate;
     private boolean acceptStatement;
     @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;

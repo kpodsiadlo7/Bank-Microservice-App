@@ -31,7 +31,8 @@ public class Proposal {
     private String username;
     private String purpose;
     private String proposalNumber;
-    private LocalDate applicationDate;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private boolean acceptStatement;
     @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;

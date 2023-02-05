@@ -27,6 +27,6 @@ public class TransactionController {
                                                           @RequestBody TransferDto transferDto) {
         return ResponseEntity.ok(transactionMapper.mapToTransactionDtoFromTransaction
                 (transactionService.openTransaction
-                        (userId,thisAccountId, descriptionTransaction, transferDto)));
+                        (userId, thisAccountId, descriptionTransaction, transferDto)));
     }
 }

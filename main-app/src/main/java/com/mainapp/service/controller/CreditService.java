@@ -17,7 +17,7 @@ public class CreditService {
 
     private final FeignServiceAccountsManager feignServiceAccountsManager;
 
-    public String getCredit(final User user, ModelMap modelMap) {
+    public String getCredits(final User user, ModelMap modelMap) {
         modelMap.put("proposalDto", new ProposalDto());
         try {
             TreeSet<AccountDto> fetchingAccounts = feignServiceAccountsManager.getAllAccountsByUserId(user.getId());
@@ -25,8 +25,8 @@ public class CreditService {
         } catch (Exception e) {
             modelMap.put("error", "Problem with fetching your accounts");
             modelMap.put("accountsDto", List.of(new AccountDto()));
-            return "credit";
+            return "credits";
         }
-        return "credit";
+        return "credits";
     }
 }

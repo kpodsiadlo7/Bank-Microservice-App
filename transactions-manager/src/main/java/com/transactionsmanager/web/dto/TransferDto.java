@@ -15,5 +15,5 @@ public class TransferDto {
     private Long userReceiveId;
     private Long accountReceiveId;
     private BigDecimal amount;
-    private String userAccountNumber;
+    private String accountNumber;
 }

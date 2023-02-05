@@ -1,6 +1,5 @@
 package com.mainapp.web.feign;
 
-import com.mainapp.service.data.User;
 import com.mainapp.web.dto.ProposalDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,4 +16,7 @@ public interface FeignServiceProposalManager {
     ProposalDto validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
                                            @RequestParam Long accountId,
                                            @RequestParam String creditKind);
+
+    @PostMapping("/accept-proposal")
+    void acceptProposal(@RequestParam String proposalNumber);
 }

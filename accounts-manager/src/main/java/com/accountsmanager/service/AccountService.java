@@ -28,6 +28,7 @@ public class AccountService {
             return createMainAccount(userId, account);
         return createAccountForUser(userId, account);
     }
+
     public Account getAccountByAccountId(final Long accountId) {
         Account account = accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
         log.info("user account " + account.toString());
@@ -89,6 +90,7 @@ public class AccountService {
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
             increaseMoney(thisAccountId, transfer.getAmount());
+        log.info("deposit money after validation");
         return transfer;
     }
 
@@ -112,39 +114,57 @@ public class AccountService {
     }
 
     public Transfer validateDataBeforeTransaction(final Long thisAccountId, final Transfer transfer) {
+        //this case is for taking credit
+        log.info("should be credit "+transfer.getAccountNumber());
+        if (transfer.getAccountNumber().equals("credit"))
+            return transfer;
+
+
         if (transfer.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            transfer.setUserAccountNumber("Minimum amount must be over 0");
+            log.info("amount min 0");
+            transfer.setAccountNumber("Minimum amount must be over 0");
             transfer.setAmount(new BigDecimal(-1));
             return transfer;
         }
+
         if (adapterAccountRepository.findById(thisAccountId).getBalance().compareTo(transfer.getAmount()) < 0) {
-            if (transfer.getUserAccountNumber().equals("deposit"))
+            if (transfer.getAccountNumber().equals("deposit")) {
+                log.info("deposit");
                 return transfer;
+            }
             transfer.setAmount(new BigDecimal(-1));
-            transfer.setUserAccountNumber("You don't have enough money");
+            log.info("dont have enough money");
+            transfer.setAccountNumber("You don't have enough money");
             return transfer;
         }
-        if (adapterAccountRepository.findById(thisAccountId).getNumber().equals(transfer.getUserAccountNumber())) {
+
+
+        if (adapterAccountRepository.findById(thisAccountId).getNumber().equals(transfer.getAccountNumber())) {
             transfer.setAmount(new BigDecimal(-1));
-            transfer.setUserAccountNumber("You can't send money to account which from you send");
+            log.info("him self");
+            transfer.setAccountNumber("You can't send money to account which from you send");
             return transfer;
         }
-        if (!adapterAccountRepository.existsByNumber(transfer.getUserAccountNumber())) {
-            if (transfer.getUserAccountNumber().equals("deposit") ||
-                    transfer.getUserAccountNumber().equals("withdraw"))
+        if (!adapterAccountRepository.existsByNumber(transfer.getAccountNumber())) {
+            if (transfer.getAccountNumber().equals("deposit") ||
+                    transfer.getAccountNumber().equals("withdraw")) {
+                log.info("deposit or withdraw");
                 return transfer;
+            }
+            log.info("user doesnt exist");
             transfer.setAmount(new BigDecimal(-1));
-            transfer.setUserAccountNumber("User with this number doesn't exist!");
+            transfer.setAccountNumber("User with this number doesn't exist!");
             return transfer;
         }
+        log.info("end of validation");
         return transfer;
     }
 
     @Transactional
     protected Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
-        Long accountIncreaseId = adapterAccountRepository.findByNumber(transfer.getUserAccountNumber()).getId();
+        Long accountIncreaseId = adapterAccountRepository.findByNumber(transfer.getAccountNumber()).getId();
         log.info("should be 1 before set " + accountIncreaseId);
-        log.info("account nr " + transfer.getUserAccountNumber());
+        log.info("account nr " + transfer.getAccountNumber());
         increaseMoney(accountIncreaseId, transfer.getAmount());
         decreaseMoney(thisAccountId, transfer.getAmount());
 

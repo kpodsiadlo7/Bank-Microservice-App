@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProposalMapper {
 
-    public ProposalDto mapToProposalDtoFromProposal(final Proposal proposal){
+    public ProposalDto mapToProposalDtoFromProposal(final Proposal proposal) {
         return new ProposalDto(
                 proposal.getId(),
                 proposal.getUserId(),
@@ -24,7 +24,8 @@ public class ProposalMapper {
                 proposal.getUsername(),
                 proposal.getPurpose(),
                 proposal.getProposalNumber(),
-                proposal.getApplicationDate(),
+                proposal.getDateFrom(),
+                proposal.getDateTo(),
                 proposal.isAcceptStatement(),
                 proposal.getStatusProposal(),
                 proposal.getDescriptionRejected(),
@@ -48,7 +49,8 @@ public class ProposalMapper {
                 proposalEntity.getUsername(),
                 proposalEntity.getPurpose(),
                 proposalEntity.getProposalNumber(),
-                proposalEntity.getApplicationDate(),
+                proposalEntity.getDateFrom(),
+                proposalEntity.getDateTo(),
                 proposalEntity.isAcceptStatement(),
                 proposalEntity.getStatusProposal(),
                 proposalEntity.getDescriptionRejected(),
@@ -56,7 +58,7 @@ public class ProposalMapper {
         );
     }
 
-    public Proposal mapToProposalFromProposalDto(final ProposalDto proposalDto){
+    public Proposal mapToProposalFromProposalDto(final ProposalDto proposalDto) {
         return new Proposal(
                 proposalDto.getId(),
                 proposalDto.getUserId(),
@@ -72,7 +74,8 @@ public class ProposalMapper {
                 proposalDto.getUsername(),
                 proposalDto.getPurpose(),
                 proposalDto.getProposalNumber(),
-                proposalDto.getApplicationDate(),
+                proposalDto.getDateFrom(),
+                proposalDto.getDateTo(),
                 proposalDto.isAcceptStatement(),
                 proposalDto.getStatusProposal(),
                 proposalDto.getDescriptionRejected(),
@@ -95,7 +98,33 @@ public class ProposalMapper {
                 proposal.getUsername(),
                 proposal.getPurpose(),
                 proposal.getProposalNumber(),
-                proposal.getApplicationDate(),
+                proposal.getDateFrom(),
+                proposal.getDateTo(),
+                proposal.isAcceptStatement(),
+                proposal.getStatusProposal(),
+                proposal.getDescriptionRejected(),
+                proposal.getCreditKind()
+        );
+    }
+
+    public ProposalEntity updateProposalEntity(final Proposal proposal) {
+        return new ProposalEntity(
+                proposal.getId(),
+                proposal.getUserId(),
+                proposal.getAccountId(),
+                proposal.getAmountOfCredit(),
+                proposal.getMonth(),
+                proposal.getSalary(),
+                proposal.getInterest(),
+                proposal.getCommission(),
+                proposal.getMonthlyFee(),
+                proposal.getCurrency(),
+                proposal.getCurrencySymbol(),
+                proposal.getUsername(),
+                proposal.getPurpose(),
+                proposal.getProposalNumber(),
+                proposal.getDateFrom(),
+                proposal.getDateTo(),
                 proposal.isAcceptStatement(),
                 proposal.getStatusProposal(),
                 proposal.getDescriptionRejected(),

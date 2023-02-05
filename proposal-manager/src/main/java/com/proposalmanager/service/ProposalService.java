@@ -4,21 +4,20 @@ import com.proposalmanager.domain.enums.CreditKind;
 import com.proposalmanager.domain.enums.DescriptionRejected;
 import com.proposalmanager.domain.enums.StatusProposal;
 import com.proposalmanager.repository.adapter.AdapterProposalEntityRepository;
-import com.proposalmanager.service.data.Account;
-import com.proposalmanager.service.data.Credit;
-import com.proposalmanager.service.data.Proposal;
-import com.proposalmanager.service.data.User;
+import com.proposalmanager.service.adapter.ProposalToTransfer;
+import com.proposalmanager.service.data.*;
 import com.proposalmanager.service.mapper.AccountMapper;
-import com.proposalmanager.service.mapper.CreditMapper;
 import com.proposalmanager.service.mapper.ProposalMapper;
+import com.proposalmanager.service.mapper.TransferMapper;
 import com.proposalmanager.service.mapper.UserMapper;
 import com.proposalmanager.web.feign.FeignServiceAccountsManager;
+import com.proposalmanager.web.feign.FeignServiceCreditManager;
+import com.proposalmanager.web.feign.FeignServiceTransactionsManager;
 import com.proposalmanager.web.feign.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -28,13 +27,51 @@ import java.util.Random;
 public class ProposalService {
 
     private final AdapterProposalEntityRepository adapterProposalEntityRepository;
+    private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final FeignServiceCreditManager feignServiceCreditManager;
     private final FeignServiceUserManager feignServiceUserManager;
+    private final ProposalToTransfer proposalToTransfer;
     private final ProposalMapper proposalMapper;
+    private final TransferMapper transferMapper;
     private final AccountMapper accountMapper;
     private final CreditService creditService;
-    private final CreditMapper creditMapper;
     private final UserMapper userMapper;
+
+    public void postProposal(final String proposalNumber) {
+        Proposal proposal = proposalMapper.mapToProposalFromProposalEntity
+                (adapterProposalEntityRepository.findByProposalNumber(proposalNumber));
+
+        if (!feignServiceCreditManager.acceptCredit(proposal)) {
+            rejectedProposal(proposal);
+            return;
+        }
+        approveProposal(proposal);
+    }
+
+    private void rejectedProposal(final Proposal proposalToRejected) {
+        proposalToRejected.setDescriptionRejected(DescriptionRejected.CREDIT_EXCEEDS_YOUR_FINANCIAL_CAPACITY);
+        proposalToRejected.setStatusProposal(StatusProposal.REJECTED);
+        adapterProposalEntityRepository.save(proposalMapper.updateProposalEntity(proposalToRejected));
+    }
+
+    private void approveProposal(final Proposal proposalToApproved) {
+        Transfer transfer = proposalToTransfer.mapToTransferFromProposal(proposalToApproved);
+        log.info("should be 6 "+transfer.getAccountReceiveId());
+        try {
+            String accountNumber = feignServiceAccountsManager.getAccountByAccountId(transfer.getAccountReceiveId()).getNumber();
+            String descriptionTransaction = "credit";
+            transfer.setAccountNumber(accountNumber);
+
+
+            feignServiceTransactionsManager.makeTransaction(transfer.getUserReceiveId(), transfer.getAccountReceiveId(), descriptionTransaction,
+                    transferMapper.mapToTransferDtoFromTransfer(transfer));
+            proposalToApproved.setDescriptionRejected(DescriptionRejected.ACCEPT);
+            proposalToApproved.setStatusProposal(StatusProposal.ACCEPT);
+            proposalToApproved.setAcceptStatement(true);
+            adapterProposalEntityRepository.save(proposalMapper.updateProposalEntity(proposalToApproved));
+        } catch (Exception ignored) {}
+    }
 
     public Proposal getProposalByNumber(final String proposalNumber) {
         if (!adapterProposalEntityRepository.existsByProposalNumber(proposalNumber)) {
@@ -49,20 +86,18 @@ public class ProposalService {
 
     public Proposal validateProposalBeforePost(final Proposal proposal, final Long accountId, final String creditKind) {
         Proposal error = new Proposal();
-        Account fetchingAccount = new Account();
         Credit fetchingCredit = new Credit();
-        User fetchingUser = new User();
+        Account fetchingAccount;
+        User fetchingUser;
         CreditKind kind = whatKindOfCredit(creditKind);
 
 
-        fetchingCredit = creditService.checkAccountAlreadyHaveThatKindCredit(accountId,kind,fetchingCredit);
-        if (fetchingCredit.getUserId() == -1){
+        fetchingCredit = creditService.checkAccountAlreadyHaveThatKindCredit(accountId, kind, fetchingCredit);
+        if (fetchingCredit.getUserId() == -1) {
             error.setCurrency("error");
             error.setProposalNumber(fetchingCredit.getProposalNumber());
             return error;
         }
-
-
 
         /**
          * needs to be refactored
@@ -79,7 +114,7 @@ public class ProposalService {
 
         try {
             fetchingUser = userMapper.mapToUserFromUserDto(feignServiceUserManager.getUserById(fetchingAccount.getUserId()));
-        } catch (Exception e){
+        } catch (Exception e) {
             error.setCurrency("error");
             error.setProposalNumber("There is a problem with connecting to user manager");
             return error;
@@ -135,11 +170,11 @@ public class ProposalService {
                         proposal.getPurpose(),
                         createApplicationNumber(),
                         LocalDate.now(),
+                        LocalDate.now().plusMonths(proposal.getMonth()),
                         false,
                         StatusProposal.OPEN,
                         DescriptionRejected.OPEN,
-                        creditKind
-                ))));
+                        creditKind))));
     }
 
     private String createApplicationNumber() {
@@ -156,7 +191,7 @@ public class ProposalService {
     }
 
     private double createMonthlyFee(final double amountOfCredit, final int month, double interest) {
-        return (amountOfCredit+interest)/month;
+        return (amountOfCredit + interest) / month;
     }
 
     private double getCommission(final double amountOfCredit) {

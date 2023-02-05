@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.util.List;
 import java.util.TreeSet;
 
 @Service
@@ -24,17 +25,18 @@ public class ProposalService {
     public String getProposal(final String proposalNumber, ModelMap modelMap) {
         Proposal returningProposal;
         try {
-            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.getProposalByNumber(proposalNumber));
+            returningProposal = proposalMapper.mapToProposalFromProposalDto
+                    (feignServiceProposalManager.getProposalByNumber(proposalNumber));
         } catch (Exception e) {
             modelMap.put("proposalDto", new ProposalDto());
             modelMap.put("error", "There is a problem with fetching your proposal");
-            return "credit";
+            return "proposal";
         }
-        modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(returningProposal));
-        return "credit";
+        modelMap.put("proposalDto", returningProposal);
+        return "proposal";
     }
 
-    public String validateBeforePostAndPost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind) {
+    public String validateBeforePost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind) {
         Proposal returningProposal;
         TreeSet<AccountDto> fetchingAccounts = new TreeSet<>();
         try {
@@ -45,16 +47,29 @@ public class ProposalService {
                 modelMap.put("error", returningProposal.getProposalNumber());
                 try {
                     fetchingAccounts = feignServiceAccountsManager.getAllAccountsByUserId(user.getId());
-                } catch (Exception e){
-                    modelMap.put("error","Error with fetching your accounts");
+                } catch (Exception e) {
+                    modelMap.put("error", "Error with fetching your accounts");
                 }
                 modelMap.put("accountsDto", fetchingAccounts);
-                return "credit";
+                return "credits";
             }
         } catch (Exception e) {
             modelMap.put("error", "There is a problem with connecting to proposal-manager");
-            return "credit";
+            modelMap.put("accountsDto",fetchingAccounts);
+            return "credits";
         }
         return "redirect:/dashboard/credit/" + returningProposal.getProposalNumber();
+    }
+
+    public String postProposal(final String proposalNumber,ModelMap modelMap) {
+        try {
+            feignServiceProposalManager.acceptProposal(proposalNumber);
+        } catch (Exception e){
+            modelMap.put("error","Problem with connecting to proposal manager");
+            modelMap.put("accountsDto", List.of(new AccountDto()));
+            modelMap.put("proposalDto", new ProposalDto());
+            return "credits";
+        }
+        return "redirect:/dashboard/credit/" + proposalNumber + "/status";
     }
 }

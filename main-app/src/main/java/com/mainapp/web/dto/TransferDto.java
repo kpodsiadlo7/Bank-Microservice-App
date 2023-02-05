@@ -13,5 +13,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransferDto {
     private BigDecimal amount;
-    private String userAccountNumber;
+    private String accountNumber;
 }

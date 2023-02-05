@@ -11,7 +11,7 @@ public class TransferMapper {
                 transferDto.getUserReceiveId(),
                 transferDto.getAccountReceiveId(),
                 transferDto.getAmount(),
-                transferDto.getUserAccountNumber()
+                transferDto.getAccountNumber()
         );
     }
     public TransferDto mapToUserTransferDtoFromUserTransfer(final Transfer transfer){
@@ -19,7 +19,7 @@ public class TransferMapper {
                 transfer.getUserReceiveId(),
                 transfer.getAccountReceiveId(),
                 transfer.getAmount(),
-                transfer.getUserAccountNumber()
+                transfer.getAccountNumber()
         );
     }
 }

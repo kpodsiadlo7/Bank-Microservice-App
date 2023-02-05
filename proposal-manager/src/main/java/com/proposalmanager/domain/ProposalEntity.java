@@ -3,6 +3,7 @@ package com.proposalmanager.domain;
 import com.proposalmanager.domain.enums.CreditKind;
 import com.proposalmanager.domain.enums.DescriptionRejected;
 import com.proposalmanager.domain.enums.StatusProposal;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "proposals_db")
 public class ProposalEntity {
     @Id
@@ -32,7 +34,8 @@ public class ProposalEntity {
     private String username;
     private String purpose;
     private String proposalNumber;
-    private LocalDate applicationDate;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private boolean acceptStatement;
     @Enumerated(EnumType.STRING)
     private StatusProposal statusProposal;
@@ -41,7 +44,7 @@ public class ProposalEntity {
     @Enumerated(EnumType.STRING)
     private CreditKind creditKind;
 
-    public ProposalEntity(final Long userId, final Long accountId, final double amountOfCredit, final int month, final double salary, final double interest, final double commission, final double monthlyFee, final String currency, final String currencySymbol, final String username, final String purpose, final String proposalNumber, final LocalDate applicationDate, final boolean acceptStatement, final StatusProposal statusProposal, final DescriptionRejected descriptionRejected, final CreditKind creditKind) {
+    public ProposalEntity(final Long userId, final Long accountId, final double amountOfCredit, final int month, final double salary, final double interest, final double commission, final double monthlyFee, final String currency, final String currencySymbol, final String username, final String purpose, final String proposalNumber, final LocalDate dateFrom, final LocalDate dateTo, final boolean acceptStatement, final StatusProposal statusProposal, final DescriptionRejected descriptionRejected, final CreditKind creditKind) {
         this.userId = userId;
         this.accountId = accountId;
         this.amountOfCredit = amountOfCredit;
@@ -55,7 +58,8 @@ public class ProposalEntity {
         this.username = username;
         this.purpose = purpose;
         this.proposalNumber = proposalNumber;
-        this.applicationDate = applicationDate;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
         this.acceptStatement = acceptStatement;
         this.statusProposal = statusProposal;
         this.descriptionRejected = descriptionRejected;

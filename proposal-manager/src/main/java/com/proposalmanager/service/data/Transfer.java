@@ -1,4 +1,4 @@
-package com.accountsmanager.service.data;
+package com.proposalmanager.service.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

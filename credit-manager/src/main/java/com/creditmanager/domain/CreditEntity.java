@@ -21,4 +21,11 @@ public class CreditEntity {
     private String proposalNumber;
     @Enumerated(EnumType.STRING)
     private CreditKind creditKind;
+
+    public CreditEntity(final Long userId, final Long accountId, final String proposalNumber, final CreditKind creditKind) {
+        this.userId = userId;
+        this.accountId = accountId;
+        this.proposalNumber = proposalNumber;
+        this.creditKind = creditKind;
+    }
 }

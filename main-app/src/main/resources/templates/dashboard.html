@@ -104,7 +104,7 @@
                                                     <input type="hidden" name="accountId" th:value="${userBankAccounts[index].id}">
                                                     <label for="nrAccount" class="form-label">Nr account</label>
                                                     <input type="text" class="form-control" style="width: 25em"
-                                                           th:field="${quickTransfer.userAccountNumber}" required>
+                                                           th:field="${quickTransfer.accountNumber}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="amount" class="form-label">Amount</label>
@@ -151,7 +151,7 @@
                                                            th:value="${userBankAccounts[index+1].id}">
                                                     <label for="nrAccount" class="form-label">Nr account</label>
                                                     <input type="text" class="form-control" style="width: 25em"
-                                                           th:field="${quickTransfer.userAccountNumber}" required>
+                                                           th:field="${quickTransfer.accountNumber}" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="amount" class="form-label">Amount</label>

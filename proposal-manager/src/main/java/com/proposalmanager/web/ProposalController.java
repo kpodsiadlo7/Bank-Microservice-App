@@ -6,6 +6,7 @@ import com.proposalmanager.web.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -27,9 +28,15 @@ public class ProposalController {
                                                                   @RequestParam Long accountId,
                                                                   @RequestParam String creditKind) {
         log.info("controller");
-        log.info("should be 'bo tak'" +proposalDto.getPurpose());
-        log.info("should be 1 "+accountId);
+        log.info("should be 'bo tak'" + proposalDto.getPurpose());
+        log.info("should be 1 " + accountId);
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
                 (proposalService.validateProposalBeforePost(proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, creditKind)));
+    }
+
+    @PostMapping("/accept-proposal")
+    public ResponseEntity<Void> postProposal(@RequestParam String proposalNumber) {
+        proposalService.postProposal(proposalNumber);
+        return ResponseEntity.ok().build();
     }
 }

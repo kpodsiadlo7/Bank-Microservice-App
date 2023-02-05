@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Web Application</title>
+    <script th:include="fragments/header.html :: headerScript" th:remove="tag"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+</head>
+<script type="text/javascript">
+    $(function () {
+        $("#backBtn").click(function () {
+            window.location.href = '/dashboard';
+        });
+    });
+    $(function () {
+        $("#cancelBtn").click(function () {
+            window.location.href = '/dashboard';
+        });
+    });
+    $(function () {
+        if ($("#errorMsg").text() != "") {
+            $("#errorMsg").removeClass("d-none");
+        }
+    });
+</script>
+<body>
+<div class="card">
+    <div class="card-header" style="margin-bottom: 1em">
+        <div class="row">
+            <div class="h2 col-11">
+                Microservices Bank Application
+            </div>
+            <div class="col-1">
+                <button id="backBtn" type="button" class="btn btn-primary">Back</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row gx-lg-0">
+            <div class="col-2">
+                <div class="d-grid gap-2">
+                    <div class="card-header" style="margin-left: 2em;">
+                        <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Q&A</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
+                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 14em">About
+                            us</a><br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="p1" style="margin-left: 3em">
+                    <form action="" method="post">
+                        <input name="creditKind" value="CASH" hidden>
+                        <h2>Credit Confirmation</h2>
+                        <h6><i>minimum formalities maximum benefits</i></h6>
+                        <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
+                        <div class="form-row" style="margin-top: 2em">
+                            <div class="mb-3 row">
+                                <label>Name
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.username}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Salary
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.salary}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Amount of credit
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.amountOfCredit}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Interest
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.interest}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-top: 2em">
+                            <div class="mb-3 row">
+                                <label>Purpose
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.purpose}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row" style="margin-left: 10.5em">
+                                <label>Commission
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.commission}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Monthly fee
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.monthlyFee}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-top: 2em">
+                            <div class="mb-3 row">
+                                <label>Date from
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.dateFrom}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Date to
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.dateTo}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Currency
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.currency}">
+                                </label>
+                            </div>
+                            <div class="mb-3 row">
+                                <label>Month
+                                    <input type="text" readonly class="form-control-plaintext"
+                                           th:value="${proposalDto.month}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 7em">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="acceptPolicy" required>
+                                <label>Accept policy</label>
+                                <div class="form-text">*if your salary is less than 20% amount of credit it is possible
+                                    that the application will be rejected
+                                </div>
+                                <div class="form-text">*actually you do not have a choice</div>
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-top: 2em">
+                            <div class="mb-3 row">
+                                <button type="button" id="cancelBtn" class="btn btn-outline-danger"
+                                        style="margin-left: 7em; margin-bottom: 2em">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div class="mb-3 row">
+                                <button type="submit" class="btn btn-outline-success"
+                                        style="margin-left: 14em; margin-bottom: 2em">
+                                    Accept
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="p1">img</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
