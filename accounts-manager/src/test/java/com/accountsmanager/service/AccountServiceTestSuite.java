@@ -39,7 +39,7 @@ public class AccountServiceTestSuite {
         //and
         var adapterUserRepo = mock(AdapterAccountRepository.class);
         //system under test
-        var toTest = new AccountService(mockRepository, adapterUserRepo);
+        var toTest = new AccountService(mockRepository, adapterUserRepo,null);
         //when
         Account accountAfterTest = toTest.validateData(7L, account);
         //then
@@ -64,7 +64,7 @@ public class AccountServiceTestSuite {
                 "€"
         );
         //system under test
-        var toTest = new AccountService(accountMapper, adapterAccountRepository);
+        var toTest = new AccountService(accountMapper, adapterAccountRepository,null);
         //when
         Account accountAfterTest = toTest.validateData(7L, account);
         //then
@@ -89,7 +89,7 @@ public class AccountServiceTestSuite {
         adapterAccountRepository.save(userAccountEUR);
         //and
         //system under test
-        var toTest = new AccountService(accountMapper, adapterAccountRepository);
+        var toTest = new AccountService(accountMapper, adapterAccountRepository,null);
         //when
         List<Account> accountAfterRealMethod = toTest.getAllUserAccounts(7L);
         //then

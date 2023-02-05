@@ -3,14 +3,17 @@ package com.accountsmanager.service;
 import com.accountsmanager.domain.AccountEntity;
 import com.accountsmanager.repository.adapter.AdapterAccountRepository;
 import com.accountsmanager.service.data.Account;
+import com.accountsmanager.service.data.Currency;
 import com.accountsmanager.service.data.Transfer;
 import com.accountsmanager.service.mapper.AccountMapper;
+import com.accountsmanager.web.feign.FeignServiceExchangeCurrency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -23,6 +26,8 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final AdapterAccountRepository adapterAccountRepository;
 
+    private final FeignServiceExchangeCurrency feignServiceExchangeCurrency;
+
     public Account validateData(final Long userId, final Account account) {
         log.info("validate data");
         if (account.getCurrency() == null)
@@ -32,7 +37,7 @@ public class AccountService {
 
     public Account getAccountByAccountId(final Long accountId) {
         log.info("get account by id");
-        return accountMapper.mapToUserAccountFromUserAccountEntity(adapterAccountRepository.findById(accountId));
+        return getAccountById(accountId);
     }
 
     private Account createAccountForUser(final Long userId, final Account account) {
@@ -79,7 +84,7 @@ public class AccountService {
         for (int i = 0; i <= 20; i++) {
             b.append(random.nextInt(7));
         }
-        if (adapterAccountRepository.existsByNumber(b.toString())) {
+        if (existByNumber(b.toString())) {
             b.setLength(0);
             return prepareAccountData(account);
         }
@@ -90,7 +95,7 @@ public class AccountService {
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
         log.info("deposit money before validation");
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
-            increaseMoney(thisAccountId, transfer.getAmount());
+            increaseMoney(getAccountById(thisAccountId), transfer.getAmount());
         log.info("deposit money after validation");
         return transfer;
     }
@@ -98,7 +103,7 @@ public class AccountService {
     public Transfer withdrawMoney(final Long thisAccountId, final Transfer transfer) {
         log.info("withdraw money");
         if (!Objects.equals(validateDataBeforeTransaction(thisAccountId, transfer).getAmount(), new BigDecimal(-1)))
-            decreaseMoney(thisAccountId, transfer.getAmount());
+            decreaseMoney(getAccountById(thisAccountId), transfer.getAmount());
         return transfer;
     }
 
@@ -128,7 +133,7 @@ public class AccountService {
             return transfer;
         }
 
-        if (adapterAccountRepository.findById(thisAccountId).getBalance().compareTo(transfer.getAmount()) < 0) {
+        if (getAccountById(thisAccountId).getBalance().compareTo(transfer.getAmount()) < 0) {
             if (transfer.getAccountNumber().equals("deposit")) {
                 log.info("deposit");
                 return transfer;
@@ -140,13 +145,13 @@ public class AccountService {
         }
 
 
-        if (adapterAccountRepository.findById(thisAccountId).getNumber().equals(transfer.getAccountNumber())) {
+        if (getAccountById(thisAccountId).getNumber().equals(transfer.getAccountNumber())) {
             transfer.setAmount(new BigDecimal(-1));
             log.info("him self");
             transfer.setAccountNumber("You can't send money to account which from you send");
             return transfer;
         }
-        if (!adapterAccountRepository.existsByNumber(transfer.getAccountNumber())) {
+        if (!existByNumber(transfer.getAccountNumber())) {
             if (transfer.getAccountNumber().equals("deposit") ||
                     transfer.getAccountNumber().equals("withdraw")) {
                 log.info("deposit or withdraw");
@@ -161,35 +166,49 @@ public class AccountService {
         return transfer;
     }
 
+
     @Transactional
     protected Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
         log.info("close money transfer");
-        Long accountIncreaseId = adapterAccountRepository.findByNumber(transfer.getAccountNumber()).getId();
-        increaseMoney(accountIncreaseId, transfer.getAmount());
-        decreaseMoney(thisAccountId, transfer.getAmount());
+        Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
+                (adapterAccountRepository.findByNumber(transfer.getAccountNumber()));
+        Account accountToDecrease = getAccountById(thisAccountId);
 
-        transfer.setAccountReceiveId(accountIncreaseId);
+        decreaseMoney(accountToDecrease, transfer.getAmount());
+
+        //checking difference currency before increase money
+        exchangeCurrency(accountIncrease, accountToDecrease, transfer.getAmount());
+
+        transfer.setAccountReceiveId(accountIncrease.getId());
         return transfer;
     }
 
-    protected void increaseMoney(final Long thisAccountId, final BigDecimal amount) {
-        log.info("increase money " +amount);
-        Account accountToReceiveMoney = accountMapper.mapToUserAccountFromUserAccountEntity
-                (adapterAccountRepository.findById(thisAccountId));
-        BigDecimal amountAfterIncrease = accountToReceiveMoney.getBalance().add(amount);
-        accountToReceiveMoney.setBalance(amountAfterIncrease);
-        log.info("save account after increase money");
-        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToReceiveMoney));
+    private void exchangeCurrency(final Account accountIncrease, final Account accountToDecrease, final BigDecimal amount) {
+        String to = accountIncrease.getCurrency().toLowerCase();
+        String from = accountToDecrease.getCurrency().toLowerCase();
+
+        Currency currency = feignServiceExchangeCurrency.getRate(from, to);
+        MathContext mc = new MathContext(4);
+        BigDecimal rate = BigDecimal.valueOf(currency.getCurrency(to));
+        BigDecimal newAmount = rate.multiply(amount,mc);
+
+        increaseMoney(accountIncrease, newAmount);
     }
 
-    protected void decreaseMoney(final Long thisAccountId, final BigDecimal amount) {
-        log.info("decrease money" +amount);
-        Account accountToSpendMoney = accountMapper.mapToUserAccountFromUserAccountEntity
-                (adapterAccountRepository.findById(thisAccountId));
-        BigDecimal amountAfterDecrease = accountToSpendMoney.getBalance().subtract(amount);
-        accountToSpendMoney.setBalance(amountAfterDecrease);
+    protected void increaseMoney(final Account accountToIncreaseMoney, final BigDecimal amount) {
+        log.info("increase money " + amount);
+        BigDecimal amountAfterIncrease = accountToIncreaseMoney.getBalance().add(amount);
+        accountToIncreaseMoney.setBalance(amountAfterIncrease);
+        log.info("save account after increase money");
+        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToIncreaseMoney));
+    }
+
+    protected void decreaseMoney(final Account accountToDecreaseMoney, final BigDecimal amount) {
+        log.info("decrease money" + amount);
+        BigDecimal amountAfterDecrease = accountToDecreaseMoney.getBalance().subtract(amount);
+        accountToDecreaseMoney.setBalance(amountAfterDecrease);
         log.info("save account after decrease money");
-        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToSpendMoney));
+        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToDecreaseMoney));
     }
 
     private Account createMainAccount(final Long userId, final Account account) {
@@ -202,4 +221,12 @@ public class AccountService {
         return account;
     }
 
+    private boolean existByNumber(final String accountNumber) {
+        return adapterAccountRepository.existsByNumber(accountNumber);
+    }
+
+    private Account getAccountById(final Long accountId) {
+        return accountMapper.mapToUserAccountFromUserAccountEntity
+                (adapterAccountRepository.findById(accountId));
+    }
 }
