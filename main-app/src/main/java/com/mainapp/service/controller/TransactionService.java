@@ -1,9 +1,11 @@
 package com.mainapp.service.controller;
 
 import com.mainapp.web.dto.AccountDto;
+import com.mainapp.web.dto.ProposalDto;
 import com.mainapp.web.dto.TransactionDto;
 import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.feign.FeignServiceAccountsManager;
+import com.mainapp.web.feign.FeignServiceProposalManager;
 import com.mainapp.web.feign.FeignServiceTransactionsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class TransactionService {
 
     private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
+    private final FeignServiceProposalManager feignServiceProposalManager;
 
 
     public String getAccounts(final Long accountId, final ModelMap modelMap) {
@@ -42,12 +45,25 @@ public class TransactionService {
             transactions = feignServiceTransactionsManager.getAllTransactionByUserId(userId);
             TreeSet<TransactionDto> sorted = new TreeSet<>(transactions);
             modelMap.put("transactionsDto", sorted);
-            log.info("list size " + transactions.size());
         } catch (Exception e) {
             modelMap.put("error", "Problem with fetching your transactions");
             modelMap.put("transactionsDto", transactions);
             return "transactions";
         }
         return "transactions";
+    }
+
+    public String getAllProposalsByUserId(final Long userId, ModelMap modelMap) {
+        Set<ProposalDto> proposals = new HashSet<>();
+        try {
+            proposals = feignServiceProposalManager.getAllProposalsByUserId(userId);
+            TreeSet<ProposalDto> sorted = new TreeSet<>(proposals);
+            modelMap.put("proposalsDto", sorted);
+        } catch (Exception e) {
+            modelMap.put("error", "Problem with fetching your proposals");
+            modelMap.put("proposalsDto", proposals);
+            return "proposals";
+        }
+        return "proposals";
     }
 }

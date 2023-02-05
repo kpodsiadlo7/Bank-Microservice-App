@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProposalDto {
+public class ProposalDto implements Comparable<ProposalDto>{
     private Long id;
     private Long userId;
     private Long accountId;
@@ -40,4 +40,9 @@ public class ProposalDto {
     private DescriptionRejected descriptionRejected;
     @Enumerated(EnumType.STRING)
     private CreditKind creditKind;
+
+    @Override
+    public int compareTo(final ProposalDto o) {
+        return this.id.compareTo(o.getId());
+    }
 }

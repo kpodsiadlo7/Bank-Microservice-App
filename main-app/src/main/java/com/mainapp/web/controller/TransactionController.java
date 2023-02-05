@@ -18,9 +18,15 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
     private final DashboardService dashboardService;
     private final TransactionService transactionService;
+
     @GetMapping("/transactions")
-    public String getAllTransactionsByUserId(@AuthenticationPrincipal User user,ModelMap modelMap){
+    public String getAllTransactionsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
         return transactionService.getAllTransactionsByUserId(user.getId(), modelMap);
+    }
+
+    @GetMapping("/proposals")
+    public String getAllProposalsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
+        return transactionService.getAllProposalsByUserId(user.getId(), modelMap);
     }
 
     @GetMapping("/account/{accountId}")

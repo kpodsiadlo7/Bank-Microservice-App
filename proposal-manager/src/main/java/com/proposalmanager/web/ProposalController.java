@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class ProposalController {
     public ResponseEntity<ProposalDto> getProposalByNumber(@RequestParam String proposalNumber) {
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
                 (proposalService.getProposalByNumber(proposalNumber)));
+    }
+
+    @GetMapping("/proposals")
+    public ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId){
+        return ResponseEntity.ok(proposalMapper.mapToProposalDtoSetFromProposalSet
+                (proposalService.getAllProposalsByUserId(userId)));
     }
 
     @PostMapping("/validate-proposal")

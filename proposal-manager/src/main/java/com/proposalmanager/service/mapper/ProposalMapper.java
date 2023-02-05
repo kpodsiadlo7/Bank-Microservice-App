@@ -5,6 +5,9 @@ import com.proposalmanager.service.data.Proposal;
 import com.proposalmanager.web.dto.ProposalDto;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 public class ProposalMapper {
 
@@ -130,5 +133,21 @@ public class ProposalMapper {
                 proposal.getDescriptionRejected(),
                 proposal.getCreditKind()
         );
+    }
+
+    public Set<ProposalDto> mapToProposalDtoSetFromProposalSet(final Set<Proposal> proposals) {
+        Set<ProposalDto> proposalDtos = new HashSet<>();
+        for (Proposal p: proposals){
+            proposalDtos.add(mapToProposalDtoFromProposal(p));
+        }
+        return proposalDtos;
+    }
+
+    public Set<Proposal> mapToProposalSetFromProposalEntitySet(final Set<ProposalEntity> proposalEntities) {
+        Set<Proposal> proposals = new HashSet<>();
+        for (ProposalEntity p: proposalEntities){
+            proposals.add(mapToProposalFromProposalEntity(p));
+        }
+        return proposals;
     }
 }

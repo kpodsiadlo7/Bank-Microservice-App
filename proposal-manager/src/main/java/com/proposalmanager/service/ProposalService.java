@@ -16,8 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.Random;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -214,7 +216,8 @@ public class ProposalService {
 
     private double createMonthlyFee(final double amountOfCredit, final int month, double interest) {
         log.info("create monthly fee");
-        return (amountOfCredit + interest) / month;
+        double monthlyFee = (amountOfCredit+interest)/month;
+        return Math.round(monthlyFee*100.0)/100.0;
     }
 
     private double getCommission(final double amountOfCredit) {
@@ -244,4 +247,8 @@ public class ProposalService {
         return Math.ceil(amountOfCredit * (139.7f / 100));
     }
 
+    public Set<Proposal> getAllProposalsByUserId(final Long userId) {
+        return proposalMapper.mapToProposalSetFromProposalEntitySet
+                (adapterProposalEntityRepository.findAllByUserId(userId));
+    }
 }
