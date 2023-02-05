@@ -28,6 +28,7 @@ even if we want to take 100 zł we still pay this minimum. If commission is more
 you will still get the main account after runs again)
 * Several types of account e.g. currency account, savings account
 ### Transfer money from user to user
+* Money exchange during transfer money from user to user
 * Checking that the user want to transfer money to himself and if user which we send money already exist
 * Limit for that kind of transaction is 20000 each
 * Transfer money by account number
