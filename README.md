@@ -15,8 +15,8 @@ e.g. interest, monthly fee etc.
 * Even if we cancel proposal, every attempt are stored in the database
 * At any time we can come back to a request that we did not approve for some reason
 * If your salary is less than 20% amount of credit it is possible that the application will be rejected
-* We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency, 
-even if we want to take 100 zł we still pay this minimum. If commission is more than 50zł we pay as how much as has been calculated
+* We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
+ if commission is more than 50zł we pay as how much as has been calculated
 
 ### Login and Register system
 * Checking before register by 'login' if user already exist
