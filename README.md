@@ -14,7 +14,7 @@ to approve or cancel our proposal, there are detailed information about the cred
 e.g. interest, monthly fee etc.
 * Even if we cancel proposal, every attempt are stored in the database
 * At any time we can come back to a request that we did not approve for some reason
-* If your salary is less than 20% amount of credit it is possible that the application will be rejected
+* If your salary is less than 2% amount of credit it is possible that the application will be rejected
 * We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
  if commission is more than 50zł we pay as how much as has been calculated
 
