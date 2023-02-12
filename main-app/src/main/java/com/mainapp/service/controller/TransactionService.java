@@ -57,8 +57,8 @@ public class TransactionService {
         Set<ProposalDto> proposals = new HashSet<>();
         try {
             proposals = feignServiceProposalManager.getAllProposalsByUserId(userId);
-            TreeSet<ProposalDto> sorted = new TreeSet<>(proposals);
-            modelMap.put("proposalsDto", sorted);
+            TreeSet<ProposalDto> sortedById = new TreeSet<>(proposals);
+            modelMap.put("proposalsDto", sortedById);
         } catch (Exception e) {
             modelMap.put("error", "Problem with fetching your proposals");
             modelMap.put("proposalsDto", proposals);
