@@ -19,6 +19,13 @@
             $("#errorMsg").removeClass("d-none");
         }
     });
+    $(function () {
+        $("tr[id*='proposal-']").click(function () {
+            var proposalNum = $(this).prop('id').split('-')[1];
+
+            window.location.href = '/dashboard/credit/'+proposalNum;
+        });
+    });
 </script>
 <body>
 <div class="card">
@@ -66,7 +73,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="proposal : ${proposalsDto}">
+                                    <tr th:each="proposal : ${proposalsDto}" style="cursor: pointer" th:id="|proposal-${proposal.proposalNumber}|">
                                         <td th:text="${proposal.dateFrom}">dddd</td>
                                         <td th:text="${proposal.dateTo}">dddd</td>
                                         <td th:text="${proposal.amountOfCredit}">ddd</td>

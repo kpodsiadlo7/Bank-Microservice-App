@@ -47,9 +47,4 @@ public class CreditController {
     public String postProposal(@PathVariable String proposalNumber, ModelMap modelMap){
         return proposalService.postProposal(proposalNumber,modelMap);
     }
-
-    @GetMapping("{proposalNumber}/status")
-    public String getStatusProposal(@PathVariable String proposalNumber){
-        return "status";
-    }
 }

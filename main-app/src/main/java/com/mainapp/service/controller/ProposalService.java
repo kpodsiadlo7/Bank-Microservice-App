@@ -84,6 +84,6 @@ public class ProposalService {
             return "credits";
         }
         log.info("successful accept proposal");
-        return "redirect:/dashboard/credit/" + proposalNumber + "/status";
+        return "redirect:/dashboard/credit/" + proposalNumber;
     }
 }
