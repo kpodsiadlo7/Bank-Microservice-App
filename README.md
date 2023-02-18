@@ -16,9 +16,9 @@ e.g. interest, monthly fee etc.
 * Even if we cancel proposal, every attempt are stored in the database
 * At any time we can come back to a request that we did not approve for some reason
 * If monthly fee is below half your salary that is 100% chance to get a credit, but if the monthly fee is greater than:
-2. 50% your salary, rejected chance: 50%
-3. 75% your salary, rejected chance: 80% 
-4. 100% your salary, rejected chance: 100%
+1. 50% your salary, rejected chance: 50%
+2. 75% your salary, rejected chance: 80% 
+3. 100% your salary, rejected chance: 100%
 * We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
  if commission is more than 50zł we pay as how much as has been calculated
 * We can use promotion for 0% commission for credit which is less than 10000
