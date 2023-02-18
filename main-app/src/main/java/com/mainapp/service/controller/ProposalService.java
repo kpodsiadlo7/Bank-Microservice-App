@@ -42,13 +42,13 @@ public class ProposalService {
         return "proposal";
     }
 
-    public String validateBeforePost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind) {
+    public String validateBeforePost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind, final String promotion) {
         log.info("validate before post");
         Proposal returningProposal;
         TreeSet<AccountDto> fetchingAccounts = new TreeSet<>();
         try {
             returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.validateProposalBeforePost(
-                    proposalMapper.mapToProposalDtoFromProposal(proposal), accountId, creditKind));
+                    proposalMapper.mapToProposalDtoFromProposal(proposal), accountId, creditKind, promotion));
             if (returningProposal.getCurrency().equals("error")) {
                 log.warn("error " + returningProposal.getProposalNumber());
                 modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));

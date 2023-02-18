@@ -6,7 +6,6 @@ import com.proposalmanager.web.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -26,7 +25,7 @@ public class ProposalController {
     }
 
     @GetMapping("/proposals")
-    public ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId){
+    public ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId) {
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoSetFromProposalSet
                 (proposalService.getAllProposalsByUserId(userId)));
     }
@@ -34,9 +33,10 @@ public class ProposalController {
     @PostMapping("/validate-proposal")
     public ResponseEntity<ProposalDto> validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
                                                                   @RequestParam Long accountId,
-                                                                  @RequestParam String creditKind) {
+                                                                  @RequestParam String creditKind,
+                                                                  @RequestParam String promotion) {
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
-                (proposalService.validateProposalBeforePost(proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, creditKind)));
+                (proposalService.validateProposalBeforePost(proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, creditKind, promotion)));
     }
 
     @PostMapping("/accept-proposal")

@@ -129,28 +129,37 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="form-row" style="margin-top: 2em" th:if="${proposalDto.statusProposal.name() == 'OPEN'}">
+                        <div class="form-row" style="margin-top: 2em"
+                             th:if="${proposalDto.statusProposal.name() == 'OPEN'}">
                             <div class="form-group" style="margin-top: 7em">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="acceptPolicy" required>
                                     <label>Accept policy</label>
-                                    <div class="form-text">*if your salary is less than 20% amount of credit it is possible
-                                        that the application will be rejected
-                                    </div>
+                                    <div class="form-text">*policy</div>
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <button type="button" id="cancelBtn" class="btn btn-outline-danger" style="margin-left: 7em; margin-bottom: 2em">Cancel</button>
-                            </div>
-                            <div class="mb-3 row">
-                                <button type="submit" class="btn btn-outline-success" style="margin-left: 14em; margin-bottom: 2em">Accept</button>
+                            <div>
+                                <div class="mb-3 row">
+                                    <button type="button" id="cancelBtn" class="btn btn-outline-danger"
+                                            style="margin-left: 7em; margin-bottom: 2em">Cancel
+                                    </button>
+                                </div>
+                                <div class="mb-3 row">
+                                    <button type="submit" class="btn btn-outline-success"
+                                            style="margin-left: 14em; margin-bottom: 2em">Accept
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row" style="margin-top: 2em; margin-bottom: 2em" th:if="${proposalDto.statusProposal.name() == 'ACCEPT'}">
-                            STATUS: <div style="color: greenyellow">ACCEPTED</div>
+                        <div class="form-row" style="margin-top: 2em; margin-bottom: 2em"
+                             th:if="${proposalDto.statusProposal.name() == 'ACCEPT'}">
+                            STATUS:
+                            <div style="color: greenyellow">ACCEPTED</div>
                         </div>
-                        <div class="form-row" style="margin-top: 2em; margin-bottom: 2em" th:if="${proposalDto.statusProposal.name() == 'REJECTED'}">
-                            STATUS: <div style="color: red">REJECTED</div>
+                        <div class="form-row" style="margin-top: 2em; margin-bottom: 2em"
+                             th:if="${proposalDto.statusProposal.name() == 'REJECTED'}">
+                            STATUS:
+                            <div style="color: red">REJECTED</div>
                             <div class="h5" th:text="${proposalDto.descriptionRejected}"></div>
                         </div>
                     </form>

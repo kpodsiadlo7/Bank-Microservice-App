@@ -21,7 +21,7 @@ e.g. interest, monthly fee etc.
 4. 100% your salary, rejected chance: 100%
 * We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
  if commission is more than 50zł we pay as how much as has been calculated
-* Credit below 10 000zł or other currency has 0% commission
+* We can use promotion for 0% commission for credit which is less than 10000
 * Minimum amount which we can take it is 1000
 
 ### Login and Register system

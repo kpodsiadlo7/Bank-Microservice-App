@@ -1,6 +1,5 @@
 package com.transactionsmanager.service;
 
-import com.transactionsmanager.domain.TransactionEntity;
 import com.transactionsmanager.repository.adapter.AdapterTransactionRepository;
 import com.transactionsmanager.service.data.Transaction;
 import com.transactionsmanager.service.mapper.TransactionMapper;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Slf4j
 @Service
@@ -36,7 +33,7 @@ public class TransactionService {
         error.setKindTransaction("error");
 
         if (descriptionTransaction.equals("transfer money"))
-            return moneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error, transaction);
+            return moneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
 
         if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw"))
             return depositOrWithdraw(userId, thisAccountId, transferDto, descriptionTransaction, error);
@@ -120,15 +117,14 @@ public class TransactionService {
 
     @Transactional
     protected Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                        final String descriptionTransaction, Transaction error,
-                                        Transaction transaction) {
+                                        final String descriptionTransaction, Transaction error) {
         log.info("money transfer");
         if (transferDto.getAmount().compareTo(BigDecimal.valueOf(20000)) > 0) {
             log.warn("limit 20000");
             error.setDescription("Limit for this kind of transaction is 20000");
             return error;
         }
-        transaction = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
+        Transaction transaction = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
         if (transaction.getKindTransaction().equals("error")) {
             log.warn("something is wrong with returning transaction");
             transaction.setDescription(transaction.getDescription());

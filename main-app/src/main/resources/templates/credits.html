@@ -37,11 +37,8 @@
                         <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
                     </div>
                     <div class="d-grid gap-1">
-                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Q&A</a><br>
                         <a href="" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
-                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 14em">About
-                            us</a><br>
-                        <a id="backBtn" class="btn btn-outline-danger" style="margin-left: 2em;">Cancel</a><br>
+                        <a id="backBtn" class="btn btn-outline-danger" style="margin-left: 2em; margin-top: 17em">Cancel</a><br>
                     </div>
                 </div>
             </div>
@@ -90,11 +87,24 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group" style="margin-top: 7em">
+                        <div class="form-group" style="margin-top: 1em">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="acceptPolicy" required>
                                 <label>Accept policy</label>
-                                <div class="form-text">*if your salary is less than 20% amount of credit it is possible that the application will be rejected</div>
+                                <div class="form-text">*policy</div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="promotion" value="noPromotion" checked>
+                                <label class="form-check-label">
+                                    No promotion
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="promotion" value="commission0">
+                                <label class="form-check-label">
+                                    Promotion for 0% commission
+                                </label>
+                                <div class="form-text">*only for credit less than 10000</div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-outline-success"

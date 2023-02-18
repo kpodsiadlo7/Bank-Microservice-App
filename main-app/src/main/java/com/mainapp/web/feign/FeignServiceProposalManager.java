@@ -20,7 +20,8 @@ public interface FeignServiceProposalManager {
     @PostMapping("/validate-proposal")
     ProposalDto validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
                                            @RequestParam Long accountId,
-                                           @RequestParam String creditKind);
+                                           @RequestParam String creditKind,
+                                           @RequestParam String promotion);
 
     @PostMapping("/accept-proposal")
     void acceptProposal(@RequestParam String proposalNumber);

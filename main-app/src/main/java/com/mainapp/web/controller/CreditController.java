@@ -35,16 +35,17 @@ public class CreditController {
 
     @PostMapping
     public String prepareProposal(@AuthenticationPrincipal User user,
-                               @ModelAttribute ProposalDto proposalDto,
-                               @RequestParam(name = "accountId") Long accountId, ModelMap modelMap,
-                               @RequestParam(name = "creditKind") String creditKind) {
+                                  @ModelAttribute ProposalDto proposalDto,
+                                  @RequestParam(name = "accountId") Long accountId, ModelMap modelMap,
+                                  @RequestParam(name = "creditKind") String creditKind,
+                                  @RequestParam(name = "promotion") String promotion) {
         log.info("should be 3 " + proposalDto.getMonth());
         return proposalService.validateBeforePost(user,
-                proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, modelMap, creditKind);
+                proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, modelMap, creditKind, promotion);
     }
 
     @PostMapping("{proposalNumber}")
-    public String postProposal(@PathVariable String proposalNumber, ModelMap modelMap){
-        return proposalService.postProposal(proposalNumber,modelMap);
+    public String postProposal(@PathVariable String proposalNumber, ModelMap modelMap) {
+        return proposalService.postProposal(proposalNumber, modelMap);
     }
 }

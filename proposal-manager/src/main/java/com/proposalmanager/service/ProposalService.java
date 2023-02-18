@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Set;
@@ -98,9 +97,21 @@ public class ProposalService {
                 (adapterProposalEntityRepository.findByProposalNumber(proposalNumber));
     }
 
-    public Proposal validateProposalBeforePost(final Proposal proposal, final Long accountId, final String creditKind) {
+    public Proposal validateProposalBeforePost(final Proposal proposal, final Long accountId, final String creditKind, final String promotion) {
         log.info("validate proposal before past");
         Proposal error = new Proposal();
+        if (proposal.getAmountOfCredit() < 1000) {
+            log.warn("error amount is less than 1000");
+            error.setCurrency("error");
+            error.setProposalNumber("Minimum credit amount is 1000");
+            return error;
+        }
+        if (promotion.equals("commission0") && proposal.getAmountOfCredit() > 10000){
+            log.warn("error promotion only for credit is less than 10000");
+            error.setCurrency("error");
+            error.setProposalNumber("Promotion is only for credit which is below 10000");
+            return error;
+        }
         Credit fetchingCredit = new Credit();
         Account fetchingAccount = new Account();
         User fetchingUser = new User();
@@ -142,7 +153,7 @@ public class ProposalService {
         }
 
 
-        Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind);
+        Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind, promotion);
         log.info("save proposal");
         return proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.save
@@ -163,41 +174,6 @@ public class ProposalService {
         return CreditKind.CASH;
     }
 
-    private Proposal prepareProposal(final User fetchingUser, final Proposal proposal, final Account fetchingAccount, final CreditKind creditKind) {
-        log.info("prepare proposal");
-        double interest = createInterest(proposal.getAmountOfCredit(),
-                proposal.getMonth(),
-                fetchingAccount.getAccountName());
-        double commission = getCommission(proposal.getAmountOfCredit());
-        double monthlyFee = createMonthlyFee(
-                proposal.getAmountOfCredit(),
-                proposal.getMonth(),
-                interest);
-        log.info("prepare proposal one step before return proposal");
-
-        return proposalMapper.mapToProposalFromProposalDto(proposalMapper.mapToProposalDtoFromProposal(
-                (new Proposal(
-                        proposal.getId(),
-                        fetchingUser.getId(),
-                        fetchingAccount.getId(),
-                        proposal.getAmountOfCredit(),
-                        proposal.getMonth(),
-                        proposal.getSalary(),
-                        interest,
-                        commission,
-                        monthlyFee,
-                        fetchingAccount.getCurrency(),
-                        fetchingAccount.getCurrencySymbol(),
-                        fetchingUser.getRealName(),
-                        proposal.getPurpose(),
-                        createApplicationNumber(),
-                        LocalDate.now(),
-                        LocalDate.now().plusMonths(proposal.getMonth()),
-                        false,
-                        StatusProposal.OPEN,
-                        DescriptionRejected.OPEN,
-                        creditKind))));
-    }
 
     private String createApplicationNumber() {
         log.info("create application number");
@@ -216,8 +192,8 @@ public class ProposalService {
 
     private double createMonthlyFee(final double amountOfCredit, final int month, double interest) {
         log.info("create monthly fee");
-        double monthlyFee = (amountOfCredit+interest)/month;
-        return Math.round(monthlyFee*100.0)/100.0;
+        double monthlyFee = (amountOfCredit + interest) / month;
+        return Math.round(monthlyFee * 100.0) / 100.0;
     }
 
     private double getCommission(final double amountOfCredit) {
@@ -250,5 +226,45 @@ public class ProposalService {
     public Set<Proposal> getAllProposalsByUserId(final Long userId) {
         return proposalMapper.mapToProposalSetFromProposalEntitySet
                 (adapterProposalEntityRepository.findAllByUserId(userId));
+    }
+
+    private Proposal prepareProposal(final User fetchingUser, final Proposal proposal, final Account fetchingAccount, final CreditKind creditKind, final String promotion) {
+        log.info("prepare proposal");
+        double commission = 0;
+        double interest = createInterest(proposal.getAmountOfCredit(),
+                proposal.getMonth(),
+                fetchingAccount.getAccountName());
+
+        if (promotion.equals("noPromotion"))
+            commission = getCommission(proposal.getAmountOfCredit());
+
+        double monthlyFee = createMonthlyFee(
+                proposal.getAmountOfCredit(),
+                proposal.getMonth(),
+                interest);
+        log.info("prepare proposal one step before return proposal");
+
+        return proposalMapper.mapToProposalFromProposalDto(proposalMapper.mapToProposalDtoFromProposal(
+                (new Proposal(
+                        proposal.getId(),
+                        fetchingUser.getId(),
+                        fetchingAccount.getId(),
+                        proposal.getAmountOfCredit(),
+                        proposal.getMonth(),
+                        proposal.getSalary(),
+                        interest,
+                        commission,
+                        monthlyFee,
+                        fetchingAccount.getCurrency(),
+                        fetchingAccount.getCurrencySymbol(),
+                        fetchingUser.getRealName(),
+                        proposal.getPurpose(),
+                        createApplicationNumber(),
+                        LocalDate.now(),
+                        LocalDate.now().plusMonths(proposal.getMonth()),
+                        false,
+                        StatusProposal.OPEN,
+                        DescriptionRejected.OPEN,
+                        creditKind))));
     }
 }
