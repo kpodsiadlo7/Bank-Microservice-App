@@ -12,11 +12,17 @@
 * If everything is alright we are redirected to next view in which we have a choice
 to approve or cancel our proposal, there are detailed information about the credit 
 e.g. interest, monthly fee etc.
+* If we already have an opened proposal, we cannot make another one before that accepted
 * Even if we cancel proposal, every attempt are stored in the database
 * At any time we can come back to a request that we did not approve for some reason
-* If your salary is less than 2% amount of credit it is possible that the application will be rejected
+* If monthly fee is below half your salary that is 100% chance to get a credit, but if the monthly fee is greater than:
+2. 50% your salary, rejected chance: 50%
+3. 75% your salary, rejected chance: 80% 
+4. 100% your salary, rejected chance: 100%
 * We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
  if commission is more than 50zł we pay as how much as has been calculated
+* Credit below 10 000zł or other currency has 0% commission
+* Minimum amount which we can take it is 1000
 
 ### Login and Register system
 * Checking before register by 'login' if user already exist
