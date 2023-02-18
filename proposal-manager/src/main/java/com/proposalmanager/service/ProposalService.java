@@ -207,7 +207,7 @@ public class ProposalService {
             b.append(random.nextInt(7));
         }
         if (adapterProposalEntityRepository.existsByProposalNumber(b.toString())) {
-            log.info("is not possible but it is, the random number exist in db :D");
+            log.info("the random number exist in db");
             b.setLength(0);
             return createApplicationNumber();
         }

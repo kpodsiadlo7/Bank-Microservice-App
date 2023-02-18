@@ -98,7 +98,7 @@ public class MainService {
 
     public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
                                    final String descriptionTransaction, final Long thisAccountId) {
-        log.info("mage transaction");
+        log.info("make transaction");
         try {
             TransactionDto returningTransactionDto =
                     feignServiceTransactionsManager.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);

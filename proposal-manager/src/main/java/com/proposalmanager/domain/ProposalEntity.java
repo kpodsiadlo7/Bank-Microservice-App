@@ -41,6 +41,8 @@ public class ProposalEntity {
     private StatusProposal statusProposal;
     @Enumerated(EnumType.STRING)
     private DescriptionRejected descriptionRejected;
+
+    // credit kind to delete because already exist in db
     @Enumerated(EnumType.STRING)
     private CreditKind creditKind;
 
