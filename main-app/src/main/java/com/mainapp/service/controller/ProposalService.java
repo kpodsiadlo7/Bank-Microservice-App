@@ -38,6 +38,7 @@ public class ProposalService {
         }
         modelMap.put("proposalDto", returningProposal);
         log.info("successful received proposal");
+        log.info(String.valueOf(returningProposal.getStatusProposal()));
         return "proposal";
     }
 
