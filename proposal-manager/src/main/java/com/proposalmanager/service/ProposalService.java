@@ -70,7 +70,7 @@ public class ProposalService {
 
             //reduce money by commission
             descriptionTransaction = "commission";
-            transfer.setAmount(BigDecimal.valueOf(getCommission(proposalToApproved.getAmountOfCredit())));
+            transfer.setAmount(BigDecimal.valueOf(proposalToApproved.getCommission()));
             feignServiceTransactionsManager.makeTransaction(transfer.getUserReceiveId(), transfer.getAccountReceiveId(), descriptionTransaction,
                     transferMapper.mapToTransferDtoFromTransfer(transfer));
 
@@ -106,7 +106,7 @@ public class ProposalService {
             error.setProposalNumber("Minimum credit amount is 1000");
             return error;
         }
-        if (promotion.equals("commission0") && proposal.getAmountOfCredit() > 10000){
+        if (promotion.equals("commission0") && proposal.getAmountOfCredit() > 10000) {
             log.warn("error promotion only for credit is less than 10000");
             error.setCurrency("error");
             error.setProposalNumber("Promotion is only for credit which is below 10000");
@@ -136,7 +136,7 @@ public class ProposalService {
         log.info("successful fetching account by account id from accounts service");
 
         //checking if we already have money on account for commission
-        BigDecimal commission = BigDecimal.valueOf(getCommission(proposal.getAmountOfCredit()));
+        BigDecimal commission = BigDecimal.valueOf(getCommission(proposal.getAmountOfCredit(),promotion));
         if (fetchingAccount.getBalance().compareTo(commission) < 0) {
             log.warn("don't enough money for paying commission");
             error.setCurrency("error");
@@ -196,31 +196,33 @@ public class ProposalService {
         return Math.round(monthlyFee * 100.0) / 100.0;
     }
 
-    private double getCommission(final double amountOfCredit) {
+    private double getCommission(final double amountOfCredit, final String promotion) {
         log.info("get commission");
-        double commission = amountOfCredit * 0.0024f;
+        if (promotion.equals("commission0"))return 0;
+
+        double commission = amountOfCredit * 0.0024;
         if (commission < 50)
-            return 50f;
+            return 50;
         return Math.ceil(commission);
     }
 
     private double createInterest(final double amountOfCredit, final int month, final String accountType) {
         log.info("crete interest");
         if (accountType.equals("Student"))
-            return 0f;
+            return 0;
 
         if (month <= 24)
-            return Math.ceil(amountOfCredit * (19.4f / 100));
+            return Math.ceil(amountOfCredit * (19.4 / 100));
         if (month <= 48)
-            return Math.ceil(amountOfCredit * (30.3f / 100));
+            return Math.ceil(amountOfCredit * (30.3 / 100));
         if (month <= 60)
-            return Math.ceil(amountOfCredit * (37.4f / 100));
+            return Math.ceil(amountOfCredit * (37.4 / 100));
         if (month <= 72)
-            return Math.ceil(amountOfCredit * (55.9f / 100));
+            return Math.ceil(amountOfCredit * (55.9 / 100));
         if (month <= 120)
-            return Math.ceil(amountOfCredit * (74.1f / 100));
+            return Math.ceil(amountOfCredit * (74.1 / 100));
 
-        return Math.ceil(amountOfCredit * (139.7f / 100));
+        return Math.ceil(amountOfCredit * (139.7 / 100));
     }
 
     public Set<Proposal> getAllProposalsByUserId(final Long userId) {
@@ -230,13 +232,10 @@ public class ProposalService {
 
     private Proposal prepareProposal(final User fetchingUser, final Proposal proposal, final Account fetchingAccount, final CreditKind creditKind, final String promotion) {
         log.info("prepare proposal");
-        double commission = 0;
         double interest = createInterest(proposal.getAmountOfCredit(),
                 proposal.getMonth(),
                 fetchingAccount.getAccountName());
-
-        if (promotion.equals("noPromotion"))
-            commission = getCommission(proposal.getAmountOfCredit());
+        double commission = getCommission(proposal.getAmountOfCredit(),promotion);
 
         double monthlyFee = createMonthlyFee(
                 proposal.getAmountOfCredit(),
