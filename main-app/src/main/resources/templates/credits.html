@@ -37,7 +37,7 @@
                         <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
                     </div>
                     <div class="d-grid gap-1">
-                        <a href="/dashboard/proposals" class="btn btn-outline-dark" style="margin-left: 2em">My requests</a><br>
+                        <a href="/dashboard/proposals" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">My requests</a><br>
                         <a id="backBtn" class="btn btn-outline-danger" style="margin-left: 2em; margin-top: 19em">Back</a><br>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                             <div class="form-group col-md-6">
                                 <select class="form-select mb-3" name="accountId">
                                     <option th:each="account : ${accountsDto}" th:value="${account.id}">
-                                        <div th:text="${account.accountName}"></div>
+                                        <div th:text="|${account.accountName} ${account.currencySymbol}|"></div>
                                     </option>
                                 </select>
                             </div>
