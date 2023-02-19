@@ -1,7 +1,7 @@
 package com.mainapp.web.feign;
 
-import com.mainapp.web.dto.TransferDto;
 import com.mainapp.web.dto.AccountDto;
+import com.mainapp.web.dto.TransferDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +15,7 @@ public interface FeignServiceAccountsManager {
 
     @GetMapping("/get-accounts")
     TreeSet<AccountDto> getAllAccountsByUserId(@RequestParam Long userId);
+
     @GetMapping("/get-account")
     AccountDto getAccountByAccountId(@RequestParam Long accountId);
 
@@ -22,8 +23,8 @@ public interface FeignServiceAccountsManager {
     TransferDto quickTransfer(@RequestParam Long userId,
                               @RequestParam String kindTransaction,
                               @RequestBody TransferDto transferDto);
+
     @PostMapping("/create-account")
     AccountDto createAccountForUser(@RequestParam Long userId,
                                     @RequestBody AccountDto accountDto);
-
 }

@@ -10,7 +10,6 @@ import com.accountsmanager.web.feign.FeignServiceExchangeCurrency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -32,14 +31,21 @@ public class AccountService {
         log.info("validate data");
         if (account.getCurrency() == null)
             return createMainAccount(userId, account);
+        if (checkIfAccountWithThatCurrencyExist(userId,account.getCurrency())){
+            account.setCurrency("exist");
+            return account;
+        }
         return createAccountForUser(userId, account);
+    }
+
+    public boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
+        return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);
     }
 
     public Account getAccountByAccountId(final Long accountId) {
         log.info("get account by id");
         return getAccountById(accountId);
     }
-
 
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
         log.info("deposit money before validation");
@@ -116,7 +122,6 @@ public class AccountService {
     }
 
 
-    @Transactional
     protected Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
         log.info("close money transfer");
         Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
@@ -230,4 +235,5 @@ public class AccountService {
         account.setNumber(b.toString());
         return account;
     }
+
 }

@@ -15,4 +15,5 @@ public interface AdapterAccountRepository {
 
     AccountEntity findByNumber(String number);
     AccountEntity findById(long accountId);
+    boolean existsByUserIdAndCurrency(long userId, String currency);
 }

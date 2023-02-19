@@ -1,6 +1,7 @@
 package com.mainapp.service.controller;
 
 import com.mainapp.service.MainService;
+import com.mainapp.service.data.Account;
 import com.mainapp.service.data.User;
 import com.mainapp.service.mapper.AccountMapper;
 import com.mainapp.web.dto.AccountDto;
@@ -56,7 +57,12 @@ public class DashboardService {
 
     public String createAccount(final User user, final AccountDto accountDto, ModelMap modelMap) {
         try {
-            mainService.createAccountForUser(user.getId(), accountMapper.mapToUserAccountFromUserAccountDto(accountDto));
+            Account returningAccount = mainService.createAccountForUser(user.getId(), accountMapper.mapToUserAccountFromUserAccountDto(accountDto));
+            if (returningAccount.getCurrency().equals("exist")){
+                modelMap.put("error", "You already have account with that currency");
+                modelMap.put("account", new AccountDto());
+                return "accounts";
+            }
         } catch (Exception e) {
             modelMap.put("error", "Failed with creating account");
             modelMap.put("account", new AccountDto());

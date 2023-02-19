@@ -23,6 +23,7 @@ e.g. interest, monthly fee etc.
  if commission is more than 50zł we pay as how much as has been calculated
 * We can use promotion for 0% commission for credit which is less than 10000
 * Minimum amount which we can take it is 1000
+* We can open one account with one currency
 
 ### Login and Register system
 * Checking before register by 'login' if user already exist
