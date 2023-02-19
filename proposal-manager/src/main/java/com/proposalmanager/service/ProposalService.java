@@ -40,6 +40,7 @@ public class ProposalService {
         log.info("post proposal");
         Proposal proposal = proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.findByProposalNumber(proposalNumber));
+        log.info("account id from returning proposal from db"+proposal.getAccountId());
 
         if (!feignServiceCreditManager.acceptCredit(proposal)) {
             log.info("proposal rejected");
@@ -78,6 +79,7 @@ public class ProposalService {
             proposalToApproved.setDescriptionRejected(DescriptionRejected.ACCEPT);
             proposalToApproved.setStatusProposal(StatusProposal.ACCEPT);
             proposalToApproved.setAcceptStatement(true);
+
             adapterProposalEntityRepository.save(proposalMapper.updateProposalEntity(proposalToApproved));
             log.info("proposal successful saved");
         } catch (Exception ignored) {
@@ -112,6 +114,7 @@ public class ProposalService {
             error.setProposalNumber("Promotion is only for credit which is below 10000");
             return error;
         }
+
         Credit fetchingCredit = new Credit();
         Account fetchingAccount = new Account();
         User fetchingUser = new User();
@@ -136,7 +139,7 @@ public class ProposalService {
         log.info("successful fetching account by account id from accounts service");
 
         //checking if we already have money on account for commission
-        BigDecimal commission = BigDecimal.valueOf(getCommission(proposal.getAmountOfCredit(),promotion));
+        BigDecimal commission = BigDecimal.valueOf(getCommission(proposal.getAmountOfCredit(), promotion));
         if (fetchingAccount.getBalance().compareTo(commission) < 0) {
             log.warn("don't enough money for paying commission");
             error.setCurrency("error");
@@ -151,7 +154,6 @@ public class ProposalService {
             error.setProposalNumber(fetchingUser.getRealName());
             return error;
         }
-
 
         Proposal proposalToSaveAfterPrepare = prepareProposal(fetchingUser, proposal, fetchingAccount, kind, promotion);
         log.info("save proposal");
@@ -198,7 +200,7 @@ public class ProposalService {
 
     private double getCommission(final double amountOfCredit, final String promotion) {
         log.info("get commission");
-        if (promotion.equals("commission0"))return 0;
+        if (promotion.equals("commission0")) return 0;
 
         double commission = amountOfCredit * 0.0024;
         if (commission < 50)
@@ -235,7 +237,7 @@ public class ProposalService {
         double interest = createInterest(proposal.getAmountOfCredit(),
                 proposal.getMonth(),
                 fetchingAccount.getAccountName());
-        double commission = getCommission(proposal.getAmountOfCredit(),promotion);
+        double commission = getCommission(proposal.getAmountOfCredit(), promotion);
 
         double monthlyFee = createMonthlyFee(
                 proposal.getAmountOfCredit(),

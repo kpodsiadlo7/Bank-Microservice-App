@@ -27,4 +27,8 @@ public interface FeignServiceAccountsManager {
     @PostMapping("/create-account")
     AccountDto createAccountForUser(@RequestParam Long userId,
                                     @RequestBody AccountDto accountDto);
+
+    @PostMapping("/set-commitments")
+    void setCommitmentsToAccount(@RequestParam Long accountId,
+                                 @RequestParam double monthlyFee);
 }

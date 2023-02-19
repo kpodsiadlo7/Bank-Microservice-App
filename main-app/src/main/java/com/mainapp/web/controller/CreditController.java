@@ -2,8 +2,11 @@ package com.mainapp.web.controller;
 
 import com.mainapp.service.controller.CreditService;
 import com.mainapp.service.controller.ProposalService;
+import com.mainapp.service.data.Proposal;
 import com.mainapp.service.data.User;
+import com.mainapp.service.mapper.AccountMapper;
 import com.mainapp.service.mapper.ProposalMapper;
+import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +48,10 @@ public class CreditController {
     }
 
     @PostMapping("{proposalNumber}")
-    public String postProposal(@PathVariable String proposalNumber, ModelMap modelMap) {
-        return proposalService.postProposal(proposalNumber, modelMap);
+    public String postProposal(@RequestParam(name = "accountId") Long accountId,
+                               @RequestParam(name = "monthlyFee") double monthlyFee,
+                               @PathVariable String proposalNumber,
+                               ModelMap modelMap) {
+        return proposalService.postProposal(accountId,monthlyFee,proposalNumber, modelMap);
     }
 }

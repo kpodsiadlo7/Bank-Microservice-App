@@ -11,7 +11,7 @@ public interface AdapterAccountRepository {
 
     boolean existsByNumber(String number);
 
-    AccountEntity findByUserId(long userId);
+    boolean existsById(long accountId);
 
     AccountEntity findByNumber(String number);
     AccountEntity findById(long accountId);

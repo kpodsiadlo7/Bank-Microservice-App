@@ -6,6 +6,7 @@ import com.accountsmanager.web.dto.AccountDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class AccountMapper {
                 account.getUserId(),
                 account.getAccountName(),
                 account.getBalance(),
+                account.getCommitments(),
                 account.getNumber(),
                 account.getCurrency(),
                 account.getCurrencySymbol()
@@ -30,6 +32,7 @@ public class AccountMapper {
                 accountDto.getUserId(),
                 accountDto.getAccountName(),
                 accountDto.getBalance(),
+                accountDto.getCommitments(),
                 accountDto.getNumber(),
                 accountDto.getCurrency(),
                 accountDto.getCurrencySymbol()
@@ -41,6 +44,7 @@ public class AccountMapper {
                 account.getUserId(),
                 account.getAccountName(),
                 account.getBalance(),
+                new BigDecimal(0),
                 account.getNumber(),
                 account.getCurrency(),
                 account.getCurrencySymbol()
@@ -53,6 +57,7 @@ public class AccountMapper {
                 accountEntity.getUserId(),
                 accountEntity.getAccountName(),
                 accountEntity.getBalance(),
+                accountEntity.getCommitments(),
                 accountEntity.getNumber(),
                 accountEntity.getCurrency(),
                 accountEntity.getCurrencySymbol()
@@ -81,6 +86,7 @@ public class AccountMapper {
                 account.getUserId(),
                 account.getAccountName(),
                 account.getBalance(),
+                account.getCommitments(),
                 account.getNumber(),
                 account.getCurrency(),
                 account.getCurrencySymbol()

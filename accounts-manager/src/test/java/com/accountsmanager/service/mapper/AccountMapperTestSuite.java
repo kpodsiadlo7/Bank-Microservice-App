@@ -35,6 +35,7 @@ public class AccountMapperTestSuite {
                 3L,
                 "account name",
                 new BigDecimal(3000),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"
@@ -59,6 +60,7 @@ public class AccountMapperTestSuite {
                 3L,
                 "account name",
                 new BigDecimal(3000),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"
@@ -83,6 +85,7 @@ public class AccountMapperTestSuite {
                 3L,
                 "account name",
                 new BigDecimal(3000),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"
@@ -109,6 +112,7 @@ public class AccountMapperTestSuite {
                 3L,
                 "account name",
                 new BigDecimal(3000),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"
@@ -133,8 +137,8 @@ public class AccountMapperTestSuite {
     void mapToUserAccountListFromUserAccountEntityListAndSaveToDb() {
         //given
         List<AccountEntity> entityAccountList = new ArrayList<>();
-        Account account1ToEntity = new Account(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
-        Account account2ToEntity = new Account(null, 55L, "account", new BigDecimal(30020), "444", "EUR", "€");
+        Account account1ToEntity = new Account(null, 3L, "account name", new BigDecimal(3000),new BigDecimal(0), "123", "PLN", "zł");
+        Account account2ToEntity = new Account(null, 55L, "account", new BigDecimal(30020),new BigDecimal(0), "444", "EUR", "€");
         //and
         AccountEntity account1Entity = accountMapper.mapToUserAccountEntityFromUserAccount(account1ToEntity);
         AccountEntity account2Entity = accountMapper.mapToUserAccountEntityFromUserAccount(account2ToEntity);
@@ -174,8 +178,8 @@ public class AccountMapperTestSuite {
     void mapToUserAccountDtoListFromUserAccountList() {
         //given
         List<Account> accountList = new ArrayList<>();
-        Account account1 = new Account(null, 3L, "account name", new BigDecimal(3000), "123", "PLN", "zł");
-        Account account2 = new Account(null, 7L, "account", new BigDecimal(333000), "221", "EUR", "€");
+        Account account1 = new Account(null, 3L, "account name", new BigDecimal(3000),new BigDecimal(0), "123", "PLN", "zł");
+        Account account2 = new Account(null, 7L, "account", new BigDecimal(333000),new BigDecimal(0), "221", "EUR", "€");
         //and
         accountList.add(account1);
         accountList.add(account2);

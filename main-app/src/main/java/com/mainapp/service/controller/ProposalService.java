@@ -37,6 +37,7 @@ public class ProposalService {
             return "proposal";
         }
         modelMap.put("proposalDto", returningProposal);
+        log.info("account id form model proposal " + returningProposal.getAccountId());
         log.info("successful received proposal");
         log.info(String.valueOf(returningProposal.getStatusProposal()));
         return "proposal";
@@ -72,11 +73,12 @@ public class ProposalService {
         return "redirect:/dashboard/credit/" + returningProposal.getProposalNumber();
     }
 
-    public String postProposal(final String proposalNumber, ModelMap modelMap) {
+    public String postProposal(final Long accountId, final double monthlyFee, final String proposalNumber, ModelMap modelMap) {
         log.warn("post proposal");
 
         try {
             feignServiceProposalManager.acceptProposal(proposalNumber);
+            feignServiceAccountsManager.setCommitmentsToAccount(accountId, monthlyFee);
         } catch (Exception e) {
             log.warn("problem with connecting to proposal manager");
             modelMap.put("error", "Problem with connecting to proposal manager");

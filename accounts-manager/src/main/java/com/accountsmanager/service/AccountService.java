@@ -46,6 +46,12 @@ public class AccountService {
         log.info("get account by id");
         return getAccountById(accountId);
     }
+    public void setCommitmentsToAccount(final Long accountId, final double monthlyFee) {
+        Account account = accountMapper.mapToUserAccountFromUserAccountEntity
+                (adapterAccountRepository.findById(accountId));
+        account.addCommitments(BigDecimal.valueOf(monthlyFee));
+        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(account));
+    }
 
     public Transfer depositMoney(final Long thisAccountId, final Transfer transfer) {
         log.info("deposit money before validation");

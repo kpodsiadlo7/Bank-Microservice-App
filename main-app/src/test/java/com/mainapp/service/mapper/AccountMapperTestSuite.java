@@ -29,6 +29,7 @@ public class AccountMapperTestSuite {
                 6L,
                 "account name",
                 new BigDecimal(23333),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"
@@ -52,6 +53,7 @@ public class AccountMapperTestSuite {
                 6L,
                 "account name",
                 new BigDecimal(23333),
+                new BigDecimal(0),
                 "123",
                 "PLN",
                 "zł"

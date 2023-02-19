@@ -14,6 +14,7 @@ public class AccountMapper {
                 account.getUserId(),
                 account.getAccountName(),
                 account.getBalance(),
+                account.getCommitments(),
                 account.getNumber(),
                 account.getCurrency(),
                 account.getCurrencySymbol()
@@ -26,6 +27,7 @@ public class AccountMapper {
                 accountDto.getUserId(),
                 accountDto.getAccountName(),
                 accountDto.getBalance(),
+                accountDto.getCommitments(),
                 accountDto.getNumber(),
                 accountDto.getCurrency(),
                 accountDto.getCurrencySymbol()

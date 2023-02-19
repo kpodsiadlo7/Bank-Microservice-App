@@ -56,7 +56,9 @@
                                 th:text="|Account nr ${account.number}|">Currency number</h6>
                             <h6 style="margin-bottom: 0.7em" class="card-subtitle"
                                 th:text="|Balance ${account.balance} ${account.currencySymbol}|">Currency
-                                number</h6>
+                                balance and symbol</h6>
+                            <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle"
+                                th:text="|Commitments ${account.commitments}${account.currencySymbol}|">Currency commitments</h6>
                         </div>
                     </div>
                     <h3 style="margin-left: 0.3em; margin-top: 2em">Deposit or withdraw money</h3>

@@ -22,14 +22,16 @@ public class AccountEntity {
     private Long userId;
     private String accountName;
     private BigDecimal balance;
+    private BigDecimal commitments;
     private String number;
     private String currency;
     private String currencySymbol;
 
-    public AccountEntity(final Long userId, final String accountName, final BigDecimal balance, final String number, final String currency, final String currencySymbol) {
+    public AccountEntity(final Long userId, final String accountName, final BigDecimal balance, final BigDecimal commitments, final String number, final String currency, final String currencySymbol) {
         this.userId = userId;
         this.accountName = accountName;
         this.balance = balance;
+        this.commitments = commitments;
         this.number = number;
         this.currency = currency;
         this.currencySymbol = currencySymbol;

@@ -1,10 +1,10 @@
 package com.accountsmanager.web.controller;
 
 import com.accountsmanager.service.AccountService;
-import com.accountsmanager.service.mapper.TransferMapper;
 import com.accountsmanager.service.mapper.AccountMapper;
-import com.accountsmanager.web.dto.TransferDto;
+import com.accountsmanager.service.mapper.TransferMapper;
 import com.accountsmanager.web.dto.AccountDto;
+import com.accountsmanager.web.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -62,5 +62,13 @@ public class AccountController {
         return ResponseEntity.ok(transferMapper.mapToUserTransferDtoFromUserTransfer
                 (accountService.withdrawMoney
                         (thisAccountId, transferMapper.mapToTransferFromTransferDto(transferDto))));
+    }
+
+    @PostMapping("/set-commitments")
+    public ResponseEntity<Boolean> setCommitmentsToAccountById(@RequestParam Long accountId,
+                                                               @RequestParam double monthlyFee) {
+        log.info("set commitments controller");
+        accountService.setCommitmentsToAccount(accountId, monthlyFee);
+        return ResponseEntity.ok().build();
     }
 }

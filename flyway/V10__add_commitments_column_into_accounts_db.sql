@@ -1,0 +1,1 @@
+alter table accounts_db add column commitments decimal;

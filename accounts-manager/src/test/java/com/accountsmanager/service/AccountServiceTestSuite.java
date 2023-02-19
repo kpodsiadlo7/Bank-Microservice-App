@@ -59,6 +59,7 @@ public class AccountServiceTestSuite {
                 null,
                 "student account",
                 new BigDecimal(0),
+                new BigDecimal(0),
                 null,
                 "EUR",
                 "€"
@@ -81,8 +82,8 @@ public class AccountServiceTestSuite {
     @DisplayName("should return real data from database when we saving several examples one in EUR one in PLN")
     void getAllUserAccounts() {
         //given
-        AccountEntity userAccountPLN = new AccountEntity(7L, "pln account", new BigDecimal(777), "PL55123123", "PLN", "zł");
-        AccountEntity userAccountEUR = new AccountEntity(7L, "euro account", new BigDecimal(400), "DE49123123", "EUR", "€");
+        AccountEntity userAccountPLN = new AccountEntity(7L, "pln account", new BigDecimal(777),new BigDecimal(0), "PL55123123", "PLN", "zł");
+        AccountEntity userAccountEUR = new AccountEntity(7L, "euro account", new BigDecimal(400),new BigDecimal(0), "DE49123123", "EUR", "€");
         userAccountPLN.setId(111L);
         userAccountEUR.setId(333L);
         adapterAccountRepository.save(userAccountPLN);
@@ -104,7 +105,7 @@ public class AccountServiceTestSuite {
     @DisplayName("exists by number should return true when we check if account number which is 'generated' exist in database before assign to the user")
     void existsByNumberInDb() {
         //given
-        AccountEntity userAccountPLN = new AccountEntity(7L, "pln account", new BigDecimal(777), "PL55123123", "PLN", "zł");
+        AccountEntity userAccountPLN = new AccountEntity(7L, "pln account", new BigDecimal(777),new BigDecimal(0), "PL55123123", "PLN", "zł");
         adapterAccountRepository.save(userAccountPLN);
         //when
         boolean thisShouldBeTrue = adapterAccountRepository.existsByNumber("PL55123123");

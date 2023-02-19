@@ -121,6 +121,8 @@
                                 <h6 class="card-subtitle"
                                     th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
                                     Currency balance</h6>
+                                <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle"
+                                    th:text="|Commitments ${userBankAccounts[index].commitments}${userBankAccounts[index].currencySymbol}|">Currency commitments</h6>
                             </div>
                         </div>
                         <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
@@ -168,6 +170,8 @@
                                 <h6 class="card-subtitle"
                                     th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
                                     Currency balance</h6>
+                                <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle"
+                                    th:text="|Commitments ${userBankAccounts[index+1].commitments}${userBankAccounts[index+1].currencySymbol}|">Currency commitments</h6>
                             </div>
                         </div>
                     </div>
