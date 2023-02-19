@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import java.util.Set;
@@ -36,7 +35,6 @@ public class MainService {
     private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
     public boolean createUser(final User user, final ModelMap modelMap) {
         log.info("create user");
         if (!user.getPassword().equals(user.getConfirmPassword())) {
@@ -49,7 +47,7 @@ public class MainService {
         User userFromUserManager = createAndReturnNewUser(user);
 
         if (userFromUserManager.getId() == null) {
-            log.warn("error "+userFromUserManager.getUsername());
+            log.warn("error " + userFromUserManager.getUsername());
             modelMap.put("error", userFromUserManager.getUsername());
             return false;
         }

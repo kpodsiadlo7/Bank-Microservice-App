@@ -25,6 +25,10 @@ public class TransactionService {
         return transactionMapper.mapToTransactionSetFromTransactionEntitySet
                         (adapterTransactionRepository.findAllByUserId(userId));
     }
+    public Set<Transaction> getTransactionsByAccountId(final Long accountId) {
+        return transactionMapper.mapToTransactionSetFromTransactionEntitySet
+                (adapterTransactionRepository.findAllByAccountId(accountId));
+    }
     public Transaction openTransaction(final Long userId, final Long thisAccountId,
                                        final String descriptionTransaction, final TransferDto transferDto) {
         log.info("open transaction");

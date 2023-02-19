@@ -21,4 +21,7 @@ public interface FeignServiceTransactionsManager {
                                    @RequestParam Long thisAccountId,
                                    @RequestParam String descriptionTransaction,
                                    @RequestBody TransferDto transferDto);
+
+    @GetMapping("/transactions_by_account_id")
+    Set<TransactionDto> getTransactionsByAccountId(@RequestParam Long accountId);
 }

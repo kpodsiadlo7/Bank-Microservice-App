@@ -36,6 +36,20 @@ public class TransactionService {
             modelMap.put("error", "Failed with loading your account");
             modelMap.put("account", new AccountDto());
         }
+        return getTransactionsByAccountId(accountId,modelMap);
+    }
+
+    private String getTransactionsByAccountId(final Long accountId, final ModelMap modelMap) {
+        Set<TransactionDto> transactions = new HashSet<>();
+        try {
+            transactions = feignServiceTransactionsManager.getTransactionsByAccountId(accountId);
+            TreeSet<TransactionDto> sortedTransactions = new TreeSet<>(transactions);
+            modelMap.put("transactionsDto",sortedTransactions);
+        } catch (Exception e){
+            modelMap.put("error", "Problem with fetching your transactions");
+            modelMap.put("transactionsDto", transactions);
+            return "account";
+        }
         return "account";
     }
 
@@ -43,8 +57,8 @@ public class TransactionService {
         Set<TransactionDto> transactions = new HashSet<>();
         try {
             transactions = feignServiceTransactionsManager.getAllTransactionByUserId(userId);
-            TreeSet<TransactionDto> sorted = new TreeSet<>(transactions);
-            modelMap.put("transactionsDto", sorted);
+            TreeSet<TransactionDto> sortedTransactions = new TreeSet<>(transactions);
+            modelMap.put("transactionsDto", sortedTransactions);
         } catch (Exception e) {
             modelMap.put("error", "Problem with fetching your transactions");
             modelMap.put("transactionsDto", transactions);

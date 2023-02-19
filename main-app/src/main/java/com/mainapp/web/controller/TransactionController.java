@@ -30,7 +30,7 @@ public class TransactionController {
     }
 
     @GetMapping("/account/{accountId}")
-    public String getAccounts(@AuthenticationPrincipal User user, @PathVariable Long accountId, ModelMap modelMap) {
+    public String getAccounts(@PathVariable Long accountId, ModelMap modelMap) {
         return transactionService.getAccounts(accountId, modelMap);
     }
 

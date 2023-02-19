@@ -38,7 +38,7 @@
                         <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
                     </div>
                     <div class="d-grid gap-1">
-                        <a class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Transactions</a><br>
+                        <a th:href="@{/dashboard/account/{accountId}(accountId=${account.id})}" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">Refresh</a><br>
                         <a class="btn btn-outline-danger" style="margin-left: 2em; margin-top: 12em">CLOSE ACCOUNT</a><br>
                         <a id="backBtn" class="btn btn-outline-primary" style="margin-left: 2em; margin-top: 1em">Back</a><br>
                     </div>
@@ -77,7 +77,33 @@
                 </div>
             </div>
             <div class="col-5">
-                <div class="p1">img</div>
+                <div class="p1" style="margin-left: 3em">
+                    <form>
+                        <div class="h2" style="margin-left: 0.6em;">Account transactions</div>
+                        <div data-bs-spy="scroll"data-bs-smooth-scroll="true" class="scrollspy-example" style="height: 30em" tabindex="1">
+                            <div class="card-body" style="margin-right: 0.6em">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Kind transaction</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="transaction : ${transactionsDto}">
+                                        <td th:text="${transaction.transactionDate}">dddd</td>
+                                        <td th:text="${transaction.kindTransaction}">ddd</td>
+                                        <td th:text="${transaction.description}">ddd</td>
+                                        <td th:text="${transaction.value}">$0.00</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

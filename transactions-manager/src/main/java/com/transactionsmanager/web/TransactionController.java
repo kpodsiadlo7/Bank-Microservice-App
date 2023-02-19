@@ -21,6 +21,18 @@ public class TransactionController {
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
 
+
+    @GetMapping
+    public ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
+        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
+                (transactionService.getAllTransactionsByUserId(userId)));
+    }
+    @GetMapping("/transactions_by_account_id")
+    public ResponseEntity<Set<TransactionDto>> getTransactionsByAccountId(@RequestParam Long accountId){
+        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
+                (transactionService.getTransactionsByAccountId(accountId)));
+    }
+
     @PostMapping
     public ResponseEntity<TransactionDto> makeTransaction(@RequestParam Long userId,
                                                           @RequestParam Long thisAccountId,
@@ -31,9 +43,4 @@ public class TransactionController {
                         (userId, thisAccountId, descriptionTransaction, transferDto)));
     }
 
-    @GetMapping
-    public ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
-        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
-                (transactionService.getAllTransactionsByUserId(userId)));
-    }
 }
