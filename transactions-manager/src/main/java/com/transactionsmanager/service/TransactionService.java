@@ -118,9 +118,7 @@ public class TransactionService {
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
     }
 
-
-    @Transactional
-    protected Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
+    Transaction moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
                                         final String descriptionTransaction, Transaction error) {
         log.info("money transfer");
         if (transferDto.getAmount().compareTo(BigDecimal.valueOf(20000)) > 0) {

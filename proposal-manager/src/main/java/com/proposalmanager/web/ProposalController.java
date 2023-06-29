@@ -40,8 +40,7 @@ public class ProposalController {
     }
 
     @PostMapping("/accept-proposal")
-    public ResponseEntity<Void> postProposal(@RequestParam String proposalNumber) {
-        proposalService.postProposal(proposalNumber);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> postProposal(@RequestParam String proposalNumber) {
+        return ResponseEntity.ok(proposalService.postProposal(proposalNumber));
     }
 }

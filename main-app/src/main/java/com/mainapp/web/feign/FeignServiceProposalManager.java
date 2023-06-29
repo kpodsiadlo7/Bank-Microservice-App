@@ -24,5 +24,5 @@ public interface FeignServiceProposalManager {
                                            @RequestParam String promotion);
 
     @PostMapping("/accept-proposal")
-    void acceptProposal(@RequestParam String proposalNumber);
+    boolean acceptProposal(@RequestParam String proposalNumber);
 }
