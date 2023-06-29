@@ -77,8 +77,9 @@ public class ProposalService {
         log.warn("post proposal");
 
         try {
-            feignServiceProposalManager.acceptProposal(proposalNumber);
+            if(feignServiceProposalManager.acceptProposal(proposalNumber)){
             feignServiceAccountsManager.setCommitmentsToAccount(accountId, monthlyFee);
+            }
         } catch (Exception e) {
             log.warn("problem with connecting to proposal manager");
             modelMap.put("error", "Problem with connecting to proposal manager");

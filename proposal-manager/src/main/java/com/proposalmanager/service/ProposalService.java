@@ -36,7 +36,7 @@ public class ProposalService {
     private final CreditService creditService;
     private final UserService userService;
 
-    public void postProposal(final String proposalNumber) {
+    public boolean postProposal(final String proposalNumber) {
         log.info("post proposal");
         Proposal proposal = proposalMapper.mapToProposalFromProposalEntity
                 (adapterProposalEntityRepository.findByProposalNumber(proposalNumber));
@@ -45,9 +45,10 @@ public class ProposalService {
         if (!feignServiceCreditManager.acceptCredit(proposal)) {
             log.info("proposal rejected");
             rejectedProposal(proposal);
-            return;
+            return false;
         }
         approveProposal(proposal);
+        return true;
     }
 
     private void rejectedProposal(final Proposal proposalToRejected) {

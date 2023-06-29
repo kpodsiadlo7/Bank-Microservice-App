@@ -16,15 +16,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="accounts-manager" target="17" />
       <module name="authentication-manager" target="17" />
-      <module name="credit-manager" target="17" />
-      <module name="main-app" target="17" />
-      <module name="proposal-manager" target="17" />
       <module name="transactions-app" target="17" />
-      <module name="transactions-manager" target="17" />
       <module name="user-manage" target="17" />
-      <module name="user-manager" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

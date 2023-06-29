@@ -236,10 +236,9 @@ public class AccountService {
         }
         if (existByNumber(b.toString())) {
             b.setLength(0);
-            return prepareAccountData(account);
+            return createNumberForAccount(account);
         }
         account.setNumber(b.toString());
         return account;
     }
-
 }
