@@ -1,7 +1,3 @@
-### Polskie online portfolio https://cvkarolpodsiadlo.wixsite.com/start
-
-### English online portfolio https://cvkarolpodsiadlo.wixsite.com/website
-
 ﻿# Microservices Bank Application
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
