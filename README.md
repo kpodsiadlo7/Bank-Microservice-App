@@ -17,7 +17,7 @@
 * Even if a proposal is canceled, every attempt is recorded in the database.
 * At any time, you can revisit a previously unapproved request.
 * The likelihood of credit approval depends on the relationship between the monthly fee and your salary:
-- If the monthly fee is less than 50% of your salary, the chance of rejection is 0%.
+[ ] If the monthly fee is less than 50% of your salary, the chance of rejection is 0%.
 - If the monthly fee is between 50% and 75% of your salary, the rejection chance is 50%.
 - If the monthly fee equals or exceeds 75% of your salary, the rejection chance rises to 80%.
 - If the monthly fee equals 100% of your salary, the rejection chance is 100%.
