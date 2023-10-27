@@ -5,44 +5,46 @@
 # Available
 
 ### Credit Logic
-* Before taking credit we need to fill proposal
-* There are several simple validation e.g. if commission is more than we have
-  money on account we can't approve a credit proposal, 
-  also if we already have that kind of credit in our account
-* If everything is alright we are redirected to next view in which we have a choice
-to approve or cancel our proposal, there are detailed information about the credit 
-e.g. interest, monthly fee etc.
-* If we already have an opened proposal, we cannot make another one before that accepted
-* Even if we cancel proposal, every attempt are stored in the database
-* At any time we can come back to a request that we did not approve for some reason
-* If monthly fee is below half your salary that is 100% chance to get a credit, but if the monthly fee is greater than:
-1. 50% your salary, rejected chance: 50%
-2. 75% your salary, rejected chance: 80% 
-3. 100% your salary, rejected chance: 100%
-* We have to pay a commission, which is calculated from amount of credit, min is 50zł or other currency,
- if commission is more than 50zł we pay as how much as has been calculated
-* We can use promotion for 0% commission for credit which is less than 10000
-* Minimum amount which we can take it is 1000
-* We can open one account with one currency
+* Before applying for credit, a proposal must be submitted.
+* Various simple validations are in place; for instance, if the commission exceeds the available
+  account balance, the credit proposal cannot be approved. Also, if a similar credit is already
+  active in the account, a new proposal won't be accepted.
+* Upon successful validation, you are redirected to the next view, which provides options to
+  either approve or cancel the proposal. Detailed information regarding the credit, such as interest
+  rates and monthly fees, is presented.
+* It's important to note that if there's an existing active proposal, a new one cannot be
+  initiated until the previous one is either accepted or canceled.
+* Even if a proposal is canceled, every attempt is recorded in the database.
+* At any time, you can revisit a previously unapproved request.
+* The likelihood of credit approval depends on the relationship between the monthly fee and your salary:
+- If the monthly fee is less than 50% of your salary, the chance of rejection is 0%.
+- If the monthly fee is between 50% and 75% of your salary, the rejection chance is 50%.
+- If the monthly fee equals or exceeds 75% of your salary, the rejection chance rises to 80%.
+- If the monthly fee equals 100% of your salary, the rejection chance is 100%.
+* A commission is applicable, calculated based on the credit amount. The minimum commission is 50 zł
+  (or the equivalent in other currencies). If the calculated commission exceeds 50 zł, you will be
+  charged the calculated amount.
+* There's an option to take advantage of a promotion for a 0% commission on credits less than 10,000.
+* The minimum credit amount that can be requested is 1,000.
+* Each account can have only one active currency.
 
-### Login and Register system
-* Checking before register by 'login' if user already exist
-* Password encoding
-* User authentication principal via Spring Security
-### Open account system
-* At the time of registration we receive the main account
-(validation if you registered while the account manager was down,
-you will still get the main account after runs again)
-* Several types of account e.g. currency account, savings account
-### Transfer money from user to user
-* Money exchange during transfer money from user to user by currency api
-* Checking that the user want to transfer money to himself and if user which we send money already exist
-* Limit for that kind of transaction is 20000 each
-* Transfer money by account number
-* Account number starts with country code e.g. '€' account -> starts with 'EU' etc.
-### Deposit and withdraw money
-* There is a limit for withdraw money to 5000 and 15000 for deposit each
-* Checking if we have enough money to withdraw
+### Login and Registration System
+* Prior to registration, the system checks if the user already exists using the 'login' information.
+* Passwords are securely encoded.
+* User authentication is managed through Spring Security.
+### Account Management System
+* During the registration process, users receive their primary account. The system also handles cases
+  where registration occurs while the account manager is offline; users will still receive their primary
+  account once it's operational.
+* Various types of accounts are available, including currency accounts and savings accounts.
+### User-to-User Money Transfer
+* Money exchange is conducted during user-to-user money transfers using a currency API.
+* The system checks to ensure that users do not transfer money to themselves and that the recipient user exists.
+* There's a transaction limit of 20,000 units for this type of transfer.
+* Money can be transferred using account numbers, which start with country codes (e.g., '€' account -> starts with 'EU,' etc.).
+### Deposit and Withdrawal of Funds
+* There are limits for withdrawals (up to 5,000 units) and deposits (up to 15,000 units).
+* The system performs checks to verify the availability of funds for withdrawals.
 
 #
 ## still in progress...
