@@ -31,30 +31,72 @@
         });
     </script>
     <div id="errorMsg" class="alert alert-danger d-none" role="alert" th:text="${error}"></div>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1500px;
+        }
+        .card {
+            border: none;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .menu {
+            margin-left: 2em;
+            margin-top: 2em;
+        }
+        .menu-item {
+            margin-left: 2em;
+            margin-bottom: 1em;
+        }
+        .menu-dropdown {
+            margin-left: 6.3em;
+        }
+        .menu-logout {
+            margin-left: 2em;
+            margin-top: 7em;
+        }
+        .custom-btn {
+            color: #fff !important;
+            background-color: #0d6efd !important;
+            border: #0d6efd;
+        }
+
+        .custom-btn:hover {
+            color: #fff !important;
+            background-color: #0b5ed7 !important;
+            border: #0a58ca;
+        }
+    </style>
 </head>
 <body>
-<div class="card">
-    <div class="card-header" style="margin-bottom: 1em">
-        <div class="row">
-            <div class="h2 col-11">
-                Microservices Bank Application
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="h2 col-11">
+                    Microservices Bank Application
+                </div>
             </div>
         </div>
-    </div>
-    <div>
         <div class="row gx-lg-0">
             <div class="col-2">
                 <div class="d-grid gap-2">
-                    <div class="card-header" style="margin-left: 2em;">
-                        <h2 style="margin-left: 2.5em; margin-bottom: 0.3em">Menu</h2>
+                    <div class="card-header" style="margin-top: 2em; margin-left: 2em; margin-right: 22px; text-align: center;">
+                        <h2 style="margin-bottom: 0.3em">Menu</h2>
                     </div>
                     <div class="d-grid gap-1">
-                        <a href="/dashboard/transactions" class="btn btn-outline-dark" style="margin-left: 2em; margin-top: 2em">All
-                            Transactions</a><br>
-                        <a href="" class="btn btn-outline-dark" style="margin-left: 2em">Mortgage loan</a><br>
-                        <a href="/dashboard/proposals" class="btn btn-outline-dark" style="margin-left: 2em">My Requests</a><br>
-                        <div class="dropdown">
-                            <button style="margin-left: 6.3em" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="/dashboard/transactions" class="btn btn-outline-dark menu-item" style="margin-right: 22px">All Transactions</a>
+                        <a href="" class="btn btn-outline-dark menu-item" style="margin-right: 22px">Mortgage loan</a>
+                        <a href="/dashboard/proposals" class="btn btn-outline-dark menu-item" style="margin-right: 22px">My Requests</a>
+                        <div class="dropdown menu-dropdown" style="margin-left: 58px">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Need money?
                             </button>
                             <ul class="dropdown-menu">
@@ -63,8 +105,7 @@
                                 <li><a class="dropdown-item" href="/dashboard/credit">For something?</a></li>
                             </ul>
                         </div>
-                        <a id="logoutBtn" type="button" class="btn btn-outline-primary"
-                           style="margin-left: 2em; margin-top: 7em">Logout</a><br>
+                        <a id="logoutBtn" style="margin-bottom: 25px; margin-right: 22px" type="button" class="btn btn-outline-primary menu-logout">Logout</a>
                     </div>
                 </div>
             </div>
@@ -72,106 +113,78 @@
                 <div class="p-1">
                     <div class="row">
                         <div class="col-6">
-                            <button id="addAccountBtn" type="button" style="margin-left: 2em; margin-bottom: 2em"
-                                    class="btn btn-outline-primary">Add new account
-                            </button>
+                            <button id="addAccountBtn" type="button" style="margin-top: 30px" class="btn btn-outline-primary menu-item">Add new account</button>
                         </div>
                     </div>
-                    <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row"
-                         style="margin-bottom: 2em; margin-left: 2em; margin-right: 2em">
+                    <div th:each="index : ${#numbers.sequence(0,userBankAccounts.size(),2)}" class="row">
                         <div class="col-sm" th:if="${index < userBankAccounts.size()}">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
-                                    <div style="margin-left: auto">
-                                        <div class="dropdown">
-                                            <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index].id})}" class="btn btn-outline-primary">View account</a>
-                                            <button type="button" style="margin-left: 27em" class="btn btn-primary dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false"
-                                                    data-bs-auto-close="outside">
-                                                Quick Transfer
-                                            </button>
-                                            <form class="dropdown-menu p-4" action="" method="post">
-                                                <div class="mb-3">
-                                                    <input type="hidden" name="accountId" th:value="${userBankAccounts[index].id}">
-                                                    <label for="nrAccount" class="form-label">Nr account</label>
-                                                    <input type="text" class="form-control" style="width: 25em"
-                                                           th:field="${quickTransfer.accountNumber}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="amount" class="form-label">Amount</label>
-                                                    <input type="number" class="form-control"
-                                                           th:field="${quickTransfer.amount}" required>
-                                                </div>
-                                                <button type="submit" name="descriptionTransaction"
-                                                        style="margin-bottom: 1.3em" value="transfer money"
-                                                        class="btn btn-outline-success">Send Money
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="h3" th:text="${userBankAccounts[index].accountName}">Account name</div>
+                                        <div style="margin-left: auto">
+                                            <div class="dropdown">
+                                                <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index].id})}" class="btn btn-outline-primary custom-btn">View account</a>
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                                                    Quick Transfer
                                                 </button>
-                                            </form>
+                                                <form class="dropdown-menu p-4" action="" method="post">
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="accountId" th:value="${userBankAccounts[index].id}">
+                                                        <label for="nrAccount" class="form-label">Nr account</label>
+                                                        <input type="text" class="form-control" style="width: 25em" th:field="${quickTransfer.accountNumber}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="amount" class="form-label">Amount</label>
+                                                        <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
+                                                    </div>
+                                                    <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="transfer money" class="btn btn-outline-success">Send Money</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">
-                                    Currency
-                                    account</h6>
-                                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index].number}|">
-                                    Currency number</h6>
-                                <h6 class="card-subtitle"
-                                    th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">
-                                    Currency balance</h6>
-                                <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle"
-                                    th:text="|Commitments ${userBankAccounts[index].commitments}${userBankAccounts[index].currencySymbol}|">Currency commitments</h6>
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index].currency}">Currency account</h6>
+                                    <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index].number}|">Currency number</h6>
+                                    <h6 class="card-subtitle" th:text="|Balance ${userBankAccounts[index].balance} ${userBankAccounts[index].currencySymbol}|">Currency balance</h6>
+                                    <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle" th:text="|Commitments ${userBankAccounts[index].commitments}${userBankAccounts[index].currencySymbol}|">Currency commitments</h6>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm" th:if="${index+1 < userBankAccounts.size()}">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name
-                                    </div>
-                                    <div style="margin-left: auto">
-                                        <div class="dropdown">
-                                            <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index+1].id})}" class="btn btn-outline-primary">View account</a>
-                                            <button type="button" style="margin-left: 27em" class="btn btn-primary dropdown-toggle"
-                                                    data-bs-toggle="dropdown" aria-expanded="false"
-                                                    data-bs-auto-close="outside">
-                                                Quick Transfer
-                                            </button>
-                                            <form class="dropdown-menu p-4" action="" method="post">
-                                                <div class="mb-3">
-                                                    <input type="hidden" name="accountId"
-                                                           th:value="${userBankAccounts[index+1].id}">
-                                                    <label for="nrAccount" class="form-label">Nr account</label>
-                                                    <input type="text" class="form-control" style="width: 25em"
-                                                           th:field="${quickTransfer.accountNumber}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="amount" class="form-label">Amount</label>
-                                                    <input type="number" class="form-control"
-                                                           th:field="${quickTransfer.amount}" required>
-                                                </div>
-                                                <button type="submit" name="descriptionTransaction"
-                                                        style="margin-bottom: 1.3em" value="transfer money"
-                                                        class="btn btn-outline-success">Send Money
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="h3" th:text="${userBankAccounts[index+1].accountName}">Account name</div>
+                                        <div style="margin-left: auto">
+                                            <div class="dropdown">
+                                                <a th:href="@{/dashboard/account/{accountId}(accountId=${userBankAccounts[index+1].id})}" class="btn btn-outline-primary custom-btn">View account</a>
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                                                    Quick Transfer
                                                 </button>
-                                            </form>
+                                                <form class="dropdown-menu p-4" action="" method="post">
+                                                    <div class="mb-3">
+                                                        <input type="hidden" name="accountId" th:value="${userBankAccounts[index+1].id}">
+                                                        <label for="nrAccount" class="form-label">Nr account</label>
+                                                        <input type="text" class="form-control" style="width: 25em" th:field="${quickTransfer.accountNumber}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="amount" class="form-label">Amount</label>
+                                                        <input type="number" class="form-control" th:field="${quickTransfer.amount}" required>
+                                                    </div>
+                                                    <button type="submit" name="descriptionTransaction" style="margin-bottom: 1.3em" value="transfer money" class="btn btn-outline-success">Send Money</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <h6 class="card-subtitle mb-2 text-muted"
-                                    th:text="${userBankAccounts[index+1].currency}">Currency
-                                    account</h6>
-                                <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index+1].number}|">
-                                    Currency
-                                    number</h6>
-                                <h6 class="card-subtitle"
-                                    th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">
-                                    Currency balance</h6>
-                                <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle"
-                                    th:text="|Commitments ${userBankAccounts[index+1].commitments}${userBankAccounts[index+1].currencySymbol}|">Currency commitments</h6>
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted" th:text="${userBankAccounts[index+1].currency}">Currency account</h6>
+                                    <h6 class="card-subtitle" th:text="|Account nr ${userBankAccounts[index+1].number}|">Currency number</h6>
+                                    <h6 class="card-subtitle" th:text="|Balance ${userBankAccounts[index+1].balance} ${userBankAccounts[index+1].currencySymbol}|">Currency balance</h6>
+                                    <h6 style="margin-bottom: 0.7em; margin-top: 1em" class="card-subtitle" th:text="|Commitments ${userBankAccounts[index+1].commitments}${userBankAccounts[index+1].currencySymbol}|">Currency commitments</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
