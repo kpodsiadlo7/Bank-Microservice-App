@@ -46,11 +46,4 @@
 * There are limits for withdrawals (up to 5,000 units) and deposits (up to 15,000 units).
 * The system performs checks to verify the availability of funds for withdrawals.
 
-#
-## still in progress...
-#### *Mortgage loan
-#### Close account
-#### Extend credit logic
-#### Spending money system
-
 #### ports: 5432 - 8080 - 8090 - 8000 - 8010
