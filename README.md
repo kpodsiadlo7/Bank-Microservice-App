@@ -2,7 +2,7 @@
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
 
-[English Version](#Description_In_English)
+[English Version](#DescriptionInEnglish)
 
 Opis aplikacji
 ### Logika Kredytowa
