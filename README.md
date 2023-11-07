@@ -2,8 +2,43 @@
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
 
-[English Version](#Available)
-# Available
+[English Version](#Description_In_English)
+
+Opis aplikacji
+### Logika Kredytowa
+* Przed złożeniem wniosku o kredyt, konieczne jest przedstawienie propozycji.
+* Wprowadzono różne proste walidacje; na przykład, jeśli prowizja przekracza dostępny stan konta, wniosek kredytowy nie może zostać zatwierdzony. Ponadto, jeśli na koncie istnieje już aktywny kredyt o podobnych warunkach, nowa propozycja nie zostanie przyjęta.
+* Po udanej walidacji, następuje przekierowanie do kolejnego widoku, który oferuje opcje zatwierdzenia lub anulowania propozycji. Prezentowane są szczegółowe informacje dotyczące kredytu, takie jak oprocentowanie i opłaty miesięczne.
+* Warto zauważyć, że jeśli istnieje aktywna propozycja kredytowa, nową nie można zainicjować, dopóki poprzednia nie zostanie zaakceptowana lub anulowana.
+* Nawet jeśli propozycja zostanie anulowana, każda próba jest rejestrowana w bazie danych.
+* W każdej chwili można powrócić do wcześniej niezaakceptowanego wniosku.
+* Szansa na zatwierdzenie kredytu zależy od relacji między opłatą miesięczną a Twoją pensją:
+- Jeśli opłata miesięczna wynosi mniej niż 50% Twojej pensji, szansa na odrzucenie to 0%.
+- Jeśli opłata miesięczna wynosi od 50% do 75% Twojej pensji, szansa na odrzucenie to 50%.
+- Jeśli opłata miesięczna wynosi 75% lub więcej Twojej pensji, szansa na odrzucenie wzrasta do 80%.
+- Jeśli opłata miesięczna wynosi 100% Twojej pensji, szansa na odrzucenie wynosi 100%.
+Naliczana jest prowizja, obliczana na podstawie kwoty kredytu. Minimalna prowizja wynosi 50 zł (lub równowartość w innych walutach). Jeśli obliczona prowizja przekracza 50 zł, zostanie naliczona odpowiednia kwota.
+Istnieje opcja skorzystania z promocji na 0% prowizji przy kredytach poniżej 10 000.
+Minimalna kwota kredytu, jaką można wnioskować, wynosi 1 000.
+Każde konto może mieć tylko jedną aktywną walutę.
+System Logowania i Rejestracji
+Przed rejestracją system sprawdza, czy użytkownik już istnieje, korzystając z informacji o 'login'.
+Hasła są bezpiecznie zakodowane.
+Autoryzacja użytkownika jest zarządzana za pomocą Spring Security.
+System Zarządzania Kontem
+Podczas procesu rejestracji użytkownicy otrzymują swoje podstawowe konto. System obsługuje również przypadki rejestracji, gdy menedżer konta jest niedostępny; użytkownicy otrzymają swoje podstawowe konto, gdy stanie się ono dostępne.
+Dostępne są różne rodzaje kont, w tym konta walutowe i konta oszczędnościowe.
+Przelew Pieniędzy Od Użytkownika Do Użytkownika
+Wymiana pieniędzy odbywa się podczas przelewów pieniędzy od użytkownika do użytkownika za pomocą interfejsu API walutowego.
+System sprawdza, czy użytkownicy nie przekazują pieniędzy sobie samym oraz czy odbiorca istnieje.
+Dla tego rodzaju przelewu istnieje ograniczenie transakcji do 20 000 jednostek.
+Pieniądze można przekazywać za pomocą numerów kont, które zaczynają się od kodów krajów (np. konto '€' zaczyna się od 'EU', itp.).
+Wpłaty i Wypłaty Środków
+Istnieją limity dla wypłat (do 5 000 jednostek) i wpłat (do 15 000 jednostek).
+System przeprowadza sprawdzenia, aby zweryfikować dostępność środków do wypłaty.
+
+
+# Description in English
 
 ### Credit Logic
 * Before applying for credit, a proposal must be submitted.
