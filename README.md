@@ -6,36 +6,36 @@
 
 Opis aplikacji
 ### Logika Kredytowa
-* Przed złożeniem wniosku o kredyt, konieczne jest przedstawienie propozycji.
-* Wprowadzono różne proste walidacje; na przykład, jeśli prowizja przekracza dostępny stan konta, wniosek kredytowy nie może zostać zatwierdzony. Ponadto, jeśli na koncie istnieje już aktywny kredyt o podobnych warunkach, nowa propozycja nie zostanie przyjęta.
+* Przed złożeniem wniosku o kredyt, konieczne jest przedstawienie propozycji i wypełnienie wniosku.
+* Wprowadzono różne walidacje; na przykład, jeśli prowizja przekracza dostępny stan konta, wniosek kredytowy nie może zostać zatwierdzony. Ponadto, jeśli na koncie istnieje już aktywny kredyt o podobnych warunkach, nowa propozycja nie zostanie przyjęta.
 * Po udanej walidacji, następuje przekierowanie do kolejnego widoku, który oferuje opcje zatwierdzenia lub anulowania propozycji. Prezentowane są szczegółowe informacje dotyczące kredytu, takie jak oprocentowanie i opłaty miesięczne.
 * Warto zauważyć, że jeśli istnieje aktywna propozycja kredytowa, nową nie można zainicjować, dopóki poprzednia nie zostanie zaakceptowana lub anulowana.
 * Nawet jeśli propozycja zostanie anulowana, każda próba jest rejestrowana w bazie danych.
-* W każdej chwili można powrócić do wcześniej niezaakceptowanego wniosku.
+* W każdej chwili można powrócić do wcześniej niezaakceptowanego lub otwartego wniosku.
 * Szansa na zatwierdzenie kredytu zależy od relacji między opłatą miesięczną a Twoją pensją:
 1. Jeśli opłata miesięczna wynosi mniej niż 50% Twojej pensji, szansa na odrzucenie to 0%.
 2. Jeśli opłata miesięczna wynosi od 50% do 75% Twojej pensji, szansa na odrzucenie to 50%.
 3. Jeśli opłata miesięczna wynosi 75% lub więcej Twojej pensji, szansa na odrzucenie wzrasta do 80%.
 4. Jeśli opłata miesięczna wynosi 100% Twojej pensji, szansa na odrzucenie wynosi 100%.
 * Naliczana jest prowizja, obliczana na podstawie kwoty kredytu. Minimalna prowizja wynosi 50 zł (lub równowartość w innych walutach). Jeśli obliczona prowizja przekracza 50 zł, zostanie naliczona odpowiednia kwota.
-* Istnieje opcja skorzystania z promocji na 0% prowizji przy kredytach poniżej 10 000.
-* Minimalna kwota kredytu, jaką można wnioskować, wynosi 1 000.
+* Istnieje opcja skorzystania z promocji na 0% prowizji przy kredytach poniżej 10 000 zł.
+* Minimalna kwota kredytu, jaką można wnioskować, wynosi 1 000 zł.
 * Każde konto może mieć tylko jedną aktywną walutę.
 ### System Logowania i Rejestracji
-* Przed rejestracją system sprawdza, czy użytkownik już istnieje, korzystając z informacji o 'login'.
-* Hasła są bezpiecznie zakodowane.
+* Przed rejestracją system sprawdza, czy użytkownik już istnieje w bazie danych.
+* Hasła są zakodowane.
 * Autoryzacja użytkownika jest zarządzana za pomocą Spring Security.
 ### System Zarządzania Kontem
-* Podczas procesu rejestracji użytkownicy otrzymują swoje podstawowe konto. System obsługuje również przypadki rejestracji, gdy menedżer konta jest niedostępny; użytkownicy otrzymają swoje podstawowe konto, gdy stanie się ono dostępne.
+* Podczas procesu rejestracji użytkownicy otrzymują swoje podstawowe konto. System obsługuje również przypadki rejestracji, gdy menedżer konta był niedostępny w momencie rejestracji; użytkownicy otrzymają swoje podstawowe konto, gdy stanie się on ponownie dostępny.
 * Dostępne są różne rodzaje kont, w tym konta walutowe i konta oszczędnościowe.
 ### Przelew Pieniędzy Od Użytkownika Do Użytkownika
-* Wymiana pieniędzy odbywa się podczas przelewów pieniędzy od użytkownika do użytkownika za pomocą interfejsu API walutowego.
-* System sprawdza, czy użytkownicy nie przekazują pieniędzy sobie samym oraz czy odbiorca istnieje.
-* Dla tego rodzaju przelewu istnieje ograniczenie transakcji do 20 000 jednostek.
-* Pieniądze można przekazywać za pomocą numerów kont, które zaczynają się od kodów krajów (np. konto '€' zaczyna się od 'EU', itp.).
+* Przelew pieniędzy odbywa się za pomocą interfejsu API walutowego z uwzględnieniem aktualnego kursu dla walut.
+* System sprawdza, czy użytkownicy nie przelewają pieniędzy sobie samym oraz czy odbiorca istnieje.
+* Dla tego rodzaju przelewu istnieje ograniczenie transakcji do 20 000 zł.
+* Przelewy odbywają się za pomocą numerów kont bankowych, które zaczynają się od kodów krajów (np. konto '€' zaczyna się od 'EU', itp.).
 ### Wpłaty i Wypłaty Środków
-* Istnieją limity dla wypłat (do 5 000 jednostek) i wpłat (do 15 000 jednostek).
-* System przeprowadza sprawdzenia, aby zweryfikować dostępność środków do wypłaty.
+* Istnieją limity dla wypłat (do 5 000 zł) i wpłat (do 15 000 zł).
+* System automatycznie sprawdza, czy dostępne są pieniądze do wypłaty.
 
 
 # Description in the English version
