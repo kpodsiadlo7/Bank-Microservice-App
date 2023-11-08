@@ -2,7 +2,7 @@
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc
 
-# Opis aplikacji [English Version](#description-in-the-english-version)
+ Opis aplikacji [English Version](#description-in-the-english-version)
 ### Logika Kredytowa
 * Przed złożeniem wniosku o kredyt, konieczne jest przedstawienie propozycji i wypełnienie wniosku.
 * Wprowadzono różne walidacje; na przykład, jeśli prowizja przekracza dostępny stan konta, wniosek kredytowy nie może zostać zatwierdzony. Ponadto, jeśli na koncie istnieje już aktywny kredyt o podobnych warunkach, nowa propozycja nie zostanie przyjęta.
