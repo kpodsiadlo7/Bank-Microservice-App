@@ -45,14 +45,19 @@ public class CreditService {
     private boolean checkingSalaryToCreditPossibilities(final Proposal proposal) {
         log.info("checking Salary To Credit Possibilities");
 
-        if (proposal.getMonthlyFee() >= proposal.getSalary())
-            return false;
+        double salary = proposal.getSalary();
+        double monthlyFee = proposal.getMonthlyFee();
 
-        if (proposal.getMonthlyFee() >= proposal.getSalary()/1.25) {
+        if (monthlyFee >= salary) {
+            return false;
+        }
+        double salaryToFeeRatio = salary / monthlyFee;
+
+        if (monthlyFee >= salaryToFeeRatio * 1.25) {
             int random = (int) (Math.random() * 9);
             return random >= 8;
         }
-        if (proposal.getMonthlyFee() > proposal.getSalary()/2) {
+        if (monthlyFee > salaryToFeeRatio * 0.5) {
             int random = (int) (Math.random() * 9);
             return random >= 4;
         }
