@@ -1,14 +1,9 @@
-package com.accountsmanager.service.mapper;
+package com.accountsmanager.service.account;
 
 import com.accountsmanager.AccountsManagerApplication;
-import com.accountsmanager.domain.AccountEntity;
-import com.accountsmanager.repository.adapter.AdapterAccountRepository;
-import com.accountsmanager.service.data.Account;
-import com.accountsmanager.web.dto.AccountDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -22,10 +17,16 @@ import java.util.List;
 @SpringBootTest(classes = AccountsManagerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AccountMapperTestSuite {
 
-    @Autowired
-    private AccountMapper accountMapper;
-    @Autowired
-    private AdapterAccountRepository adapterAccountRepository;
+    private final AccountMapper accountMapper;
+    private final AdapterAccountRepository adapterAccountRepository;
+    private final AccountFactory accountFactory;
+
+    public AccountMapperTestSuite(AccountMapper accountMapper, AdapterAccountRepository adapterAccountRepository, AccountFactory accountFactory) {
+        this.accountMapper = accountMapper;
+        this.adapterAccountRepository = adapterAccountRepository;
+        this.accountFactory = accountFactory;
+    }
+
 
     @Test
     void mapToUserAccountDtoFromUserAccount() {
@@ -41,7 +42,7 @@ public class AccountMapperTestSuite {
                 "zł"
         );
         //when
-        AccountDto accountAfterMapper = accountMapper.mapToUserAccountDtoFromUserAccount(account);
+        AccountDto accountAfterMapper = accountFactory.buildUserAccountDtoFromUserAccount(account);
         //then
         Assertions.assertEquals(3, accountAfterMapper.getUserId());
         Assertions.assertNull(accountAfterMapper.getId());
@@ -55,16 +56,15 @@ public class AccountMapperTestSuite {
     @Test
     void mapToUserAccountFromUserAccountDto() {
         //given
-        AccountDto userAccount = new AccountDto(
-                null,
-                3L,
-                "account name",
-                new BigDecimal(3000),
-                new BigDecimal(0),
-                "123",
-                "PLN",
-                "zł"
-        );
+        AccountDto userAccount = AccountDto.builder()
+                .withId(null)
+                .withUserId(3L)
+                .withAccountName("account name")
+                .withBalance(new BigDecimal(3000))
+                .withCommitments(new BigDecimal(0))
+                .withNumber("123")
+                .withCurrency("PLN")
+                .withCurrencySymbol("zł").build();
         //when
         Account accountAfterMapper = accountMapper.mapToUserAccountFromUserAccountDto(userAccount);
         //then

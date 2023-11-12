@@ -1,10 +1,6 @@
-package com.accountsmanager.service;
+package com.accountsmanager.service.account;
 
 import com.accountsmanager.AccountsManagerApplication;
-import com.accountsmanager.domain.AccountEntity;
-import com.accountsmanager.repository.adapter.AdapterAccountRepository;
-import com.accountsmanager.service.data.Account;
-import com.accountsmanager.service.mapper.AccountMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +18,7 @@ import static org.mockito.Mockito.mock;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountsManagerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AccountServiceTestSuite {
+public class AccountFacadeTestSuite {
 
     @Autowired
     private AdapterAccountRepository adapterAccountRepository;
@@ -34,12 +30,8 @@ public class AccountServiceTestSuite {
     void createMainAccountPassingUserAccountWithoutCurrency() {
         //given
         Account account = new Account();
-        //and
-        var mockRepository = mock(AccountMapper.class);
-        //and
-        var adapterUserRepo = mock(AdapterAccountRepository.class);
         //system under test
-        var toTest = new AccountService(mockRepository, adapterUserRepo,null);
+        var toTest = new AccountFacade(accountMapper,null,null,null,adapterAccountRepository);
         //when
         Account accountAfterTest = toTest.validateData(7L, account);
         //then
@@ -65,7 +57,7 @@ public class AccountServiceTestSuite {
                 "€"
         );
         //system under test
-        var toTest = new AccountService(accountMapper, adapterAccountRepository,null);
+        var toTest = new AccountFacade(accountMapper,null,null,null,adapterAccountRepository);
         //when
         Account accountAfterTest = toTest.validateData(7L, account);
         //then
@@ -90,7 +82,7 @@ public class AccountServiceTestSuite {
         adapterAccountRepository.save(userAccountEUR);
         //and
         //system under test
-        var toTest = new AccountService(accountMapper, adapterAccountRepository,null);
+        var toTest = new AccountFacade(accountMapper,null,null,null,adapterAccountRepository);
         //when
         List<Account> accountAfterRealMethod = toTest.getAllUserAccounts(7L);
         //then
