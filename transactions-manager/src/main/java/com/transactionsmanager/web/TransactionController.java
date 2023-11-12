@@ -9,32 +9,30 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class TransactionController {
+class TransactionController {
 
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
 
 
     @GetMapping
-    public ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
+    ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
         return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
                 (transactionService.getAllTransactionsByUserId(userId)));
     }
     @GetMapping("/transactions_by_account_id")
-    public ResponseEntity<Set<TransactionDto>> getTransactionsByAccountId(@RequestParam Long accountId){
+    ResponseEntity<Set<TransactionDto>> getTransactionsByAccountId(@RequestParam Long accountId){
         return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
                 (transactionService.getTransactionsByAccountId(accountId)));
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDto> makeTransaction(@RequestParam Long userId,
+    ResponseEntity<TransactionDto> makeTransaction(@RequestParam Long userId,
                                                           @RequestParam Long thisAccountId,
                                                           @RequestParam String descriptionTransaction,
                                                           @RequestBody TransferDto transferDto) {
