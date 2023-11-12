@@ -1,4 +1,4 @@
-package com.accountsmanager.service.data;
+package com.accountsmanager.service.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Currency {
+class CurrencyApi {
     double eur;
     double usd;
     double pln;

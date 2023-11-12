@@ -1,4 +1,4 @@
-package com.accountsmanager.web.dto;
+package com.accountsmanager.service.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto {
+class Account {
     private Long id;
     private Long userId;
     private String accountName;
@@ -20,4 +20,8 @@ public class AccountDto {
     private String number;
     private String currency;
     private String currencySymbol;
+
+    void addCommitments(final BigDecimal commitments) {
+        this.commitments = this.commitments.add(commitments);
+    }
 }
