@@ -33,105 +33,6 @@ public class AccountFacade {
         }
         return createAccountForUser(userId, account);
     }
-
-    private void increaseMoney(final Account accountToIncreaseMoney, final BigDecimal amount) {
-        log.info("increase money " + amount);
-        BigDecimal amountAfterIncrease = accountToIncreaseMoney.getBalance().add(amount);
-        accountToIncreaseMoney.setBalance(amountAfterIncrease);
-        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToIncreaseMoney));
-    }
-
-    private void decreaseMoney(final Account accountToDecreaseMoney, final BigDecimal amount) {
-        log.info("decrease money" + amount);
-        BigDecimal amountAfterDecrease = accountToDecreaseMoney.getBalance().subtract(amount);
-        accountToDecreaseMoney.setBalance(amountAfterDecrease);
-        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToDecreaseMoney));
-    }
-
-    boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
-        return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);
-    }
-
-    AccountDto getAccountByAccountId(final Long accountId) {
-        return accountFactory.buildUserAccountDtoFromUserAccount(getAccountById(accountId));
-    }
-    TransferDto depositMoney(final Long thisAccountId, final TransferDto transferDto){
-        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
-            return transferDto;
-        }
-        if(transferFacade.depositMoney(thisAccountId,transferDto))
-            increaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
-                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
-        return transferDto;
-    }
-
-    TransferDto validateDataBeforeTransaction(Long thisAccountId, TransferDto transferDto){
-        if (getAccountById(thisAccountId).getBalance().compareTo(transferDto.getAmount()) < 0) {
-            if (transferDto.getAccountNumber().equals("deposit")) {
-                log.info("deposit");
-                return transferDto;
-            }
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
-            log.info("dont have enough money");
-            transferDto.toBuilder().withAccountNumber("You don't have enough money");
-            return transferDto;
-        }
-
-        if (getAccountById(thisAccountId).getNumber().equals(transferDto.getAccountNumber())) {
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
-            log.info("him self");
-            transferDto.toBuilder().withAccountNumber("You can't send money to account which from you send");
-            return transferDto;
-        }
-        if (!existByNumber(transferDto.getAccountNumber())) {
-            if (transferDto.getAccountNumber().equals("deposit") ||
-                    transferDto.getAccountNumber().equals("withdraw")) {
-                log.info("deposit or withdraw");
-                return transferDto;
-            }
-            log.info("user doesnt exist");
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
-            transferDto.toBuilder().withAccountNumber("User with this number doesn't exist!");
-            return transferDto;
-        }
-        return transferDto;
-    }
-
-    TransferDto withdrawMoney(final Long thisAccountId, final TransferDto transferDto) {
-        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
-            return transferDto;
-        }
-        if(transferFacade.withdrawMoney(transferDto)){
-            decreaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
-                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
-        }
-        return transferDto;
-    }
-
-    TransferDto moneyTransferFromUserToUser(final Long thisAccountId, final TransferDto transferDto) {
-        Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
-                (adapterAccountRepository.findByNumber(transferDto.getAccountNumber()));
-        Account accountToDecrease = getAccountById(thisAccountId);
-        //checking difference currency before increase money in external API
-        BigDecimal newAmount = currencyFacade.exchangeCurrency(
-                accountIncrease.getCurrency().toLowerCase(),
-                accountToDecrease.getCurrency().toLowerCase(), transferDto.getAmount());
-
-        decreaseMoney(accountToDecrease, newAmount);
-        increaseMoney(accountIncrease, newAmount);
-        return Objects.equals
-                (validateDataBeforeTransaction(thisAccountId, transferDto)
-                        .getAmount(), new BigDecimal(-1)) ?
-                transferFacade.moneyTransferFromUserToUser(accountIncrease.getId(),
-                        accountIncrease.getUserId(),transferDto) : transferDto;
-    }
-
-    List<Account> getAllUserAccounts(final Long userId) {
-        log.info("get all user accounts");
-        List<AccountEntity> accountEntities = adapterAccountRepository.findAllByUserId(userId);
-        return accountMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
-    }
-
     private Account createAccountForUser(final Long userId, final Account account) {
         log.info("create account for user");
         account.setUserId(userId);
@@ -140,14 +41,12 @@ public class AccountFacade {
         adapterAccountRepository.save(accountEntity);
         return accountMapper.mapToUserAccountFromUserAccountEntity(accountEntity);
     }
-
     private Account prepareAccountData(final Account account) {
         log.info("prepare account data");
         //start money
         account.setBalance(new BigDecimal(10000));
         return createNumberForAccount(account);
     }
-
     private Account createMainAccount(final Long userId, final Account account) {
         log.info("create main account");
         account.setUserId(userId);
@@ -157,16 +56,10 @@ public class AccountFacade {
         adapterAccountRepository.save(accountMapper.mapToUserAccountEntityFromUserAccount(account));
         return account;
     }
-
-    private boolean existByNumber(final String accountNumber) {
-        return adapterAccountRepository.existsByNumber(accountNumber);
-    }
-
     private Account getAccountById(final Long accountId) {
         return accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findById(accountId));
     }
-
     private Account createNumberForAccount(final Account account) {
         log.info("create number for account");
         String symbol = "";
@@ -201,21 +94,112 @@ public class AccountFacade {
         account.setNumber(b.toString());
         return account;
     }
-
-    List<AccountDto> getAllUserAccountByUserId(Long userId) {
-        return accountMapper.mapToUserAccountDtoListFromUserAccountList
-                (getAllUserAccounts(userId));
+    List<Account> getAllUserAccounts(final Long userId) {
+        log.info("get all user accounts");
+        List<AccountEntity> accountEntities = adapterAccountRepository.findAllByUserId(userId);
+        return accountMapper.mapToUserAccountListFromUserAccountEntityList(accountEntities);
     }
-
+    AccountDto getAccountByAccountId(final Long accountId) {
+        return accountFactory.buildUserAccountDtoFromUserAccount(getAccountById(accountId));
+    }
     AccountDto createAccount(Long userId, AccountDto accountDto) {
         return accountFactory.buildUserAccountDtoFromUserAccount(validateData
                 (userId, accountMapper.mapToUserAccountFromUserAccountDto(accountDto)));
     }
+    List<AccountDto> getAllUserAccountByUserId(Long userId) {
+        return accountMapper.mapToUserAccountDtoListFromUserAccountList
+                (getAllUserAccounts(userId));
+    }
+    TransferDto depositMoney(final Long thisAccountId, final TransferDto transferDto){
+        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
+            return transferDto;
+        }
+        if(transferFacade.depositMoney(thisAccountId,transferDto))
+            increaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
+                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
+        return transferDto;
+    }
+    TransferDto validateDataBeforeTransaction(Long thisAccountId, TransferDto transferDto){
+        if (getAccountById(thisAccountId).getBalance().compareTo(transferDto.getAmount()) < 0) {
+            if (transferDto.getAccountNumber().equals("deposit")) {
+                log.info("deposit");
+                return transferDto;
+            }
+            transferDto.toBuilder().withAmount(new BigDecimal(-1));
+            log.info("dont have enough money");
+            transferDto.toBuilder().withAccountNumber("You don't have enough money");
+            return transferDto;
+        }
 
+        if (getAccountById(thisAccountId).getNumber().equals(transferDto.getAccountNumber())) {
+            transferDto.toBuilder().withAmount(new BigDecimal(-1));
+            log.info("him self");
+            transferDto.toBuilder().withAccountNumber("You can't send money to account which from you send");
+            return transferDto;
+        }
+        if (!existByNumber(transferDto.getAccountNumber())) {
+            if (transferDto.getAccountNumber().equals("deposit") ||
+                    transferDto.getAccountNumber().equals("withdraw")) {
+                log.info("deposit or withdraw");
+                return transferDto;
+            }
+            log.info("user doesnt exist");
+            transferDto.toBuilder().withAmount(new BigDecimal(-1));
+            transferDto.toBuilder().withAccountNumber("User with this number doesn't exist!");
+            return transferDto;
+        }
+        return transferDto;
+    }
+    TransferDto withdrawMoney(final Long thisAccountId, final TransferDto transferDto) {
+        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
+            return transferDto;
+        }
+        if(transferFacade.withdrawMoney(transferDto)){
+            decreaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
+                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
+        }
+        return transferDto;
+    }
+    TransferDto moneyTransferFromUserToUser(final Long thisAccountId, final TransferDto transferDto) {
+        Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
+                (adapterAccountRepository.findByNumber(transferDto.getAccountNumber()));
+        Account accountToDecrease = getAccountById(thisAccountId);
+        //checking difference currency before increase money in external API
+        BigDecimal newAmount = currencyFacade.exchangeCurrency(
+                accountIncrease.getCurrency().toLowerCase(),
+                accountToDecrease.getCurrency().toLowerCase(), transferDto.getAmount());
+
+        decreaseMoney(accountToDecrease, newAmount);
+        increaseMoney(accountIncrease, newAmount);
+        return Objects.equals
+                (validateDataBeforeTransaction(thisAccountId, transferDto)
+                        .getAmount(), new BigDecimal(-1)) ?
+                transferFacade.moneyTransferFromUserToUser(accountIncrease.getId(),
+                        accountIncrease.getUserId(),transferDto) : transferDto;
+    }
+    boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
+        return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);
+    }
+    private boolean existByNumber(final String accountNumber) {
+        return adapterAccountRepository.existsByNumber(accountNumber);
+    }
     void setCommitmentsToAccount(final Long accountId, final double monthlyFee) {
         Account account = accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findById(accountId));
         account.addCommitments(BigDecimal.valueOf(monthlyFee));
         adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(account));
+    }
+    private void increaseMoney(final Account accountToIncreaseMoney, final BigDecimal amount) {
+        log.info("increase money " + amount);
+        BigDecimal amountAfterIncrease = accountToIncreaseMoney.getBalance().add(amount);
+        accountToIncreaseMoney.setBalance(amountAfterIncrease);
+        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToIncreaseMoney));
+    }
+
+    private void decreaseMoney(final Account accountToDecreaseMoney, final BigDecimal amount) {
+        log.info("decrease money" + amount);
+        BigDecimal amountAfterDecrease = accountToDecreaseMoney.getBalance().subtract(amount);
+        accountToDecreaseMoney.setBalance(amountAfterDecrease);
+        adapterAccountRepository.save(accountMapper.updateUserAccountEntityFromUserAccount(accountToDecreaseMoney));
     }
 }
