@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
-public class DashboardController {
+class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping
-    public String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
+    String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
         return dashboardService.fetchAllAccounts(user,modelMap);
     }
 
     @GetMapping("/create-account")
-    public String getAccount(ModelMap modelMap) {
+    String getAccount(ModelMap modelMap) {
         modelMap.put("account", new AccountDto());
         return "accounts";
     }
 
     @PostMapping("/create-account")
-    public String postAccount(@AuthenticationPrincipal User user, @ModelAttribute AccountDto accountDto, ModelMap modelMap) {
+    String postAccount(@AuthenticationPrincipal User user, @ModelAttribute AccountDto accountDto, ModelMap modelMap) {
         return dashboardService.createAccount(user,accountDto,modelMap);
     }
 
     @PostMapping
-    public String makeTransaction(@AuthenticationPrincipal User user, @RequestParam(name = "accountId") Long accountId, @ModelAttribute TransferDto transferDto,
+    String makeTransaction(@AuthenticationPrincipal User user, @RequestParam(name = "accountId") Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
         if (!dashboardService.makeTransaction(user,accountId,transferDto,descriptionTransaction,modelMap))
             return dashboardService.fetchAllAccounts(user,modelMap);

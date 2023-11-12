@@ -2,11 +2,8 @@ package com.mainapp.web.controller;
 
 import com.mainapp.service.controller.CreditService;
 import com.mainapp.service.controller.ProposalService;
-import com.mainapp.service.data.Proposal;
 import com.mainapp.service.data.User;
-import com.mainapp.service.mapper.AccountMapper;
 import com.mainapp.service.mapper.ProposalMapper;
-import com.mainapp.web.dto.AccountDto;
 import com.mainapp.web.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,25 +16,25 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/dashboard/credit")
-public class CreditController {
+class CreditController {
 
     private final CreditService creditService;
     private final ProposalService proposalService;
     private final ProposalMapper proposalMapper;
 
     @GetMapping
-    public String getCredit(@AuthenticationPrincipal User user,
+    String getCredit(@AuthenticationPrincipal User user,
                             ModelMap modelMap) {
         return creditService.getCredits(user, modelMap);
     }
 
     @GetMapping("{proposalNumber}")
-    public String getProposal(@PathVariable String proposalNumber, ModelMap modelMap) {
+    String getProposal(@PathVariable String proposalNumber, ModelMap modelMap) {
         return proposalService.getProposal(proposalNumber, modelMap);
     }
 
     @PostMapping
-    public String prepareProposal(@AuthenticationPrincipal User user,
+    String prepareProposal(@AuthenticationPrincipal User user,
                                   @ModelAttribute ProposalDto proposalDto,
                                   @RequestParam(name = "accountId") Long accountId, ModelMap modelMap,
                                   @RequestParam(name = "creditKind") String creditKind,
@@ -48,7 +45,7 @@ public class CreditController {
     }
 
     @PostMapping("{proposalNumber}")
-    public String postProposal(@RequestParam(name = "accountId") Long accountId,
+    String postProposal(@RequestParam(name = "accountId") Long accountId,
                                @RequestParam(name = "monthlyFee") double monthlyFee,
                                @PathVariable String proposalNumber,
                                ModelMap modelMap) {

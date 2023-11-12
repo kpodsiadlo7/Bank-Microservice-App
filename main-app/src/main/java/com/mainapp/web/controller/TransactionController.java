@@ -15,28 +15,28 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
-public class TransactionController {
+class TransactionController {
     private final DashboardService dashboardService;
     private final TransactionService transactionService;
 
     @GetMapping("/transactions")
-    public String getAllTransactionsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
+    String getAllTransactionsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
         return transactionService.getAllTransactionsByUserId(user.getId(), modelMap);
     }
 
     @GetMapping("/proposals")
-    public String getAllProposalsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
+    String getAllProposalsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
         return transactionService.getAllProposalsByUserId(user.getId(), modelMap);
     }
 
     @GetMapping("/account/{accountId}")
-    public String getAccounts(@PathVariable Long accountId, ModelMap modelMap) {
+    String getAccounts(@PathVariable Long accountId, ModelMap modelMap) {
         return transactionService.getAccounts(accountId, modelMap);
     }
 
 
     @PostMapping("/account/{accountId}")
-    public String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
+    String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
         if (!dashboardService.makeTransaction(user, accountId, transferDto, descriptionTransaction, modelMap))
             return "account";

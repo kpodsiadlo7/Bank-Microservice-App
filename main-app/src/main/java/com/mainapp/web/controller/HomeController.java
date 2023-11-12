@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeController {
+class HomeController {
 
     @GetMapping
-    public String getHome() {
+    String getHome() {
         return "redirect:/login";
     }
 }

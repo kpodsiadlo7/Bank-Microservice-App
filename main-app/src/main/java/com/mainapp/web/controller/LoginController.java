@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class LoginController {
+class LoginController {
 
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String getLogin(ModelMap modelMap) {
+    String getLogin(ModelMap modelMap) {
         UserDto userDto = new UserDto();
         modelMap.put("userDto", userDto);
         return "login";
     }
 
     @GetMapping("/register")
-    public String getRegister(ModelMap modelMap) {
+    String getRegister(ModelMap modelMap) {
         UserDto userDto = new UserDto();
         modelMap.put("userDto", userDto);
         return "register";
     }
 
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute UserDto userDto, ModelMap modelMap) {
+    String postRegister(@ModelAttribute UserDto userDto, ModelMap modelMap) {
         log.info(userDto.toString());
         return loginService.registerUser(userDto,modelMap);
     }
