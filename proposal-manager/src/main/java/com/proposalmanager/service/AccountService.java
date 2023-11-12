@@ -1,7 +1,6 @@
 package com.proposalmanager.service;
 
 import com.proposalmanager.service.data.Account;
-import com.proposalmanager.service.data.Proposal;
 import com.proposalmanager.service.mapper.AccountMapper;
 import com.proposalmanager.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ public class AccountService {
 
     private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final AccountMapper accountMapper;
-    public Account fetchAccountByAccountId(final Long accountId, final Account error) {
+    Account fetchAccountByAccountId(final Long accountId, final Account error) {
         log.info("fetch account by account id");
         try {
             return accountMapper.mapToUserAccountFromUserAccountDto

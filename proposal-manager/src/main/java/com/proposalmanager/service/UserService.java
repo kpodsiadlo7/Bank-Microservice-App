@@ -15,7 +15,7 @@ public class UserService {
     private final FeignServiceUserManager feignServiceUserManager;
     private final UserMapper userMapper;
 
-    public User fetchUserById(final Long userId, final User error) {
+    User fetchUserById(final Long userId, final User error) {
         log.warn("fetch user by id");
         try {
             return userMapper.mapToUserFromUserDto(feignServiceUserManager.getUserById(userId));

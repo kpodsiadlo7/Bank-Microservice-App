@@ -16,7 +16,7 @@ public class CreditService {
     private final FeignServiceCreditManager feignServiceCreditManager;
     private final AdapterProposalEntityRepository adapterProposalEntityRepository;
 
-    public Credit checkAccountAlreadyHaveThatKindCredit(final Long accountId, final CreditKind creditKind, Credit fetchingCredit) {
+    Credit checkAccountAlreadyHaveThatKindCredit(final Long accountId, final CreditKind creditKind, Credit fetchingCredit) {
         log.info("check Account Already Have That Kind Credit");
         boolean response;
         try {
