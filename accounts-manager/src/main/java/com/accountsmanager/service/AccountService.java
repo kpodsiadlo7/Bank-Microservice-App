@@ -38,7 +38,7 @@ public class AccountService {
         return createAccountForUser(userId, account);
     }
 
-    public boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
+    boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
         return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);
     }
 
@@ -81,7 +81,7 @@ public class AccountService {
         return transfer;
     }
 
-    public Transfer validateDataBeforeTransaction(final Long thisAccountId, final Transfer transfer) {
+    private Transfer validateDataBeforeTransaction(final Long thisAccountId, final Transfer transfer) {
         //this case is for taking credit
         if (transfer.getAccountNumber().equals("credit") || transfer.getAccountNumber().equals("commission"))
             return transfer;
@@ -128,7 +128,7 @@ public class AccountService {
     }
 
 
-    protected Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
+    private Transfer closeMoneyTransfer(final Long thisAccountId, final Transfer transfer) {
         log.info("close money transfer");
         Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findByNumber(transfer.getAccountNumber()));
