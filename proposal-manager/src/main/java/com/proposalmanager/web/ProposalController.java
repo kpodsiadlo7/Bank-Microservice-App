@@ -13,25 +13,25 @@ import java.util.Set;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class ProposalController {
+class ProposalController {
 
     private final ProposalMapper proposalMapper;
     private final ProposalService proposalService;
 
     @GetMapping
-    public ResponseEntity<ProposalDto> getProposalByNumber(@RequestParam String proposalNumber) {
+    ResponseEntity<ProposalDto> getProposalByNumber(@RequestParam String proposalNumber) {
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
                 (proposalService.getProposalByNumber(proposalNumber)));
     }
 
     @GetMapping("/proposals")
-    public ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId) {
+    ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId) {
         return ResponseEntity.ok(proposalMapper.mapToProposalDtoSetFromProposalSet
                 (proposalService.getAllProposalsByUserId(userId)));
     }
 
     @PostMapping("/validate-proposal")
-    public ResponseEntity<ProposalDto> validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
+    ResponseEntity<ProposalDto> validateProposalBeforePost(@RequestBody ProposalDto proposalDto,
                                                                   @RequestParam Long accountId,
                                                                   @RequestParam String creditKind,
                                                                   @RequestParam String promotion) {
@@ -40,7 +40,7 @@ public class ProposalController {
     }
 
     @PostMapping("/accept-proposal")
-    public ResponseEntity<Boolean> postProposal(@RequestParam String proposalNumber) {
+    ResponseEntity<Boolean> postProposal(@RequestParam String proposalNumber) {
         return ResponseEntity.ok(proposalService.postProposal(proposalNumber));
     }
 }
