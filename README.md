@@ -1,4 +1,4 @@
-﻿# Microservices Bank Application
+﻿# Microservices Bank Application with Frontend
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc #RabbitMQ
 
