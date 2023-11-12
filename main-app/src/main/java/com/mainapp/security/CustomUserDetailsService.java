@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+class CustomUserDetailsService implements UserDetailsService {
 
     private final FeignServiceUserManager feignServiceUserManager;
     private final UserMapper userMapper;

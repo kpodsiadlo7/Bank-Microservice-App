@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Set;
 
 @NoArgsConstructor
-public class SecurityUser extends User implements UserDetails {
+class SecurityUser extends User implements UserDetails {
 
 
     public SecurityUser(final User user) {
