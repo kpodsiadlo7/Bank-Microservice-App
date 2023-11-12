@@ -69,7 +69,7 @@ public class MainService {
         return true;
     }
 
-    public User createAndReturnNewUser(final User user) {
+    User createAndReturnNewUser(final User user) {
         log.info("create and return new user");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.mapToUserFromUserDto
@@ -77,7 +77,7 @@ public class MainService {
     }
 
 
-    public User setAuthorityForUser(final User userFromUserManager) {
+    User setAuthorityForUser(final User userFromUserManager) {
         log.info("set authority for user");
         AuthorityEntity authorityEntity = new AuthorityEntity();
         authorityEntity.setAuthority("ROLE_USER");
