@@ -32,7 +32,7 @@ class Credit {
     public static class BuilderCredit{
         private BuilderCredit(){
         }
-        public Credit build(){
+        Credit build(){
             return new Credit(this);
         }
         private Long id;
@@ -46,22 +46,18 @@ class Credit {
             this.id = id;
             return this;
         }
-
         public BuilderCredit withUserId(Long userId) {
             this.userId = userId;
             return this;
         }
-
         public BuilderCredit withAccountId(Long accountId) {
             this.accountId = accountId;
             return this;
         }
-
         public BuilderCredit withProposalNumber(String proposalNumber) {
             this.proposalNumber = proposalNumber;
             return this;
         }
-
         public BuilderCredit withCreditKind(CreditKind creditKind) {
             this.creditKind = creditKind;
             return this;

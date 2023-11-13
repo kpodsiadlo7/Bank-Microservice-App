@@ -17,7 +17,6 @@ class CreditController {
                                                                   @RequestParam CreditKind creditKind) {
         return ResponseEntity.ok(creditFacade.checkAccountAlreadyHaveThatKindCredit(accountId,creditKind));
     }
-
     @PostMapping("/accept-credit")
     ResponseEntity<Boolean> acceptCredit(@RequestBody ProposalDto proposalDto){
         return ResponseEntity.ok(creditFacade.acceptCredit(proposalDto));

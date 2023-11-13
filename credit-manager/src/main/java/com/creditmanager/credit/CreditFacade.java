@@ -24,12 +24,10 @@ public class CreditFacade {
         }
         return false;
     }
-
     public boolean checkAccountAlreadyHaveThatKindCredit(final Long accountId, final CreditKind creditKind) {
         log.info("check Account Already Have That Kind Credit");
         return adapterCreditEntityRepository.existsByAccountIdAndCreditKind(accountId, creditKind);
     }
-
     private void acceptProposal(final ProposalDto proposalDto) {
         log.info("accept proposal");
         Credit creditAccept = creditFactory.buildCreditFromProposalDto(proposalDto);
