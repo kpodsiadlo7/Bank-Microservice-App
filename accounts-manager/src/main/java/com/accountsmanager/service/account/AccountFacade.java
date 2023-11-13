@@ -109,32 +109,25 @@ public class AccountFacade {
         return accountMapper.mapToUserAccountDtoListFromUserAccountList
                 (getAllUserAccounts(userId));
     }
-    TransferDto depositMoney(final Long thisAccountId, final TransferDto transferDto){
-        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
+    TransferDto validateDataBeforeTransaction(Long thisAccountId, final TransferDto transferDto){
+        if (transferDto.getAccountNumber().equals("credit") || transferDto.getAccountNumber().equals("commission"))
             return transferDto;
-        }
-        if(transferFacade.depositMoney(transferDto))
-            increaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
-                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
-        return transferDto;
-    }
-    TransferDto validateDataBeforeTransaction(Long thisAccountId, TransferDto transferDto){
         if (getAccountById(thisAccountId).getBalance().compareTo(transferDto.getAmount()) < 0) {
             if (transferDto.getAccountNumber().equals("deposit")) {
                 log.info("deposit");
                 return transferDto;
             }
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
             log.info("dont have enough money");
-            transferDto.toBuilder().withAccountNumber("You don't have enough money");
-            return transferDto;
+            return transferDto.toBuilder()
+                    .withAmount(new BigDecimal(-1))
+                    .withAccountNumber("You don't have enough money").build();
         }
 
         if (getAccountById(thisAccountId).getNumber().equals(transferDto.getAccountNumber())) {
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
             log.info("him self");
-            transferDto.toBuilder().withAccountNumber("You can't send money to account which from you send");
-            return transferDto;
+            return transferDto.toBuilder()
+                    .withAmount(new BigDecimal(-1))
+                    .withAccountNumber("You can't send money to account which from you send").build();
         }
         if (!existByNumber(transferDto.getAccountNumber())) {
             if (transferDto.getAccountNumber().equals("deposit") ||
@@ -143,23 +136,45 @@ public class AccountFacade {
                 return transferDto;
             }
             log.info("user doesnt exist");
-            transferDto.toBuilder().withAmount(new BigDecimal(-1));
-            transferDto.toBuilder().withAccountNumber("User with this number doesn't exist!");
-            return transferDto;
+            log.info("nr account: "+transferDto.getAccountNumber());
+            return transferDto.toBuilder()
+                    .withAmount(new BigDecimal(-1))
+                    .withAccountNumber("User with this number doesn't exist!").build();
         }
+        return transferDto;
+    }
+    TransferDto depositMoney(final Long thisAccountId, final TransferDto transferDto){
+        TransferDto error = transferFacade.depositMoney(transferDto);
+        if(error.getAmount().equals(new BigDecimal(-1))){
+            return error;
+        }
+        error = validateDataBeforeTransaction(thisAccountId,transferDto);
+        if(error.getAmount().equals(new BigDecimal(-1))){
+            return error;
+        }
+        increaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
+                (adapterAccountRepository.findById(thisAccountId))), transferDto.getAmount());
         return transferDto;
     }
     TransferDto withdrawMoney(final Long thisAccountId, final TransferDto transferDto) {
-        if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
-            return transferDto;
+        TransferDto error = transferFacade.withdrawMoney(transferDto);
+        if(error.getAmount().equals(new BigDecimal(-1))){
+            return error;
         }
-        if(transferFacade.withdrawMoney(transferDto)){
-            decreaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
-                    (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
+        error = validateDataBeforeTransaction(thisAccountId,transferDto);
+        if(error.getAmount().equals(new BigDecimal(-1)))
+        {
+            return error;
         }
+        decreaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
+                (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
         return transferDto;
     }
     TransferDto moneyTransferFromUserToUser(final Long thisAccountId, final TransferDto transferDto) {
+        TransferDto error = validateDataBeforeTransaction(thisAccountId,transferDto);
+        if(error.getAmount().equals(new BigDecimal(-1))){
+            return error;
+        }
         Account accountIncrease = accountMapper.mapToUserAccountFromUserAccountEntity
                 (adapterAccountRepository.findByNumber(transferDto.getAccountNumber()));
         Account accountToDecrease = getAccountById(thisAccountId);
@@ -170,14 +185,8 @@ public class AccountFacade {
 
         decreaseMoney(accountToDecrease, transferDto.getAmount());
         increaseMoney(accountIncrease, newAmount);
-
-        TransferDto transferDtoToReturn = TransferDto.builder()
-                .withAccountNumber(transferDto.getAccountNumber())
-                .withUserReceiveId(transferDto.getUserReceiveId())
-                .withAmount(newAmount)
-                .withAccountReceiveId(accountIncrease.getId()).build();
         return transferFacade.moneyTransferFromUserToUser(accountIncrease.getId(),
-                        accountIncrease.getUserId(),transferDtoToReturn);
+                        accountIncrease.getUserId(),transferDto.toBuilder().withAmount(newAmount).build());
     }
     boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
         return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);

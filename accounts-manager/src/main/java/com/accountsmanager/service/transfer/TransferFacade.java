@@ -14,14 +14,14 @@ public class TransferFacade {
 
     private final TransferMapper transferMapper;
 
-    public boolean depositMoney(TransferDto transferDto) {
+    public TransferDto depositMoney(TransferDto transferDto) {
         log.info("deposit money before validation");
-        return (!Objects.equals(validateDataBeforeTransaction(transferDto).getAmount(), new BigDecimal(-1)));
+        return validateDataBeforeTransaction(transferDto);
     }
 
-    public boolean withdrawMoney(TransferDto transferDto) {
+    public TransferDto withdrawMoney(TransferDto transferDto) {
         log.info("withdraw money");
-        return !Objects.equals(validateDataBeforeTransaction(transferDto).getAmount(), new BigDecimal(-1));
+        return validateDataBeforeTransaction(transferDto);
     }
 
 
@@ -34,8 +34,6 @@ public class TransferFacade {
 
     public TransferDto validateDataBeforeTransaction(TransferDto transferDto) {
         //this case is for taking credit
-        if (transferDto.getAccountNumber().equals("credit") || transferDto.getAccountNumber().equals("commission"))
-            return transferDto;
         Transfer transfer = transferMapper.mapToTransferFromTransferDto(transferDto);
         if (transferDto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             log.info("amount min 0");
