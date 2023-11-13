@@ -1,4 +1,4 @@
-create table users_db
+create table users
 (
     id                bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     username          varchar(100),

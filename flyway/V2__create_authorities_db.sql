@@ -1,4 +1,4 @@
-create table authorities_db
+create table authorities
 (
     id        bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id   bigint null,

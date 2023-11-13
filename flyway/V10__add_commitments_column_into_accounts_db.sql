@@ -1,1 +1,1 @@
-alter table accounts_db add column commitments decimal;
+alter table accounts add column commitments decimal;

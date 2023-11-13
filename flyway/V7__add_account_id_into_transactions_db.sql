@@ -1,1 +1,1 @@
-alter table transactions_db add column account_id bigint;
+alter table transactions add column account_id bigint;

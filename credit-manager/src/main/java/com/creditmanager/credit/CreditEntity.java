@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "credits_db")
+@Table(name = "credits")
 class CreditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

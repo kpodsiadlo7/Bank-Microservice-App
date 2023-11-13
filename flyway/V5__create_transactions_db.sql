@@ -1,4 +1,4 @@
-create table transactions_db
+create table transactions
 (
     id               bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id          bigint null,

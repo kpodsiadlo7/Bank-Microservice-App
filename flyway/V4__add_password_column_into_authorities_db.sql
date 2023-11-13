@@ -1,1 +1,1 @@
-alter table authorities_db add column user_password varchar(255);
+alter table authorities add column user_password varchar(255);

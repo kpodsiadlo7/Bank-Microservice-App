@@ -1,1 +1,1 @@
-alter table transactions_db add column value varchar(255);
+alter table transactions add column value varchar(255);

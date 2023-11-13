@@ -1,4 +1,4 @@
-create table credits_db
+create table credits
 (
     id              bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id         bigint,

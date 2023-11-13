@@ -14,7 +14,7 @@ create type credit_kind as enum (
     'DEBIT'
     );
 
-create table proposals_db
+create table proposals
 (
     id                   bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id              bigint,

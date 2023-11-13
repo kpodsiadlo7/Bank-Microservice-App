@@ -1,4 +1,4 @@
-create table accounts_db
+create table accounts
 (
     id              bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     account_name    varchar(50),
