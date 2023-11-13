@@ -24,7 +24,6 @@ public class TransferFacade {
         return validateDataBeforeTransaction(transferDto);
     }
 
-
     public TransferDto moneyTransferFromUserToUser(final Long thisAccountId, final Long userIncreaseId, final TransferDto transferDto) {
         log.info("money transfer from user to user");
         if (!Objects.equals(validateDataBeforeTransaction(transferDto).getAmount(), new BigDecimal(-1)))

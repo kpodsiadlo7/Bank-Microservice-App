@@ -1,5 +1,6 @@
 package com.accountsmanager.account;
 
+import com.accountsmanager.account.dto.AccountDto;
 import com.accountsmanager.transfer.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

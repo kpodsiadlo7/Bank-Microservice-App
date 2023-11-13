@@ -39,7 +39,6 @@ public class AccountFacadeTestSuite {
         Assertions.assertEquals("PL55", accountAfterTest.getNumber().substring(0, 4));
         Assertions.assertEquals("zł", accountAfterTest.getCurrencySymbol());
     }
-
     @Test
     @DisplayName("should create user EUR account using validateData() when we pass correct data")
     void createAccountForUserPassingCorrectData() {
@@ -67,7 +66,6 @@ public class AccountFacadeTestSuite {
         Assertions.assertEquals("EUR", accountAfterTest.getCurrency());
         Assertions.assertEquals("€", accountAfterTest.getCurrencySymbol());
     }
-
     @Test
     @DisplayName("should return real data from database when we saving several examples one in EUR one in PLN")
     void getAllUserAccounts() {
@@ -90,7 +88,6 @@ public class AccountFacadeTestSuite {
         Assertions.assertTrue(accountAfterRealMethod.stream()
                 .anyMatch(currency -> currency.getCurrency().equals("EUR")));
     }
-
     @Test
     @DisplayName("exists by number should return true when we check if account number which is 'generated' exist in database before assign to the user")
     void existsByNumberInDb() {

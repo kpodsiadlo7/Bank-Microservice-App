@@ -1,5 +1,7 @@
 package com.accountsmanager.account;
 
+import com.accountsmanager.account.dto.AccountDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +11,10 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 class AccountMapper {
 
     private final AccountFactory accountFactory;
-
-    AccountMapper(AccountFactory accountFactory) {
-        this.accountFactory = accountFactory;
-    }
 
     Account mapToUserAccountFromUserAccountDto(final AccountDto accountDto) {
         return new Account(

@@ -1,6 +1,7 @@
 package com.accountsmanager.account;
 
 import com.accountsmanager.AccountsManagerApplication;
+import com.accountsmanager.account.dto.AccountDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

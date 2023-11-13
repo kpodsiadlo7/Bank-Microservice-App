@@ -1,5 +1,6 @@
 package com.accountsmanager.account;
 
+import com.accountsmanager.account.dto.AccountDto;
 import com.accountsmanager.currencyapi.CurrencyFacade;
 import com.accountsmanager.transfer.TransferDto;
 import com.accountsmanager.transfer.TransferFacade;
