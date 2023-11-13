@@ -30,7 +30,7 @@ public class CreditFacade {
         return adapterCreditEntityRepository.existsByAccountIdAndCreditKind(accountId, creditKind);
     }
 
-    public void acceptProposal(final ProposalDto proposalDto) {
+    private void acceptProposal(final ProposalDto proposalDto) {
         log.info("accept proposal");
         Credit creditAccept = creditFactory.buildCreditFromProposalDto(proposalDto);
         adapterCreditEntityRepository.save(creditFactory.toCreditEntityFromCredit(creditAccept));

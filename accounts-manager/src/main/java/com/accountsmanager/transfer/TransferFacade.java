@@ -1,4 +1,4 @@
-package com.accountsmanager.service.transfer;
+package com.accountsmanager.transfer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class TransferFacade {
         return transferDto;
     }
 
-    public TransferDto validateDataBeforeTransaction(TransferDto transferDto) {
+    TransferDto validateDataBeforeTransaction(TransferDto transferDto) {
         //this case is for taking credit
         Transfer transfer = transferMapper.mapToTransferFromTransferDto(transferDto);
         if (transferDto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
@@ -45,7 +45,7 @@ public class TransferFacade {
         return transferMapper.mapToUserTransferDtoFromUserTransfer(transfer);
     }
 
-    public TransferDto closeMoneyTransfer(Long thisAccountId, Long userReceiverId, TransferDto transferDto) {
+    TransferDto closeMoneyTransfer(Long thisAccountId, Long userReceiverId, TransferDto transferDto) {
         log.info("close money transfer");
         Transfer transfer = transferMapper.mapToTransferFromTransferDto(transferDto);
         transfer.setAccountReceiveId(thisAccountId);

@@ -1,4 +1,4 @@
-package com.accountsmanager.service.account;
+package com.accountsmanager.account;
 
 import com.accountsmanager.AccountsManagerApplication;
 import org.junit.jupiter.api.Assertions;
@@ -12,8 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)

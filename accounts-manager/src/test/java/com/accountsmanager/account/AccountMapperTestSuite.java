@@ -1,4 +1,4 @@
-package com.accountsmanager.service.account;
+package com.accountsmanager.account;
 
 import com.accountsmanager.AccountsManagerApplication;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ public class AccountMapperTestSuite {
     private final AdapterAccountRepository adapterAccountRepository;
     private final AccountFactory accountFactory;
 
-    public AccountMapperTestSuite(AccountMapper accountMapper, AdapterAccountRepository adapterAccountRepository, AccountFactory accountFactory) {
+    AccountMapperTestSuite(AccountMapper accountMapper, AdapterAccountRepository adapterAccountRepository, AccountFactory accountFactory) {
         this.accountMapper = accountMapper;
         this.adapterAccountRepository = adapterAccountRepository;
         this.accountFactory = accountFactory;

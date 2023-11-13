@@ -1,8 +1,8 @@
-package com.accountsmanager.service.account;
+package com.accountsmanager.account;
 
-import com.accountsmanager.service.api.CurrencyFacade;
-import com.accountsmanager.service.transfer.TransferDto;
-import com.accountsmanager.service.transfer.TransferFacade;
+import com.accountsmanager.currencyapi.CurrencyFacade;
+import com.accountsmanager.transfer.TransferDto;
+import com.accountsmanager.transfer.TransferFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

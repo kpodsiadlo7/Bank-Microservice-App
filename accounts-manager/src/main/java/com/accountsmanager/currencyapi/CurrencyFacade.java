@@ -1,4 +1,4 @@
-package com.accountsmanager.service.api;
+package com.accountsmanager.currencyapi;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.accountsmanager.service.transfer;
+package com.accountsmanager.transfer;
 
 import org.springframework.stereotype.Service;
 

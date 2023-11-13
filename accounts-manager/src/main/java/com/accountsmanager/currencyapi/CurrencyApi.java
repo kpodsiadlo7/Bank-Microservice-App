@@ -1,4 +1,4 @@
-package com.accountsmanager.service.api;
+package com.accountsmanager.currencyapi;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

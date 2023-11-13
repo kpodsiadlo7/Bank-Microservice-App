@@ -1,4 +1,4 @@
-package com.accountsmanager.service.api;
+package com.accountsmanager.currencyapi;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
