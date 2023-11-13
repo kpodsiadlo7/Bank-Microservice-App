@@ -1,6 +1,6 @@
 ﻿# Microservices Bank Application with Frontend
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
-#Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc #RabbitMQ
+#Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc #RabbitMQ #Facade #Builder #Factory
 
 # Opis aplikacji [English Version](#description-in-the-english-version)
 ### Logika Kredytowa
