@@ -5,6 +5,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Getter
+@AllArgsConstructor
 public class AccountDto {
     private final Long id;
     private final Long userId;
@@ -17,8 +18,7 @@ public class AccountDto {
     public static BuilderAccountDto builder(){
         return new BuilderAccountDto();
     }
-
-    private AccountDto(final BuilderAccountDto builderAccountDto) {
+    public AccountDto(final BuilderAccountDto builderAccountDto) {
         id = builderAccountDto.id;
         userId = builderAccountDto.userId;
         balance = builderAccountDto.balance;

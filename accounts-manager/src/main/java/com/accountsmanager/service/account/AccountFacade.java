@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 @Slf4j
@@ -114,7 +113,7 @@ public class AccountFacade {
         if(validateDataBeforeTransaction(thisAccountId,transferDto).getAmount().equals(new BigDecimal(-1))){
             return transferDto;
         }
-        if(transferFacade.depositMoney(thisAccountId,transferDto))
+        if(transferFacade.depositMoney(transferDto))
             increaseMoney(accountMapper.mapToUserAccountFromUserAccountEntity(
                     (adapterAccountRepository.findById(thisAccountId))),transferDto.getAmount());
         return transferDto;
@@ -169,13 +168,16 @@ public class AccountFacade {
                 accountIncrease.getCurrency().toLowerCase(),
                 accountToDecrease.getCurrency().toLowerCase(), transferDto.getAmount());
 
-        decreaseMoney(accountToDecrease, newAmount);
+        decreaseMoney(accountToDecrease, transferDto.getAmount());
         increaseMoney(accountIncrease, newAmount);
-        return Objects.equals
-                (validateDataBeforeTransaction(thisAccountId, transferDto)
-                        .getAmount(), new BigDecimal(-1)) ?
-                transferFacade.moneyTransferFromUserToUser(accountIncrease.getId(),
-                        accountIncrease.getUserId(),transferDto) : transferDto;
+
+        TransferDto transferDtoToReturn = TransferDto.builder()
+                .withAccountNumber(transferDto.getAccountNumber())
+                .withUserReceiveId(transferDto.getUserReceiveId())
+                .withAmount(newAmount)
+                .withAccountReceiveId(accountIncrease.getId()).build();
+        return transferFacade.moneyTransferFromUserToUser(accountIncrease.getId(),
+                        accountIncrease.getUserId(),transferDtoToReturn);
     }
     boolean checkIfAccountWithThatCurrencyExist(final Long userId, final String currency) {
         return adapterAccountRepository.existsByUserIdAndCurrency(userId,currency);

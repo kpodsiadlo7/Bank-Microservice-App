@@ -17,6 +17,6 @@ class TransferMapper {
                 .withUserReceiveId(transfer.getUserReceiveId())
                 .withAccountNumber(transfer.getAccountNumber())
                 .withAmount(transfer.getAmount())
-                .withAccountNumber(transfer.getAccountNumber()).build();
+                .withAccountReceiveId(transfer.getAccountReceiveId()).build();
     }
 }

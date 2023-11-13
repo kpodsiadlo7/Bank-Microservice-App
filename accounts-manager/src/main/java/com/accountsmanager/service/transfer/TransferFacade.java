@@ -14,7 +14,7 @@ public class TransferFacade {
 
     private final TransferMapper transferMapper;
 
-    public boolean depositMoney(Long thisAccountId, TransferDto transferDto) {
+    public boolean depositMoney(TransferDto transferDto) {
         log.info("deposit money before validation");
         return (!Objects.equals(validateDataBeforeTransaction(transferDto).getAmount(), new BigDecimal(-1)));
     }
@@ -25,7 +25,7 @@ public class TransferFacade {
     }
 
 
-    public TransferDto moneyTransferFromUserToUser(Long thisAccountId, Long userIncreaseId, TransferDto transferDto) {
+    public TransferDto moneyTransferFromUserToUser(final Long thisAccountId, final Long userIncreaseId, final TransferDto transferDto) {
         log.info("money transfer from user to user");
         if (!Objects.equals(validateDataBeforeTransaction(transferDto).getAmount(), new BigDecimal(-1)))
             return closeMoneyTransfer(thisAccountId,userIncreaseId, transferDto);
@@ -37,7 +37,6 @@ public class TransferFacade {
         if (transferDto.getAccountNumber().equals("credit") || transferDto.getAccountNumber().equals("commission"))
             return transferDto;
         Transfer transfer = transferMapper.mapToTransferFromTransferDto(transferDto);
-
         if (transferDto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             log.info("amount min 0");
             transfer.setAccountNumber("Minimum amount must be over 0");

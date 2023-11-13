@@ -1,4 +1,4 @@
-package com.creditmanager.service.data.enums;
+package com.creditmanager.proposal.enums;
 
 public enum StatusProposal {
     ACCEPT,

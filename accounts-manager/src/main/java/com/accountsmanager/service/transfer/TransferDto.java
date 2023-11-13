@@ -1,10 +1,12 @@
 package com.accountsmanager.service.transfer;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @Getter
+@AllArgsConstructor
 public class TransferDto {
     private final Long userReceiveId;
     private final Long accountReceiveId;

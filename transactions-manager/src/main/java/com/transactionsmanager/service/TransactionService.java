@@ -8,7 +8,6 @@ import com.transactionsmanager.web.feign.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -156,8 +155,7 @@ public class TransactionService {
 
     private Transaction closeMoneyTransferTransaction(final Long userId, final Long thisAccountId, final TransferDto returnedTransferDto,
                                                       final String descriptionTransaction, final BigDecimal amount) {
-        log.info("close money transfer transaction");
-        inComingTransaction(returnedTransferDto.getUserReceiveId(), returnedTransferDto.getAccountReceiveId(), descriptionTransaction, amount);
+        inComingTransaction(returnedTransferDto.getUserReceiveId(), returnedTransferDto.getAccountReceiveId(), descriptionTransaction, returnedTransferDto.getAmount());
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, amount);
     }
 

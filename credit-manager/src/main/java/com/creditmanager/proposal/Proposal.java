@@ -1,22 +1,19 @@
-package com.creditmanager.web.dto;
+package com.creditmanager.proposal;
 
-import com.creditmanager.domain.enums.CreditKind;
+import com.creditmanager.credit.enums.CreditKind;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreditDto {
+class Proposal {
     private Long id;
-    private Long userId;
     private Long accountId;
+    private double salary;
+    private double monthlyFee;
     private String proposalNumber;
     @Enumerated(EnumType.STRING)
     private CreditKind creditKind;
