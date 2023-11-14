@@ -13,7 +13,7 @@ import java.util.TreeSet;
 
 @Service
 @RequiredArgsConstructor
-public class CreditService {
+public class CreditFacade {
 
     private final AccountFacade accountFacade;
 

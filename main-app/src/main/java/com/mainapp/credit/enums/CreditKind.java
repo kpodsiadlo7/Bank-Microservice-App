@@ -1,4 +1,4 @@
-package com.mainapp.credit;
+package com.mainapp.credit.enums;
 
 public enum CreditKind {
     CASH,

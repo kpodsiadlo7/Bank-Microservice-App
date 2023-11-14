@@ -1,6 +1,6 @@
 package com.mainapp.proposal;
 
-import com.mainapp.credit.CreditKind;
+import com.mainapp.credit.enums.CreditKind;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/dashboard/credit")
 class CreditController {
 
-    private final CreditService creditService;
+    private final CreditFacade creditFacade;
     private final ProposalService proposalService;
     private final ProposalMapper proposalMapper;
 
     @GetMapping
     String getCredit(@AuthenticationPrincipal User user,
                             ModelMap modelMap) {
-        return creditService.getCredits(user, modelMap);
+        return creditFacade.getCredits(user, modelMap);
     }
 
     @GetMapping("{proposalNumber}")
