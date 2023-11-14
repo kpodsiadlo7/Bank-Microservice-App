@@ -3,7 +3,7 @@ package com.mainapp.credit;
 import com.mainapp.account.AccountFacade;
 import com.mainapp.user.User;
 import com.mainapp.account.dto.AccountDto;
-import com.mainapp.proposal.ProposalDto;
+import com.mainapp.proposal.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -18,7 +18,7 @@ public class CreditFacade {
     private final AccountFacade accountFacade;
 
     public String getCredits(final User user, ModelMap modelMap) {
-        modelMap.put("proposalDto", new ProposalDto());
+        modelMap.put("proposalDto", ProposalDto.builder().build());
         try {
             TreeSet<AccountDto> fetchingAccounts = accountFacade.getAllAccountsByUserId(user.getId());
             modelMap.put("accountsDto", fetchingAccounts);

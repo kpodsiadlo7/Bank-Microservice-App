@@ -1,4 +1,4 @@
-package com.mainapp.proposal;
+package com.mainapp.proposal.enums;
 
 public enum DescriptionRejected {
     OPEN,

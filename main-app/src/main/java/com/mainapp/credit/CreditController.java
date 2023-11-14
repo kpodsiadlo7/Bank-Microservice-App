@@ -1,9 +1,8 @@
 package com.mainapp.credit;
 
-import com.mainapp.proposal.ProposalService;
+import com.mainapp.proposal.dto.DataForProposalDto;
+import com.mainapp.proposal.ProposalFacade;
 import com.mainapp.user.User;
-import com.mainapp.proposal.ProposalMapper;
-import com.mainapp.proposal.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
 class CreditController {
 
     private final CreditFacade creditFacade;
-    private final ProposalService proposalService;
-    private final ProposalMapper proposalMapper;
+    private final ProposalFacade proposalFacade;
 
     @GetMapping
     String getCredit(@AuthenticationPrincipal User user,
@@ -29,18 +27,17 @@ class CreditController {
 
     @GetMapping("{proposalNumber}")
     String getProposal(@PathVariable String proposalNumber, ModelMap modelMap) {
-        return proposalService.getProposal(proposalNumber, modelMap);
+        return proposalFacade.getProposal(proposalNumber, modelMap);
     }
 
     @PostMapping
     String prepareProposal(@AuthenticationPrincipal User user,
-                                  @ModelAttribute ProposalDto proposalDto,
+                                  @ModelAttribute final DataForProposalDto dataForProposalDto,
                                   @RequestParam(name = "accountId") Long accountId, ModelMap modelMap,
                                   @RequestParam(name = "creditKind") String creditKind,
                                   @RequestParam(name = "promotion") String promotion) {
-        log.info("should be 3 " + proposalDto.getMonth());
-        return proposalService.validateBeforePost(user,
-                proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, modelMap, creditKind, promotion);
+        log.info("prepareProposal");
+        return proposalFacade.validateBeforePost(user, dataForProposalDto, accountId, modelMap, creditKind, promotion);
     }
 
     @PostMapping("{proposalNumber}")
@@ -48,6 +45,7 @@ class CreditController {
                                @RequestParam(name = "monthlyFee") double monthlyFee,
                                @PathVariable String proposalNumber,
                                ModelMap modelMap) {
-        return proposalService.postProposal(accountId,monthlyFee,proposalNumber, modelMap);
+        log.info("postProposal");
+        return proposalFacade.postProposal(accountId,monthlyFee,proposalNumber, modelMap);
     }
 }

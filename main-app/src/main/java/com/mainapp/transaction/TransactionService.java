@@ -2,9 +2,9 @@ package com.mainapp.transaction;
 
 import com.mainapp.account.AccountFacade;
 import com.mainapp.account.dto.AccountDto;
-import com.mainapp.proposal.ProposalDto;
+import com.mainapp.proposal.dto.ProposalDto;
+import com.mainapp.proposal.ProposalFacade;
 import com.mainapp.transfer.TransferDto;
-import com.mainapp.proposal.FeignServiceProposalManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TransactionService {
 
     private final AccountFacade accountFacade;
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
-    private final FeignServiceProposalManager feignServiceProposalManager;
+    private final ProposalFacade proposalFacade;
 
 
     public String getAccounts(final Long accountId, final ModelMap modelMap) {
@@ -68,7 +68,7 @@ public class TransactionService {
     public String getAllProposalsByUserId(final Long userId, ModelMap modelMap) {
         Set<ProposalDto> proposals = new HashSet<>();
         try {
-            proposals = feignServiceProposalManager.getAllProposalsByUserId(userId);
+            proposals = proposalFacade.getAllProposalsByUserId(userId);
             TreeSet<ProposalDto> sortedById = new TreeSet<>(proposals);
             modelMap.put("proposalsDto", sortedById);
         } catch (Exception e) {

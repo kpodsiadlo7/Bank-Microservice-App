@@ -1,6 +1,8 @@
 package com.mainapp.proposal;
 
 import com.mainapp.account.AccountFacade;
+import com.mainapp.proposal.dto.DataForProposalDto;
+import com.mainapp.proposal.dto.ProposalDto;
 import com.mainapp.user.User;
 import com.mainapp.account.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
@@ -9,47 +11,54 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProposalService {
+public class ProposalFacade {
 
     private final FeignServiceProposalManager feignServiceProposalManager;
+    private final ProposalFactory proposalFactory;
     private final AccountFacade accountFacade;
-    private final ProposalMapper proposalMapper;
 
     public String getProposal(final String proposalNumber, ModelMap modelMap) {
         log.info("get proposal");
-        Proposal returningProposal;
+        final ProposalDto returningProposalDto;
         try {
-            returningProposal = proposalMapper.mapToProposalFromProposalDto
-                    (feignServiceProposalManager.getProposalByNumber(proposalNumber));
+            returningProposalDto = feignServiceProposalManager.getProposalByNumber(proposalNumber);
         } catch (Exception e) {
             log.warn("problem with fetching your proposal");
-            modelMap.put("proposalDto", new ProposalDto());
+            modelMap.put("proposalDto", ProposalDto.builder().build());
             modelMap.put("error", "There is a problem with fetching your proposal");
             return "proposal";
         }
-        modelMap.put("proposalDto", returningProposal);
-        log.info("account id form model proposal " + returningProposal.getAccountId());
+        modelMap.put("proposalDto", returningProposalDto);
+        log.info("account id form model proposal " + returningProposalDto.getAccountId());
         log.info("successful received proposal");
-        log.info(String.valueOf(returningProposal.getStatusProposal()));
+        log.info(String.valueOf(returningProposalDto.getStatusProposal()));
         return "proposal";
     }
 
-    public String validateBeforePost(final User user, final Proposal proposal, final Long accountId, ModelMap modelMap, final String creditKind, final String promotion) {
+    public String validateBeforePost(final User user,
+                                     final DataForProposalDto dataForProposalDto,
+                                     final Long accountId, ModelMap modelMap,
+                                     final String creditKind,
+                                     final String promotion) {
         log.info("validate before post");
-        Proposal returningProposal;
+        ProposalDto returningProposalDto;
         TreeSet<AccountDto> fetchingAccounts = new TreeSet<>();
         try {
-            returningProposal = proposalMapper.mapToProposalFromProposalDto(feignServiceProposalManager.validateProposalBeforePost(
-                    proposalMapper.mapToProposalDtoFromProposal(proposal), accountId, creditKind, promotion));
-            if (returningProposal.getCurrency().equals("error")) {
-                log.warn("error " + returningProposal.getProposalNumber());
-                modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));
-                modelMap.put("error", returningProposal.getProposalNumber());
+            returningProposalDto = feignServiceProposalManager.
+                    validateProposalBeforePost
+                            (proposalFactory.buildProposalDtoFromDataForProposalDto(dataForProposalDto),
+                                    accountId, creditKind, promotion);
+
+            if (returningProposalDto.getCurrency().equals("error")) {
+                log.warn("error " + returningProposalDto.getProposalNumber());
+                modelMap.put("proposalDto", returningProposalDto);
+                modelMap.put("error", returningProposalDto.getProposalNumber());
                 try {
                     fetchingAccounts = accountFacade.getAllAccountsByUserId(user.getId());
                 } catch (Exception e) {
@@ -66,10 +75,12 @@ public class ProposalService {
             return "credits";
         }
         log.info("successful receive proposal");
-        return "redirect:/dashboard/credit/" + returningProposal.getProposalNumber();
+        return "redirect:/dashboard/credit/" + returningProposalDto.getProposalNumber();
     }
 
-    public String postProposal(final Long accountId, final double monthlyFee, final String proposalNumber, ModelMap modelMap) {
+    public String postProposal(final Long accountId,
+                               final double monthlyFee,
+                               final String proposalNumber, ModelMap modelMap) {
         log.warn("post proposal");
 
         try {
@@ -80,10 +91,14 @@ public class ProposalService {
             log.warn("problem with connecting to proposal manager");
             modelMap.put("error", "Problem with connecting to proposal manager");
             modelMap.put("accountsDto", List.of(AccountDto.builder().build()));
-            modelMap.put("proposalDto", new ProposalDto());
+            modelMap.put("proposalDto", ProposalDto.builder().build());
             return "credits";
         }
         log.info("successful accept proposal");
         return "redirect:/dashboard/credit/" + proposalNumber;
+    }
+
+    public Set<ProposalDto> getAllProposalsByUserId(Long userId) {
+        return feignServiceProposalManager.getAllProposalsByUserId(userId);
     }
 }

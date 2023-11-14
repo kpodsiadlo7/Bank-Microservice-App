@@ -2,16 +2,14 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/accounts-manager/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/authentication-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/credit-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/credit-manager/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main-app/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/main-app/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/proposal-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/proposal-manager/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/transactions-app/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/transactions-app/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/transactions-manager/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/user-manager/src/main/java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
