@@ -1,6 +1,6 @@
 package com.mainapp.security;
 
-import com.mainapp.service.data.User;
+import com.mainapp.user.User;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 

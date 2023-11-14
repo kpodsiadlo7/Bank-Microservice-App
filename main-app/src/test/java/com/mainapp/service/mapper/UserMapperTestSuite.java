@@ -2,9 +2,10 @@ package com.mainapp.service.mapper;
 
 import com.mainapp.MainAppApplication;
 import com.mainapp.security.AuthorityEntity;
-import com.mainapp.service.data.User;
-import com.mainapp.service.data.Account;
-import com.mainapp.web.dto.UserDto;
+import com.mainapp.user.User;
+import com.mainapp.account.Account;
+import com.mainapp.user.UserDto;
+import com.mainapp.user.UserMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
