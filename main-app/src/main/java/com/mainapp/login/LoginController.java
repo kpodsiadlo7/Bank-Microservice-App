@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 class LoginController {
 
-    private final LoginService loginService;
+    private final LoginFacade loginFacade;
 
     @GetMapping("/login")
     String getLogin(ModelMap modelMap) {
@@ -33,6 +33,6 @@ class LoginController {
     @PostMapping("/register")
     String postRegister(@ModelAttribute UserDto userDto, ModelMap modelMap) {
         log.info(userDto.toString());
-        return loginService.registerUser(userDto,modelMap);
+        return loginFacade.registerUser(userDto,modelMap);
     }
 }

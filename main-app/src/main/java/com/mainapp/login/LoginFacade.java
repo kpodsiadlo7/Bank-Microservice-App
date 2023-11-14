@@ -11,11 +11,11 @@ import org.springframework.ui.ModelMap;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LoginService {
+public class LoginFacade {
     private final MainService mainService;
     private final UserMapper userMapper;
 
-    public String registerUser(final UserDto userDto, final ModelMap modelMap) {
+    String registerUser(final UserDto userDto, final ModelMap modelMap) {
         try {
             if (!mainService.createUser(userMapper.mapToUserFromUserDto(userDto), modelMap))
                 return "register";
