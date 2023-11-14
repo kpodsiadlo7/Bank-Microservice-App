@@ -1,9 +1,9 @@
 package com.mainapp.service.mapper;
 
 import com.mainapp.MainAppApplication;
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AuthorityEntity;
 import com.mainapp.user.User;
-import com.mainapp.account.Account;
 import com.mainapp.user.UserDto;
 import com.mainapp.user.UserMapper;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +34,7 @@ public class UserMapperTestSuite {
                 "password",
                 "confirmpassword",
                 Set.of(new AuthorityEntity()),
-                Set.of(new Account())
+                Set.of(AccountDto.builder().build())
         );
         //when
         User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
@@ -58,7 +58,7 @@ public class UserMapperTestSuite {
                 "password",
                 "confirmpassword",
                 Set.of(new AuthorityEntity()),
-                Set.of(new Account())
+                Set.of(AccountDto.builder().build())
         );
         //when
         UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);

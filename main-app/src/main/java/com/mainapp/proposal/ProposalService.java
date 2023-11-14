@@ -1,8 +1,8 @@
 package com.mainapp.proposal;
 
+import com.mainapp.account.AccountFacade;
 import com.mainapp.user.User;
-import com.mainapp.account.AccountDto;
-import com.mainapp.account.FeignServiceAccountsManager;
+import com.mainapp.account.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.TreeSet;
 public class ProposalService {
 
     private final FeignServiceProposalManager feignServiceProposalManager;
-    private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final AccountFacade accountFacade;
     private final ProposalMapper proposalMapper;
 
     public String getProposal(final String proposalNumber, ModelMap modelMap) {
@@ -51,7 +51,7 @@ public class ProposalService {
                 modelMap.put("proposalDto", proposalMapper.mapToProposalDtoFromProposal(proposal));
                 modelMap.put("error", returningProposal.getProposalNumber());
                 try {
-                    fetchingAccounts = feignServiceAccountsManager.getAllAccountsByUserId(user.getId());
+                    fetchingAccounts = accountFacade.getAllAccountsByUserId(user.getId());
                 } catch (Exception e) {
                     log.warn("error with fetching account");
                     modelMap.put("error", "Error with fetching your accounts");
@@ -74,7 +74,7 @@ public class ProposalService {
 
         try {
             if(feignServiceProposalManager.acceptProposal(proposalNumber)){
-            feignServiceAccountsManager.setCommitmentsToAccount(accountId, monthlyFee);
+            accountFacade.setCommitmentsToAccount(accountId, monthlyFee);
             }
         } catch (Exception e) {
             log.warn("problem with connecting to proposal manager");

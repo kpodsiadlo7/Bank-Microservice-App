@@ -1,14 +1,13 @@
 package com.mainapp;
 
+import com.mainapp.account.*;
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AdapterAuthorityRepository;
 import com.mainapp.security.AuthorityEntity;
-import com.mainapp.account.Account;
 import com.mainapp.user.User;
-import com.mainapp.account.AccountFactory;
 import com.mainapp.user.UserMapper;
 import com.mainapp.transaction.TransactionDto;
 import com.mainapp.transfer.TransferDto;
-import com.mainapp.account.FeignServiceAccountsManager;
 import com.mainapp.transaction.FeignServiceTransactionsManager;
 import com.mainapp.user.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +27,13 @@ import java.util.Set;
 public class MainService {
 
     private final FeignServiceUserManager feignServiceUserManager;
-    private final FeignServiceAccountsManager feignServiceAccountsManager;
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final AdapterAuthorityRepository adapterAuthorityRepository;
     private final UserMapper userMapper;
-    private final AccountFactory accountFactory;
     private final PasswordEncoder passwordEncoder;
+
+
+    private final AccountFacade accountFacade;
 
     public boolean createUser(final User user, final ModelMap modelMap) {
         log.info("create user");
@@ -54,7 +54,9 @@ public class MainService {
 
         try {
             //creating, returning and set main account for new user
-            userFromUserManager.setAccounts(Set.of(createAccountForUser(userFromUserManager.getId(), new Account())));
+            userFromUserManager.setAccounts
+                    (Set.of(createAccountForUser(userFromUserManager.getId(),
+                            accountFacade.getNewEmptyAccount())));
         } catch (Exception e) {
             log.warn("error with creating account");
             modelMap.put("error", "Error with creating account");
@@ -88,10 +90,8 @@ public class MainService {
         return userFromUserManager;
     }
 
-    public Account createAccountForUser(final Long userId, final Account account) {
-        log.info("create account for user");
-        return accountFactory.fromAccountDtoToAccount(feignServiceAccountsManager.createAccountForUser
-                (userId, accountFactory.buildAccountDtoFromAccount(account)));
+    public AccountDto createAccountForUser(final Long userId, final AccountDto accountDto) {
+        return accountFacade.createAccountForUser(userId,accountDto);
     }
 
     public boolean makeTransaction(final User user, final TransferDto transferDto, final ModelMap modelMap,
@@ -107,7 +107,7 @@ public class MainService {
         } catch (Exception e) {
             modelMap.put("error", "There was an error with trying to connect with transactional service");
             try {
-                modelMap.put("userBankAccounts", feignServiceAccountsManager.getAllAccountsByUserId(user.getId()));
+                modelMap.put("userBankAccounts", accountFacade.getAllAccountsByUserId(user.getId()));
             } catch (Exception b) {
                 modelMap.put("error", "There was an error fetching your accounts");
             }

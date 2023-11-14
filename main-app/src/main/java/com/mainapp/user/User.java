@@ -1,7 +1,7 @@
 package com.mainapp.user;
 
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AuthorityEntity;
-import com.mainapp.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class User {
     private String confirmPassword;
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
-    private Set<Account> accounts = new TreeSet<>();
+    private Set<AccountDto> accounts = new TreeSet<>();
 
     @Override
     public String toString() {

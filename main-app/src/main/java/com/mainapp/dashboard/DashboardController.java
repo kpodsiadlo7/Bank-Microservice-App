@@ -1,7 +1,7 @@
 package com.mainapp.dashboard;
 
 import com.mainapp.user.User;
-import com.mainapp.account.AccountDto;
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.transfer.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

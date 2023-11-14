@@ -1,9 +1,9 @@
 package com.mainapp.transaction;
 
-import com.mainapp.account.AccountDto;
+import com.mainapp.account.AccountFacade;
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.proposal.ProposalDto;
 import com.mainapp.transfer.TransferDto;
-import com.mainapp.account.FeignServiceAccountsManager;
 import com.mainapp.proposal.FeignServiceProposalManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.util.TreeSet;
 @RequiredArgsConstructor
 public class TransactionService {
 
-    private final FeignServiceAccountsManager feignServiceAccountsManager;
+    private final AccountFacade accountFacade;
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
     private final FeignServiceProposalManager feignServiceProposalManager;
 
@@ -27,7 +27,7 @@ public class TransactionService {
     public String getAccounts(final Long accountId, final ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
-            AccountDto accountDto = feignServiceAccountsManager.getAccountByAccountId(accountId);
+            AccountDto accountDto = accountFacade.getAccountByAccountId(accountId);
             modelMap.put("account", accountDto);
 
         } catch (Exception e) {

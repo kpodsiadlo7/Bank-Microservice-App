@@ -1,5 +1,6 @@
 package com.mainapp.account;
 
+import com.mainapp.account.dto.AccountDto;
 import com.mainapp.transfer.TransferDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.TreeSet;
 
 @FeignClient(value = "accounts-manager", url = "http://accounts-manager:8010")
-public interface FeignServiceAccountsManager {
+interface FeignServiceAccountsManager {
 
     @GetMapping("/get-accounts")
     TreeSet<AccountDto> getAllAccountsByUserId(@RequestParam Long userId);

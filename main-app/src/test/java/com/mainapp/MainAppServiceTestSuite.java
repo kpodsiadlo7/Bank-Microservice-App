@@ -31,7 +31,7 @@ public class MainAppServiceTestSuite {
         user.setPassword("password");
         user.setConfirmPassword("notpassword");
         //system under test
-        var toTest = new MainService(null, null,null, null, null, null, null);
+        var toTest = new MainService( null,null, null, null, null, null);
         //when
         boolean shouldBeFalse = toTest.createUser(user, new ModelMap());
         //then
@@ -46,11 +46,11 @@ public class MainAppServiceTestSuite {
         user.setPassword("password");
         user.setConfirmPassword("password");
         //and
-        var mockMapper = mock(UserMapper.class);
+        var mockUserMapper = mock(UserMapper.class);
         var mockPasswordEncoder = mock(PasswordEncoder.class);
         var mockFeignServiceUserManager = mock(FeignServiceUserManager.class);
         //system under test
-        var toTest = new MainService(mockFeignServiceUserManager, null,null, null, mockMapper, null, mockPasswordEncoder);
+        var toTest = new MainService(mockFeignServiceUserManager, null, null, mockUserMapper, mockPasswordEncoder,null);
         when(toTest.createAndReturnNewUser(new User())).thenReturn(user);
         //when
         boolean shouldBeFalse = toTest.createUser(user, new ModelMap());
@@ -68,7 +68,7 @@ public class MainAppServiceTestSuite {
         user.setConfirmPassword("password");
         //and
         var mockAdapterRepo = mock(AdapterAuthorityRepository.class);
-        var toTest = new MainService(null, null,null, mockAdapterRepo, null, null, null);
+        var toTest = new MainService( null,null, mockAdapterRepo, null, null, null);
         //when
         User userWithAuthentication = toTest.setAuthorityForUser(user);
         //then
