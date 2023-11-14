@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
 class DashboardController {
-    private final DashboardService dashboardService;
+    private final DashboardFacade dashboardFacade;
 
     @GetMapping
     String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
-        return dashboardService.fetchAllAccounts(user,modelMap);
+        return dashboardFacade.fetchAllAccounts(user,modelMap);
     }
 
     @GetMapping("/create-account")
@@ -30,14 +30,14 @@ class DashboardController {
 
     @PostMapping("/create-account")
     String postAccount(@AuthenticationPrincipal User user, @ModelAttribute AccountDto accountDto, ModelMap modelMap) {
-        return dashboardService.createAccount(user,accountDto,modelMap);
+        return dashboardFacade.createAccount(user,accountDto,modelMap);
     }
 
     @PostMapping
     String makeTransaction(@AuthenticationPrincipal User user, @RequestParam(name = "accountId") Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
-        if (!dashboardService.makeTransaction(user,accountId,transferDto,descriptionTransaction,modelMap))
-            return dashboardService.fetchAllAccounts(user,modelMap);
+        if (dashboardFacade.makeTransaction(user, accountId, transferDto, descriptionTransaction, modelMap))
+            return dashboardFacade.fetchAllAccounts(user,modelMap);
 
         return "redirect:/dashboard";
     }

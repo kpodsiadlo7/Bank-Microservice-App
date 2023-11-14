@@ -13,7 +13,7 @@ import java.util.TreeSet;
 
 @Service
 @RequiredArgsConstructor
-public class DashboardService {
+public class DashboardFacade {
 
     private final AccountFacade accountFacade;
     private final MainService mainService;
@@ -26,12 +26,12 @@ public class DashboardService {
                 modelMap.put("error", "There was an error fetching your accounts");
             }
             modelMap.put("quickTransfer", new TransferDto());
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
-    public String fetchAllAccounts(final User user, final ModelMap modelMap) {
+    String fetchAllAccounts(final User user, final ModelMap modelMap) {
         modelMap.put("quickTransfer", new TransferDto());
         try {
             TreeSet<AccountDto> accounts = accountFacade.getAllAccountsByUserId(user.getId());
@@ -52,7 +52,7 @@ public class DashboardService {
         return "dashboard";
     }
 
-    public String createAccount(final User user, final AccountDto accountDto, ModelMap modelMap) {
+    String createAccount(final User user, final AccountDto accountDto, ModelMap modelMap) {
         try {
             if (mainService.createAccountForUser(user.getId(), accountDto).getCurrency().equals("exist")){
                 modelMap.put("error", "You already have account with that currency");

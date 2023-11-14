@@ -1,6 +1,6 @@
 package com.mainapp.transaction;
 
-import com.mainapp.dashboard.DashboardService;
+import com.mainapp.dashboard.DashboardFacade;
 import com.mainapp.user.User;
 import com.mainapp.transfer.TransferDto;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
 class TransactionController {
-    private final DashboardService dashboardService;
+    private final DashboardFacade dashboardFacade;
     private final TransactionService transactionService;
 
     @GetMapping("/transactions")
@@ -37,7 +37,7 @@ class TransactionController {
     @PostMapping("/account/{accountId}")
     String makeTransaction(@AuthenticationPrincipal User user, @PathVariable Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
-        if (!dashboardService.makeTransaction(user, accountId, transferDto, descriptionTransaction, modelMap))
+        if (dashboardFacade.makeTransaction(user, accountId, transferDto, descriptionTransaction, modelMap))
             return "account";
 
         return "redirect:/dashboard/account/" + accountId;
