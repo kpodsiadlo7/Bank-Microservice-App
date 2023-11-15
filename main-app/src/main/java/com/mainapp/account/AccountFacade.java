@@ -11,10 +11,6 @@ import java.util.TreeSet;
 public class AccountFacade {
     private final FeignServiceAccountsManager feignServiceAccountsManager;
 
-    public AccountDto getNewEmptyAccount() {
-        return AccountDto.builder().build();
-    }
-
     public AccountDto createAccountForUser(Long userId, AccountDto accountDto) {
         return feignServiceAccountsManager.createAccountForUser(userId, accountDto);
     }

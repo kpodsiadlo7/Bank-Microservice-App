@@ -23,7 +23,6 @@ interface FeignServiceAccountsManager {
     TransferDto quickTransfer(@RequestParam Long userId,
                               @RequestParam String kindTransaction,
                               @RequestBody TransferDto transferDto);
-
     @PostMapping("/create-account")
     AccountDto createAccountForUser(@RequestParam Long userId,
                                     @RequestBody AccountDto accountDto);

@@ -21,18 +21,15 @@ class DashboardController {
     String getDashboard(@AuthenticationPrincipal User user, ModelMap modelMap) {
         return dashboardFacade.fetchAllAccounts(user,modelMap);
     }
-
     @GetMapping("/create-account")
     String getAccount(ModelMap modelMap) {
         modelMap.put("account", AccountDto.builder().build());
         return "accounts";
     }
-
     @PostMapping("/create-account")
     String postAccount(@AuthenticationPrincipal User user, @ModelAttribute AccountDto accountDto, ModelMap modelMap) {
         return dashboardFacade.createAccount(user,accountDto,modelMap);
     }
-
     @PostMapping
     String makeTransaction(@AuthenticationPrincipal User user, @RequestParam(name = "accountId") Long accountId, @ModelAttribute TransferDto transferDto,
                                   @RequestParam(name = "descriptionTransaction") String descriptionTransaction, ModelMap modelMap) {
