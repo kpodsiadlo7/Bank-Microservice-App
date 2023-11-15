@@ -1,8 +1,8 @@
-package com.proposalmanager.domain;
+package com.proposalmanager.proposal;
 
-import com.proposalmanager.domain.enums.CreditKind;
-import com.proposalmanager.domain.enums.DescriptionRejected;
-import com.proposalmanager.domain.enums.StatusProposal;
+import com.proposalmanager.credit.enums.CreditKind;
+import com.proposalmanager.proposal.enums.DescriptionRejected;
+import com.proposalmanager.proposal.enums.StatusProposal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

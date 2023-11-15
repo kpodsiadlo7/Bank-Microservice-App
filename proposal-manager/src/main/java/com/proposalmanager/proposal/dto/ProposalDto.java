@@ -1,4 +1,4 @@
-package com.proposalmanager.proposal;
+package com.proposalmanager.proposal.dto;
 
 import com.proposalmanager.credit.enums.CreditKind;
 import com.proposalmanager.proposal.enums.DescriptionRejected;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class Proposal {
+public class ProposalDto {
     private final Long id;
     private final Long userId;
     private final Long accountId;
@@ -37,7 +37,7 @@ public class Proposal {
     @Enumerated(EnumType.STRING)
     private final CreditKind creditKind;
 
-    private Proposal(final BuilderProposal builder) {
+    private ProposalDto(final BuilderProposalDto builder) {
         this.id = builder.id;
         this.userId = builder.userId;
         this.accountId = builder.accountId;
@@ -60,8 +60,8 @@ public class Proposal {
         this.creditKind = builder.creditKind;
     }
 
-    public BuilderProposal toBuilder(){
-        return new BuilderProposal()
+    public BuilderProposalDto toBuilder(){
+        return new BuilderProposalDto()
                 .withId(id)
                 .withUserId(userId)
                 .withAccountId(accountId)
@@ -84,22 +84,15 @@ public class Proposal {
                 .withCreditKind(creditKind);
     }
 
-    public static BuilderProposal builder(){
-        return new BuilderProposal();
+    public static BuilderProposalDto builder(){
+        return new BuilderProposalDto();
     }
 
-    @Override
-    public String toString() {
-        return "Proposal{" +
-                "currency='" + currency + '\'' +
-                '}';
-    }
-
-    public static class BuilderProposal{
-        private BuilderProposal(){
+    public static class BuilderProposalDto{
+        private BuilderProposalDto(){
         }
-        public Proposal build(){
-            return new Proposal(this);
+        public ProposalDto build(){
+            return new ProposalDto(this);
         }
         private Long id;
         private Long userId;
@@ -125,102 +118,102 @@ public class Proposal {
         @Enumerated(EnumType.STRING)
         private CreditKind creditKind;
 
-        public BuilderProposal withId(Long id) {
+        public BuilderProposalDto withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public BuilderProposal withUserId(Long userId) {
+        public BuilderProposalDto withUserId(Long userId) {
             this.userId = userId;
             return this;
         }
 
-        public BuilderProposal withAccountId(Long accountId) {
+        public BuilderProposalDto withAccountId(Long accountId) {
             this.accountId = accountId;
             return this;
         }
 
-        public BuilderProposal withAmountOfCredit(double amountOfCredit) {
+        public BuilderProposalDto withAmountOfCredit(double amountOfCredit) {
             this.amountOfCredit = amountOfCredit;
             return this;
         }
 
-        public BuilderProposal withMonth(int month) {
+        public BuilderProposalDto withMonth(int month) {
             this.month = month;
             return this;
         }
 
-        public BuilderProposal withSalary(double salary) {
+        public BuilderProposalDto withSalary(double salary) {
             this.salary = salary;
             return this;
         }
 
-        public BuilderProposal withInterest(double interest) {
+        public BuilderProposalDto withInterest(double interest) {
             this.interest = interest;
             return this;
         }
 
-        public BuilderProposal withCommission(double commission) {
+        public BuilderProposalDto withCommission(double commission) {
             this.commission = commission;
             return this;
         }
 
-        public BuilderProposal withMonthlyFee(double monthlyFee) {
+        public BuilderProposalDto withMonthlyFee(double monthlyFee) {
             this.monthlyFee = monthlyFee;
             return this;
         }
 
-        public BuilderProposal withCurrency(String currency) {
+        public BuilderProposalDto withCurrency(String currency) {
             this.currency = currency;
             return this;
         }
 
-        public BuilderProposal withCurrencySymbol(String currencySymbol) {
+        public BuilderProposalDto withCurrencySymbol(String currencySymbol) {
             this.currencySymbol = currencySymbol;
             return this;
         }
 
-        public BuilderProposal withUsername(String username) {
+        public BuilderProposalDto withUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public BuilderProposal withPurpose(String purpose) {
+        public BuilderProposalDto withPurpose(String purpose) {
             this.purpose = purpose;
             return this;
         }
 
-        public BuilderProposal withProposalNumber(String proposalNumber) {
+        public BuilderProposalDto withProposalNumber(String proposalNumber) {
             this.proposalNumber = proposalNumber;
             return this;
         }
 
-        public BuilderProposal withDateFrom(LocalDate dateFrom) {
+        public BuilderProposalDto withDateFrom(LocalDate dateFrom) {
             this.dateFrom = dateFrom;
             return this;
         }
 
-        public BuilderProposal withDateTo(LocalDate dateTo) {
+        public BuilderProposalDto withDateTo(LocalDate dateTo) {
             this.dateTo = dateTo;
             return this;
         }
 
-        public BuilderProposal withAcceptStatement(boolean acceptStatement) {
+        public BuilderProposalDto withAcceptStatement(boolean acceptStatement) {
             this.acceptStatement = acceptStatement;
             return this;
         }
 
-        public BuilderProposal withStatusProposal(StatusProposal statusProposal) {
+        public BuilderProposalDto withStatusProposal(StatusProposal statusProposal) {
             this.statusProposal = statusProposal;
             return this;
         }
 
-        public BuilderProposal withDescriptionRejected(DescriptionRejected descriptionRejected) {
+        public BuilderProposalDto withDescriptionRejected(DescriptionRejected descriptionRejected) {
             this.descriptionRejected = descriptionRejected;
             return this;
         }
 
-        public BuilderProposal withCreditKind(CreditKind creditKind) {
+        public BuilderProposalDto withCreditKind(CreditKind creditKind) {
             this.creditKind = creditKind;
             return this;
         }

@@ -18,6 +18,17 @@ public class AccountDto {
     public static BuilderAccountDto builder(){
         return new BuilderAccountDto();
     }
+    public BuilderAccountDto toBuilder(){
+        return new BuilderAccountDto()
+                .withId(id)
+                .withUserId(userId)
+                .withBalance(balance)
+                .withAccountName(accountName)
+                .withCommitments(commitments)
+                .withNumber(number)
+                .withCurrency(currency)
+                .withCurrencySymbol(currencySymbol);
+    }
     public AccountDto(final BuilderAccountDto builderAccountDto) {
         id = builderAccountDto.id;
         userId = builderAccountDto.userId;

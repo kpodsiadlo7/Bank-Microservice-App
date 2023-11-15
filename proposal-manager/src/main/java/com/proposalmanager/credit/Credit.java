@@ -1,6 +1,6 @@
 package com.proposalmanager.credit;
 
-import com.proposalmanager.domain.enums.CreditKind;
+import com.proposalmanager.credit.enums.CreditKind;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import javax.persistence.Enumerated;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Credit {
+class Credit {
     private Long id;
     private Long userId;
     private Long accountId;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "transactions-manager", url = "http://transactions-manager:8000")
-public interface FeignServiceTransactionsManager {
+interface FeignServiceTransactionsManager {
 
     @PostMapping
     TransactionDto makeTransaction(@RequestParam Long userId,

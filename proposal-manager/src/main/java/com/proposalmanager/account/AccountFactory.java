@@ -3,9 +3,9 @@ package com.proposalmanager.account;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountMapper {
+class AccountFactory {
 
-    public Account mapToUserAccountFromUserAccountDto(final AccountDto accountDto) {
+     Account mapToUserAccountFromUserAccountDto(final AccountDto accountDto) {
         return new Account(
                 accountDto.getId(),
                 accountDto.getUserId(),

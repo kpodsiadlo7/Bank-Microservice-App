@@ -1,15 +1,15 @@
-package com.proposalmanager.adapter;
+package com.proposalmanager.proposal.dto;
 
 import com.proposalmanager.proposal.Proposal;
-import com.proposalmanager.transfer.Transfer;
+import com.proposalmanager.transfer.TransferDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
 public class ProposalToTransfer {
-    public Transfer mapToTransferFromProposal(final Proposal proposal) {
-        return new Transfer(
+    public TransferDto mapToTransferFromProposal(final Proposal proposal) {
+        return new TransferDto(
                 proposal.getUserId(),
                 proposal.getAccountId(),
                 BigDecimal.valueOf(proposal.getAmountOfCredit()),

@@ -1,4 +1,4 @@
-package com.proposalmanager.domain.enums;
+package com.proposalmanager.proposal.enums;
 
 public enum StatusProposal {
     ACCEPT,

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transfer {
+class Transfer {
     private Long userReceiveId;
     private Long accountReceiveId;
     private BigDecimal amount;

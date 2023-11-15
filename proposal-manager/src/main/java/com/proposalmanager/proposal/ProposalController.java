@@ -1,5 +1,6 @@
 package com.proposalmanager.proposal;
 
+import com.proposalmanager.proposal.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +13,19 @@ import java.util.Set;
 @RequiredArgsConstructor
 class ProposalController {
 
-    private final ProposalMapper proposalMapper;
-    private final ProposalService proposalService;
+    private final ProposalFactory proposalFactory;
+    private final ProposalFacade proposalFacade;
 
     @GetMapping
     ResponseEntity<ProposalDto> getProposalByNumber(@RequestParam String proposalNumber) {
-        return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
-                (proposalService.getProposalByNumber(proposalNumber)));
+        return ResponseEntity.ok(proposalFactory.buildProposalDtoFromProposal
+                (proposalFacade.getProposalByNumber(proposalNumber)));
     }
 
     @GetMapping("/proposals")
     ResponseEntity<Set<ProposalDto>> getAllProposalsByUserId(@RequestParam Long userId) {
-        return ResponseEntity.ok(proposalMapper.mapToProposalDtoSetFromProposalSet
-                (proposalService.getAllProposalsByUserId(userId)));
+        return ResponseEntity.ok(proposalFactory.mapToProposalDtoSetFromProposalSet
+                (proposalFacade.getAllProposalsByUserId(userId)));
     }
 
     @PostMapping("/validate-proposal")
@@ -32,12 +33,12 @@ class ProposalController {
                                                                   @RequestParam Long accountId,
                                                                   @RequestParam String creditKind,
                                                                   @RequestParam String promotion) {
-        return ResponseEntity.ok(proposalMapper.mapToProposalDtoFromProposal
-                (proposalService.validateProposalBeforePost(proposalMapper.mapToProposalFromProposalDto(proposalDto), accountId, creditKind, promotion)));
+        return ResponseEntity.ok(proposalFactory.buildProposalDtoFromProposal(
+                (proposalFacade.validateProposalBeforePost(proposalFactory.mapToProposalFromProposalDto(proposalDto), accountId, creditKind, promotion))));
     }
 
     @PostMapping("/accept-proposal")
     ResponseEntity<Boolean> postProposal(@RequestParam String proposalNumber) {
-        return ResponseEntity.ok(proposalService.postProposal(proposalNumber));
+        return ResponseEntity.ok(proposalFacade.postProposal(proposalNumber));
     }
 }

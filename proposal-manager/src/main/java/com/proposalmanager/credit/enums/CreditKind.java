@@ -1,4 +1,4 @@
-package com.proposalmanager.domain.enums;
+package com.proposalmanager.credit.enums;
 
 public enum CreditKind {
     CASH,

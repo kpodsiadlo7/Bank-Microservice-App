@@ -7,15 +7,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserFacade {
 
     private final FeignServiceUserManager feignServiceUserManager;
-    private final UserMapper userMapper;
 
-    User fetchUserById(final Long userId, final User error) {
+    public UserDto fetchUserById(final Long userId, final UserDto error) {
         log.warn("fetch user by id");
         try {
-            return userMapper.mapToUserFromUserDto(feignServiceUserManager.getUserById(userId));
+            return feignServiceUserManager.getUserById(userId);
         } catch (Exception e) {
             log.warn("problem with connecting to user manager");
             error.setId(-1L);
