@@ -25,17 +25,4 @@ public class User {
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
     private Set<AccountDto> accounts = new TreeSet<>();
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", realName='" + realName + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                ", authorities= " + authorities.size() +
-                ", accounts= " + accounts.size() +
-                '}';
-    }
 }

@@ -16,7 +16,7 @@ public class UserMapper {
         );
     }
 
-    public UserDto mapToUserDtoFromUser(final User user) {
+    UserDto mapToUserDtoFromUser(final User user) {
         return new UserDto(
                 user.getId(),
                 user.getUsername(),

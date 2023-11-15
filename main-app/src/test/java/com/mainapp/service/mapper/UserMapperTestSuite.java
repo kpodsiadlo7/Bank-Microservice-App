@@ -5,11 +5,11 @@ import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AuthorityEntity;
 import com.mainapp.user.User;
 import com.mainapp.user.UserDto;
-import com.mainapp.user.UserMapper;
+import com.mainapp.user.UserFacade;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -18,11 +18,11 @@ import java.util.Set;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
+@RequiredArgsConstructor
 @SpringBootTest(classes = MainAppApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserMapperTestSuite {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserFacade userFacade;
 
     @Test
     void mapToUserFromUserDto() {
@@ -37,7 +37,7 @@ public class UserMapperTestSuite {
                 Set.of(AccountDto.builder().build())
         );
         //when
-        User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
+        User userAfterMapper = userFacade.mapToUserFromUserDto(userDto);
         //then
         Assertions.assertEquals(1,userAfterMapper.getAuthorities().size());
         Assertions.assertEquals(1,userAfterMapper.getAccounts().size());
@@ -61,7 +61,7 @@ public class UserMapperTestSuite {
                 Set.of(AccountDto.builder().build())
         );
         //when
-        UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);
+        UserDto userAfterMapper = userFacade.mapToUserDtoFromUser(user);
         //then
         Assertions.assertEquals(1,userAfterMapper.getAuthorities().size());
         Assertions.assertEquals(1,userAfterMapper.getAccounts().size());

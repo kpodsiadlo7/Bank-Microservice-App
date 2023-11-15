@@ -1,8 +1,8 @@
 package com.mainapp.security;
 
+import com.mainapp.user.FeignServiceUserManager;
 import com.mainapp.user.User;
 import com.mainapp.user.UserMapper;
-import com.mainapp.user.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

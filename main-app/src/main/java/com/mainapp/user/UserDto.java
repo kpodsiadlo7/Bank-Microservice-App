@@ -25,14 +25,4 @@ public class UserDto {
     private Set<AuthorityEntity> authorities = new HashSet<>();
     @OrderBy(clause = "id")
     private Set<AccountDto> accounts = new TreeSet<>();
-
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "username='" + username + '\'' +
-                ", realName='" + realName + '\'' +
-                ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                '}';
-    }
 }

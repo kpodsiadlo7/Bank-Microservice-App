@@ -5,6 +5,7 @@ import com.mainapp.account.AccountFacade;
 import com.mainapp.account.dto.AccountDto;
 import com.mainapp.transfer.TransferDto;
 import com.mainapp.user.User;
+import com.mainapp.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -16,6 +17,7 @@ import java.util.TreeSet;
 public class DashboardFacade {
 
     private final AccountFacade accountFacade;
+    private final UserFacade userFacade;
     private final MainService mainService;
 
     public boolean makeTransaction(final User user, final Long accountId, final TransferDto transferDto, final String kindTransaction, final ModelMap modelMap) {
@@ -37,7 +39,7 @@ public class DashboardFacade {
             TreeSet<AccountDto> accounts = accountFacade.getAllAccountsByUserId(user.getId());
             if (accounts.isEmpty()) {
                 try {
-                    mainService.createAccountForUser(user.getId(), AccountDto.builder().build());
+                    userFacade.createAccountForUser(user, AccountDto.builder().build());
                     modelMap.put("quickTransfer", new TransferDto());
                     return "redirect:/dashboard";
                 } catch (Exception e) {
@@ -54,7 +56,7 @@ public class DashboardFacade {
 
     String createAccount(final User user, final AccountDto accountDto, ModelMap modelMap) {
         try {
-            if (mainService.createAccountForUser(user.getId(), accountDto).getCurrency().equals("exist")){
+            if (userFacade.createAccountForUser(user, accountDto).getCurrency().equals("exist")){
                 modelMap.put("error", "You already have account with that currency");
                 modelMap.put("account", AccountDto.builder().build());
                 return "accounts";
