@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction implements Comparable<Transaction>{
+class Transaction implements Comparable<Transaction>{
     private Long id;
     private Long userId;
     private String description;

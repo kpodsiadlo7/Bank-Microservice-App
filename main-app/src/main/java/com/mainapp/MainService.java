@@ -1,15 +1,15 @@
 package com.mainapp;
 
-import com.mainapp.account.*;
+import com.mainapp.account.AccountFacade;
 import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AdapterAuthorityRepository;
 import com.mainapp.security.AuthorityEntity;
+import com.mainapp.transaction.TransactionDto;
+import com.mainapp.transaction.TransactionFacade;
+import com.mainapp.transfer.TransferDto;
+import com.mainapp.user.FeignServiceUserManager;
 import com.mainapp.user.User;
 import com.mainapp.user.UserMapper;
-import com.mainapp.transaction.TransactionDto;
-import com.mainapp.transfer.TransferDto;
-import com.mainapp.transaction.FeignServiceTransactionsManager;
-import com.mainapp.user.FeignServiceUserManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class MainService {
 
     private final FeignServiceUserManager feignServiceUserManager;
-    private final FeignServiceTransactionsManager feignServiceTransactionsManager;
+    private final TransactionFacade transactionFacade;
     private final AdapterAuthorityRepository adapterAuthorityRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -99,7 +99,7 @@ public class MainService {
         log.info("make transaction");
         try {
             TransactionDto returningTransactionDto =
-                    feignServiceTransactionsManager.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);
+                    transactionFacade.makeTransaction(user.getId(), thisAccountId, descriptionTransaction, transferDto);
             if (returningTransactionDto.getKindTransaction().equals("error")) {
                 modelMap.put("error", returningTransactionDto.getDescription());
                 return false;

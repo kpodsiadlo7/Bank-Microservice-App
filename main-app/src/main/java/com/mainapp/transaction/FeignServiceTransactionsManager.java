@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
 
 @FeignClient(value = "transactions-manager", url = "http://transactions-manager:8000")
-public interface FeignServiceTransactionsManager {
+interface FeignServiceTransactionsManager {
 
     @GetMapping
     Set<TransactionDto> getAllTransactionByUserId(@RequestParam Long userId);

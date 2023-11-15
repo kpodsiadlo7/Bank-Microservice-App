@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/dashboard")
 class TransactionController {
     private final DashboardFacade dashboardFacade;
-    private final TransactionService transactionService;
+    private final TransactionFacade transactionFacade;
 
     @GetMapping("/transactions")
     String getAllTransactionsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
-        return transactionService.getAllTransactionsByUserId(user.getId(), modelMap);
+        return transactionFacade.getAllTransactionsByUserId(user.getId(), modelMap);
     }
 
     @GetMapping("/proposals")
     String getAllProposalsByUserId(@AuthenticationPrincipal User user, ModelMap modelMap) {
-        return transactionService.getAllProposalsByUserId(user.getId(), modelMap);
+        return transactionFacade.getAllProposalsByUserId(user.getId(), modelMap);
     }
 
     @GetMapping("/account/{accountId}")
     String getAccounts(@PathVariable Long accountId, ModelMap modelMap) {
-        return transactionService.getAccounts(accountId, modelMap);
+        return transactionFacade.getAccounts(accountId, modelMap);
     }
 
 

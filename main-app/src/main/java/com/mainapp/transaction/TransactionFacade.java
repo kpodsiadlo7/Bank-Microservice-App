@@ -17,7 +17,7 @@ import java.util.TreeSet;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TransactionService {
+public class TransactionFacade {
 
     private final AccountFacade accountFacade;
     private final FeignServiceTransactionsManager feignServiceTransactionsManager;
@@ -77,5 +77,9 @@ public class TransactionService {
             return "proposals";
         }
         return "proposals";
+    }
+
+    public TransactionDto makeTransaction(Long userId, Long thisAccountId, String descriptionTransaction, TransferDto transferDto) {
+        return feignServiceTransactionsManager.makeTransaction(userId, thisAccountId, descriptionTransaction, transferDto);
     }
 }
