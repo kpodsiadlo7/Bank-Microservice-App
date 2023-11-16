@@ -1,4 +1,4 @@
-package com.proposalmanager.user;
+package com.proposalmanager.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

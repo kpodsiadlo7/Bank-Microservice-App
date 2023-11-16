@@ -1,13 +1,14 @@
-package com.proposalmanager.account;
+package com.proposalmanager.account.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
+
 @Getter
 @AllArgsConstructor
-class Account {
+public class AccountDto {
     private final Long id;
     private final Long userId;
     private final String accountName;
@@ -17,7 +18,7 @@ class Account {
     private final String currency;
     private final String currencySymbol;
 
-    public Account(final BuilderAccount builder) {
+    public AccountDto(final BuilderAccountDto builder) {
         this.id = builder.id;
         this.userId = builder.userId;
         this.accountName = builder.accountName;
@@ -28,14 +29,26 @@ class Account {
         this.currencySymbol = builder.currencySymbol;
     }
 
-    public static BuilderAccount builder(){
-        return new BuilderAccount();
+    public BuilderAccountDto toBuilder(){
+        return new BuilderAccountDto()
+                .withId(id)
+                .withUserId(userId)
+                .withBalance(balance)
+                .withAccountName(accountName)
+                .withCommitments(commitments)
+                .withNumber(number)
+                .withCurrency(currency)
+                .withCurrencySymbol(currencySymbol);
     }
 
-    public static class BuilderAccount{
-        private BuilderAccount(){}
-        public Account build(){
-            return new Account(this);
+    public static BuilderAccountDto builder(){
+        return new BuilderAccountDto();
+    }
+
+    public static class BuilderAccountDto{
+        private BuilderAccountDto(){}
+        public AccountDto build(){
+            return new AccountDto(this);
         }
         private Long id;
         private Long userId;
@@ -46,45 +59,44 @@ class Account {
         private String currency;
         private String currencySymbol;
 
-        public BuilderAccount withId(Long id) {
+        public BuilderAccountDto withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public BuilderAccount withUserId(Long userId) {
+        public BuilderAccountDto withUserId(Long userId) {
             this.userId = userId;
             return this;
         }
 
-        public BuilderAccount withAccountName(String accountName) {
+        public BuilderAccountDto withAccountName(String accountName) {
             this.accountName = accountName;
             return this;
         }
 
-        public BuilderAccount withBalance(BigDecimal balance) {
+        public BuilderAccountDto withBalance(BigDecimal balance) {
             this.balance = balance;
             return this;
         }
 
-        public BuilderAccount withCommitments(BigDecimal commitments) {
+        public BuilderAccountDto withCommitments(BigDecimal commitments) {
             this.commitments = commitments;
             return this;
         }
 
-        public BuilderAccount withNumber(String number) {
+        public BuilderAccountDto withNumber(String number) {
             this.number = number;
             return this;
         }
 
-        public BuilderAccount withCurrency(String currency) {
+        public BuilderAccountDto withCurrency(String currency) {
             this.currency = currency;
             return this;
         }
 
-        public BuilderAccount withCurrencySymbol(String currencySymbol) {
+        public BuilderAccountDto withCurrencySymbol(String currencySymbol) {
             this.currencySymbol = currencySymbol;
             return this;
         }
     }
-
 }

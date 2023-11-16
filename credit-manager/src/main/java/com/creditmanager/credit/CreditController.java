@@ -1,7 +1,7 @@
 package com.creditmanager.credit;
 
 import com.creditmanager.credit.enums.CreditKind;
-import com.creditmanager.proposal.ProposalDto;
+import com.creditmanager.proposal.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

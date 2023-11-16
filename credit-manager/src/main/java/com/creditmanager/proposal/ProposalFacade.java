@@ -1,5 +1,6 @@
 package com.creditmanager.proposal;
 
+import com.creditmanager.proposal.dto.ProposalDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

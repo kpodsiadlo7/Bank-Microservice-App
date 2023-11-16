@@ -1,5 +1,6 @@
 package com.usermanager.user;
 
+import com.usermanager.user.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.proposalmanager.transaction;
+package com.proposalmanager.transaction.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

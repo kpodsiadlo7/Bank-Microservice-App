@@ -1,6 +1,7 @@
 package com.transactionsmanager.transaction;
 
-import com.transactionsmanager.transfer.TransferDto;
+import com.transactionsmanager.transaction.dto.TransactionDto;
+import com.transactionsmanager.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

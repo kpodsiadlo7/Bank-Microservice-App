@@ -1,4 +1,4 @@
-package com.proposalmanager.transfer;
+package com.proposalmanager.transfer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

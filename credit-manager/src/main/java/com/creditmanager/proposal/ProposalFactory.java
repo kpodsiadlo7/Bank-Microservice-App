@@ -1,5 +1,6 @@
 package com.creditmanager.proposal;
 
+import com.creditmanager.proposal.dto.ProposalDto;
 import org.springframework.stereotype.Service;
 
 @Service

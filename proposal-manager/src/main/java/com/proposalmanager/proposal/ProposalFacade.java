@@ -1,16 +1,16 @@
 package com.proposalmanager.proposal;
 
-import com.proposalmanager.account.AccountDto;
+import com.proposalmanager.account.dto.AccountDto;
 import com.proposalmanager.account.AccountFacade;
-import com.proposalmanager.credit.CreditDto;
+import com.proposalmanager.credit.dto.CreditDto;
 import com.proposalmanager.credit.CreditFacade;
 import com.proposalmanager.credit.enums.CreditKind;
 import com.proposalmanager.proposal.dto.ProposalToTransfer;
 import com.proposalmanager.proposal.enums.DescriptionRejected;
 import com.proposalmanager.proposal.enums.StatusProposal;
 import com.proposalmanager.transaction.TransactionFacade;
-import com.proposalmanager.transfer.TransferDto;
-import com.proposalmanager.user.UserDto;
+import com.proposalmanager.transfer.dto.TransferDto;
+import com.proposalmanager.user.dto.UserDto;
 import com.proposalmanager.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

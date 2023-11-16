@@ -1,7 +1,7 @@
 package com.creditmanager.credit;
 
 import com.creditmanager.credit.enums.CreditKind;
-import com.creditmanager.proposal.ProposalDto;
+import com.creditmanager.proposal.dto.ProposalDto;
 import com.creditmanager.proposal.ProposalFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

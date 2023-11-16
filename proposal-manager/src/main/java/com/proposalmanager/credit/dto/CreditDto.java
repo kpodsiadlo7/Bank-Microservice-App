@@ -1,4 +1,4 @@
-package com.proposalmanager.credit;
+package com.proposalmanager.credit.dto;
 
 import com.proposalmanager.credit.enums.CreditKind;
 import lombok.Getter;

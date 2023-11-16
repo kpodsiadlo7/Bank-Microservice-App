@@ -1,5 +1,6 @@
 package com.proposalmanager.user;
 
+import com.proposalmanager.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

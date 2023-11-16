@@ -1,6 +1,6 @@
 package com.transactionsmanager.account;
 
-import com.transactionsmanager.transfer.TransferDto;
+import com.transactionsmanager.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

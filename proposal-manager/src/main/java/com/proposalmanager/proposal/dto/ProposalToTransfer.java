@@ -1,7 +1,7 @@
 package com.proposalmanager.proposal.dto;
 
 import com.proposalmanager.proposal.Proposal;
-import com.proposalmanager.transfer.TransferDto;
+import com.proposalmanager.transfer.dto.TransferDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

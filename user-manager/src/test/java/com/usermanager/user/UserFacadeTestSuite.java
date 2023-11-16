@@ -1,6 +1,7 @@
 package com.usermanager.user;
 
 import com.usermanager.UserManagerApplication;
+import com.usermanager.user.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.proposalmanager.transaction;
 
-import com.proposalmanager.transfer.TransferDto;
+import com.proposalmanager.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
