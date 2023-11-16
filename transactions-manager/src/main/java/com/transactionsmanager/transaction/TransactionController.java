@@ -13,19 +13,16 @@ import java.util.Set;
 @RequiredArgsConstructor
 class TransactionController {
 
-    private final TransactionService transactionService;
-    private final TransactionMapper transactionMapper;
+    private final TransactionFacade transactionFacade;
 
 
     @GetMapping
     ResponseEntity<Set<TransactionDto>> getAllUserTransactionsByUserId(@RequestParam Long userId){
-        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
-                (transactionService.getAllTransactionsByUserId(userId)));
+        return ResponseEntity.ok(transactionFacade.getAllTransactionsByUserId(userId));
     }
     @GetMapping("/transactions_by_account_id")
     ResponseEntity<Set<TransactionDto>> getTransactionsByAccountId(@RequestParam Long accountId){
-        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoSetFromTransactionSet
-                (transactionService.getTransactionsByAccountId(accountId)));
+        return ResponseEntity.ok((transactionFacade.getTransactionsByAccountId(accountId)));
     }
 
     @PostMapping
@@ -33,9 +30,8 @@ class TransactionController {
                                                           @RequestParam Long thisAccountId,
                                                           @RequestParam String descriptionTransaction,
                                                           @RequestBody TransferDto transferDto) {
-        return ResponseEntity.ok(transactionMapper.mapToTransactionDtoFromTransaction
-                (transactionService.openTransaction
-                        (userId, thisAccountId, descriptionTransaction, transferDto)));
+        return ResponseEntity.ok(transactionFacade.openTransaction
+                        (userId, thisAccountId, descriptionTransaction, transferDto));
     }
 
 }

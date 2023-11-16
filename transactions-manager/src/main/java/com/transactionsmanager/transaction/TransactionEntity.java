@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Table(name = "transactions")
-public class TransactionEntity {
+class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class TransactionEntity {
     private LocalDate transactionDate;
     private String value;
 
-    public TransactionEntity(final Long userId, final Long accountId, final String description, final String kindTransaction, final String value) {
+    TransactionEntity(final Long userId, final Long accountId, final String description, final String kindTransaction, final String value) {
         this.userId = userId;
         this.accountId = accountId;
         this.description = description;
