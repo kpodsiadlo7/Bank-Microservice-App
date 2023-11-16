@@ -1,6 +1,4 @@
-package com.transactionsmanager.repository.adapter;
-
-import com.transactionsmanager.domain.TransactionEntity;
+package com.transactionsmanager.transaction;
 
 import java.util.Set;
 

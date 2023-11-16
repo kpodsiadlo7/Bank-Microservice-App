@@ -1,4 +1,4 @@
-package com.transactionsmanager.service.data;
+package com.transactionsmanager.transfer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transfer {
+public class TransferDto {
     private Long userReceiveId;
     private Long accountReceiveId;
     private BigDecimal amount;

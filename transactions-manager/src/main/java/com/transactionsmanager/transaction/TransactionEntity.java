@@ -1,4 +1,4 @@
-package com.transactionsmanager.domain;
+package com.transactionsmanager.transaction;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

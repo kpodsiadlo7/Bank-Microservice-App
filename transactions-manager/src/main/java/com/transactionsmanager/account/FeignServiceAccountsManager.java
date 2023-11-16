@@ -1,6 +1,6 @@
-package com.transactionsmanager.web.feign;
+package com.transactionsmanager.account;
 
-import com.transactionsmanager.web.dto.TransferDto;
+import com.transactionsmanager.transfer.TransferDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

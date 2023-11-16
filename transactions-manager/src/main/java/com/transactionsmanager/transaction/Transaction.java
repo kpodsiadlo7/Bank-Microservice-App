@@ -1,4 +1,4 @@
-package com.transactionsmanager.service.data;
+package com.transactionsmanager.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

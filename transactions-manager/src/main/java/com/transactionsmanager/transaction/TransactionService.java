@@ -1,10 +1,7 @@
-package com.transactionsmanager.service;
+package com.transactionsmanager.transaction;
 
-import com.transactionsmanager.repository.adapter.AdapterTransactionRepository;
-import com.transactionsmanager.service.data.Transaction;
-import com.transactionsmanager.service.mapper.TransactionMapper;
-import com.transactionsmanager.web.dto.TransferDto;
-import com.transactionsmanager.web.feign.FeignServiceAccountsManager;
+import com.transactionsmanager.transfer.TransferDto;
+import com.transactionsmanager.account.FeignServiceAccountsManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

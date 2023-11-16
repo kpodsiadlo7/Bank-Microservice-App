@@ -1,8 +1,5 @@
-package com.transactionsmanager.service.mapper;
+package com.transactionsmanager.transaction;
 
-import com.transactionsmanager.domain.TransactionEntity;
-import com.transactionsmanager.service.data.Transaction;
-import com.transactionsmanager.web.dto.TransactionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
