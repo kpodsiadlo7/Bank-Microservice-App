@@ -1,4 +1,4 @@
-package com.mainapp.user;
+package com.mainapp.user.dto;
 
 import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AuthorityEntity;

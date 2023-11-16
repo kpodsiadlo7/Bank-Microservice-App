@@ -4,7 +4,7 @@ import com.mainapp.MainAppApplication;
 import com.mainapp.account.dto.AccountDto;
 import com.mainapp.security.AuthorityEntity;
 import com.mainapp.user.User;
-import com.mainapp.user.UserDto;
+import com.mainapp.user.dto.UserDto;
 import com.mainapp.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;

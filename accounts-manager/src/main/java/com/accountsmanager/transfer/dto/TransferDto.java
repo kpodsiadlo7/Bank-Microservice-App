@@ -1,4 +1,4 @@
-package com.accountsmanager.transfer;
+package com.accountsmanager.transfer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

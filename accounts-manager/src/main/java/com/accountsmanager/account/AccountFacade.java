@@ -2,7 +2,7 @@ package com.accountsmanager.account;
 
 import com.accountsmanager.account.dto.AccountDto;
 import com.accountsmanager.currencyapi.CurrencyFacade;
-import com.accountsmanager.transfer.TransferDto;
+import com.accountsmanager.transfer.dto.TransferDto;
 import com.accountsmanager.transfer.TransferFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

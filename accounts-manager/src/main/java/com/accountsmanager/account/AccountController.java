@@ -1,7 +1,7 @@
 package com.accountsmanager.account;
 
 import com.accountsmanager.account.dto.AccountDto;
-import com.accountsmanager.transfer.TransferDto;
+import com.accountsmanager.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

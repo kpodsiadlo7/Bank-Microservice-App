@@ -3,7 +3,7 @@ package com.mainapp.dashboard;
 import com.mainapp.MainService;
 import com.mainapp.account.AccountFacade;
 import com.mainapp.account.dto.AccountDto;
-import com.mainapp.transfer.TransferDto;
+import com.mainapp.transfer.dto.TransferDto;
 import com.mainapp.user.User;
 import com.mainapp.user.UserFacade;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.mainapp.transaction;
 
 import com.mainapp.dashboard.DashboardFacade;
 import com.mainapp.user.User;
-import com.mainapp.transfer.TransferDto;
+import com.mainapp.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

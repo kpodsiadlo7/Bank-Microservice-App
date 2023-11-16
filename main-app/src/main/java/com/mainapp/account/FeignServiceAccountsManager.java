@@ -1,7 +1,7 @@
 package com.mainapp.account;
 
 import com.mainapp.account.dto.AccountDto;
-import com.mainapp.transfer.TransferDto;
+import com.mainapp.transfer.dto.TransferDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

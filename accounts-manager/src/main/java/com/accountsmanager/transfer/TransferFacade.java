@@ -1,5 +1,6 @@
 package com.accountsmanager.transfer;
 
+import com.accountsmanager.transfer.dto.TransferDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

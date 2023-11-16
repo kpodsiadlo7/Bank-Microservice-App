@@ -1,4 +1,4 @@
-package com.mainapp.transaction;
+package com.mainapp.transaction.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

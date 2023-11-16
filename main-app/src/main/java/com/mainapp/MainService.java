@@ -1,9 +1,9 @@
 package com.mainapp;
 
 import com.mainapp.account.AccountFacade;
-import com.mainapp.transaction.TransactionDto;
+import com.mainapp.transaction.dto.TransactionDto;
 import com.mainapp.transaction.TransactionFacade;
-import com.mainapp.transfer.TransferDto;
+import com.mainapp.transfer.dto.TransferDto;
 import com.mainapp.user.User;
 import com.mainapp.user.UserFacade;
 import lombok.RequiredArgsConstructor;

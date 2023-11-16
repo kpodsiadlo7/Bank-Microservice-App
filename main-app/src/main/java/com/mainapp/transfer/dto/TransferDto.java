@@ -1,4 +1,4 @@
-package com.mainapp.transfer;
+package com.mainapp.transfer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

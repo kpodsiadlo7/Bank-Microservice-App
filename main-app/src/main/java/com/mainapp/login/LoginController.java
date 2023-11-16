@@ -1,6 +1,6 @@
 package com.mainapp.login;
 
-import com.mainapp.user.UserDto;
+import com.mainapp.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

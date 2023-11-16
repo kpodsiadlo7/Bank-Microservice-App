@@ -1,7 +1,7 @@
 package com.mainapp.login;
 
 import com.mainapp.MainService;
-import com.mainapp.user.UserDto;
+import com.mainapp.user.dto.UserDto;
 import com.mainapp.user.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
