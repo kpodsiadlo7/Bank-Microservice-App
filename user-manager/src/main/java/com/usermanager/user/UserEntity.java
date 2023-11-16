@@ -1,17 +1,15 @@
-package com.usermanager.domain;
+package com.usermanager.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Setter
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class UserEntity {
+class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -28,28 +28,29 @@ public class TransactionFacade {
     public TransactionDto openTransaction(final Long userId, final Long thisAccountId,
                                        final String descriptionTransaction, final TransferDto transferDto) {
         log.info("open transaction");
+        TransactionDto error = TransactionDto.builder().withKindTransaction("error").build();
         if (descriptionTransaction.equals("transfer money"))
             return moneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction,
-                    Transaction.builder().withKindTransaction("error").build());
+                    error);
 
         if (descriptionTransaction.equals("deposit") || descriptionTransaction.equals("withdraw"))
             return depositOrWithdraw(userId, thisAccountId, transferDto, descriptionTransaction,
-                    Transaction.builder().withKindTransaction("error").build());
+                    error);
 
         if (descriptionTransaction.equals("credit") || descriptionTransaction.equals("commission")) {
             if (descriptionTransaction.equals("credit"))
                 return depositMoney(transferDto.getUserReceiveId(), thisAccountId,
-                        transferDto, descriptionTransaction, Transaction.builder().withKindTransaction("error").build());
+                        transferDto, descriptionTransaction, error);
             return withdrawMoney(transferDto.getUserReceiveId(), thisAccountId,
-                    transferDto, descriptionTransaction, Transaction.builder().withKindTransaction("error").build());
+                    transferDto, descriptionTransaction, error);
         }
 
         log.info("wrong kind of transaction");
-        return TransactionDto.builder().withKindTransaction("error").withDescription("Wrong kind of transaction transactions-manager").build();
+        return error.toBuilder().withDescription("Wrong kind of transaction transactions-manager").build();
     }
 
     private TransactionDto depositOrWithdraw(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                          final String descriptionTransaction, Transaction error) {
+                                          final String descriptionTransaction, TransactionDto error) {
         log.info("open transaction for deposit or withdraw money");
         if (descriptionTransaction.equals("deposit")) {
             transferDto.setAccountNumber("deposit");
@@ -59,43 +60,35 @@ public class TransactionFacade {
     }
 
     private TransactionDto depositMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                     final String descriptionTransaction, Transaction error) {
+                                     final String descriptionTransaction, TransactionDto error) {
         log.info("deposit money");
         if (!descriptionTransaction.equals("credit") &&
                 transferDto.getAmount().compareTo(BigDecimal.valueOf(15000)) > 0) {
             log.warn("limit 15000");
-            return TransactionDto.builder().withDescription("Limit for this kind of transaction is 15000")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Limit for this kind of transaction is 15000").build();
         }
         try {
             transferDto.setAccountNumber("credit");
             final TransferDto returnTransferDto = accountFacade.depositMoney(thisAccountId, transferDto);
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
                 log.warn("error " + returnTransferDto.getAccountNumber());
-                return TransactionDto.builder().withDescription(returnTransferDto.getAccountNumber())
-                        .withKindTransaction("error")
-                        .build();
+                return error.toBuilder().withDescription(returnTransferDto.getAccountNumber()).build();
             }
         } catch (Exception e) {
             log.warn("failed connecting with accounts manager");
-            return TransactionDto.builder().withDescription("Failed connecting with accounts manager")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Failed connecting with accounts manager").build();
         }
         log.info("successful receive transfer dto from accounts manager");
         return inComingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
     }
 
     private TransactionDto withdrawMoney(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                      final String descriptionTransaction, Transaction error) {
+                                      final String descriptionTransaction, TransactionDto error) {
         log.info("withdraw money");
         if (!descriptionTransaction.equals("commission") &&
                 transferDto.getAmount().compareTo(BigDecimal.valueOf(5000)) > 0) {
             log.warn("limit 5000");
-            return TransactionDto.builder().withDescription("Limit for this kind of transaction is 5000")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Limit for this kind of transaction is 5000").build();
         }
         try {
             transferDto.setAccountNumber("withdraw");
@@ -103,56 +96,43 @@ public class TransactionFacade {
             log.info("successful receive transfer dto from transfer dto");
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
                 log.warn("error " + returnTransferDto.getAccountNumber());
-                return TransactionDto.builder().withDescription(returnTransferDto.getAccountNumber())
-                        .withKindTransaction("error")
-                        .build();
+                return error.toBuilder().withDescription(returnTransferDto.getAccountNumber()).build();
             }
         } catch (Exception e) {
             log.warn("failed connecting with accounts manager");
-            return TransactionDto.builder().withDescription("Failed connecting with accounts manager")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Failed connecting with accounts manager").build();
         }
         return outGoingTransaction(userId, thisAccountId, descriptionTransaction, transferDto.getAmount());
     }
 
     TransactionDto moneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                        final String descriptionTransaction, Transaction error) {
+                                        final String descriptionTransaction, TransactionDto error) {
         log.info("money transfer");
         if (transferDto.getAmount().compareTo(BigDecimal.valueOf(20000)) > 0) {
             log.warn("limit 20000");
-            return TransactionDto.builder().withDescription("Limit for this kind of transaction is 20000")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Limit for this kind of transaction is 20000").build();
         }
         TransactionDto transactionDto = makeMoneyTransfer(userId, thisAccountId, transferDto, descriptionTransaction, error);
         if (transactionDto.getKindTransaction().equals("error")) {
             log.warn("something is wrong with returning transaction");
-            return TransactionDto.builder().withDescription(transactionDto.getDescription())
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription(transactionDto.getDescription()).build();
         }
         return transactionDto;
     }
 
     private TransactionDto makeMoneyTransfer(final Long userId, final Long thisAccountId, final TransferDto transferDto,
-                                          final String descriptionTransaction, final Transaction error) {
+                                          final String descriptionTransaction, final TransactionDto error) {
         log.info("make money transfer");
         TransferDto returnTransferDto;
         try {
             returnTransferDto = accountFacade.quickTransfer(thisAccountId, transferDto);
             if (returnTransferDto.getAmount().equals(new BigDecimal(-1))) {
                 log.warn("return transfer dto ma błąd");
-                return TransactionDto.builder()
-                        .withDescription(returnTransferDto.getAccountNumber())
-                        .withKindTransaction("error")
-                        .build();
+                return error.toBuilder().withDescription(returnTransferDto.getAccountNumber()).build();
             }
         } catch (Exception e) {
             log.warn("failed connecting with account manager");
-            return TransactionDto.builder().withDescription("Failed connecting with accounts manager")
-                    .withKindTransaction("error")
-                    .build();
+            return error.toBuilder().withDescription("Failed connecting with accounts manager").build();
         }
         log.info("successful receive transfer dto from accounts manager");
         return closeMoneyTransferTransaction(userId, thisAccountId, returnTransferDto, descriptionTransaction, transferDto.getAmount());

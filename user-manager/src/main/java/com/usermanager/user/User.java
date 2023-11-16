@@ -1,13 +1,15 @@
-package com.usermanager.web.dto;
+package com.usermanager.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class UserDto {
+@AllArgsConstructor
+class User {
     private Long id;
     private String username;
     private String realName;

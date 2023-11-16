@@ -1,8 +1,6 @@
-package com.usermanager.repository.adapter;
+package com.usermanager.user;
 
-import com.usermanager.domain.UserEntity;
-
-public interface AdapterUserEntityRepository {
+interface AdapterUserEntityRepository {
     UserEntity save(UserEntity userEntity);
 
     UserEntity findByUsername(String username);

@@ -26,6 +26,17 @@ public class TransactionDto{
         this.value = builder.value;
     }
 
+    public BuilderTransactionDto toBuilder(){
+        return new BuilderTransactionDto()
+                .withId(id)
+                .withUserId(userId)
+                .withAccountId(accountId)
+                .withDescription(description)
+                .withKindTransaction(kindTransaction)
+                .withTransactionDate(transactionDate)
+                .withValue(value);
+    }
+
     public static BuilderTransactionDto builder(){
         return new BuilderTransactionDto();
     }

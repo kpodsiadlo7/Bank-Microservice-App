@@ -1,10 +1,6 @@
-package com.usermanager.service.mapper;
+package com.usermanager.user;
 
 import com.usermanager.UserManagerApplication;
-import com.usermanager.domain.UserEntity;
-import com.usermanager.repository.adapter.AdapterUserEntityRepository;
-import com.usermanager.service.data.User;
-import com.usermanager.web.dto.UserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +12,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = UserManagerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserMapperTestSuite {
+public class UserFactoryTestSuite {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserFactory userFactory;
 
     @Autowired
     private AdapterUserEntityRepository adapterUserEntityRepository;
@@ -35,7 +31,7 @@ public class UserMapperTestSuite {
                 null
         );
         //when
-        UserDto userAfterMapper = userMapper.mapToUserDtoFromUser(user);
+        UserDto userAfterMapper = userFactory.mapToUserDtoFromUser(user);
         //then
         Assertions.assertEquals(7L, userAfterMapper.getId());
         Assertions.assertEquals("real user", userAfterMapper.getRealName());
@@ -53,7 +49,7 @@ public class UserMapperTestSuite {
                 "password"
         );
         //when
-        User userAfterMapper = userMapper.mapToUserFromUserDto(userDto);
+        User userAfterMapper = userFactory.mapToUserFromUserDto(userDto);
         //then
         Assertions.assertEquals(7L, userAfterMapper.getId());
         Assertions.assertEquals("real dto", userAfterMapper.getRealName());
@@ -72,7 +68,7 @@ public class UserMapperTestSuite {
                 null
         );
         //when
-        UserEntity userAfterMapper = userMapper.mapToUserEntityFromUser(user);
+        UserEntity userAfterMapper = userFactory.mapToUserEntityFromUser(user);
         adapterUserEntityRepository.save(userAfterMapper);
         Long userId = userAfterMapper.getId();
         //then
@@ -93,10 +89,10 @@ public class UserMapperTestSuite {
                 null
         );
         //when
-        UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
+        UserEntity userEntity = userFactory.mapToUserEntityFromUser(user);
         adapterUserEntityRepository.save(userEntity);
         //and
-        User userAfterMapper = userMapper.mapToUserFromUserEntity(userEntity);
+        UserDto userAfterMapper = userFactory.buildUserDtoFromUserEntity(userEntity);
         //then
         Assertions.assertNotEquals(7, userAfterMapper.getId());
         Assertions.assertEquals(2, userAfterMapper.getId());

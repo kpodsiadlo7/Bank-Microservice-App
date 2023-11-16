@@ -1,10 +1,6 @@
-package com.usermanager.service;
+package com.usermanager.user;
 
 import com.usermanager.UserManagerApplication;
-import com.usermanager.domain.UserEntity;
-import com.usermanager.repository.adapter.AdapterUserEntityRepository;
-import com.usermanager.service.data.User;
-import com.usermanager.service.mapper.UserMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +17,10 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = UserManagerApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserServiceTestSuite {
+public class UserFacadeTestSuite {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserFactory userFactory;
     @Autowired
     private AdapterUserEntityRepository adapterUserEntityRepository;
 
@@ -33,7 +29,7 @@ public class UserServiceTestSuite {
         //given
         User user = new User(null, "userek", "real name", null, "confirmpassword");
         //system under test
-        var toTest = new UserService(null, null);
+        var toTest = new UserFacade(null, null);
         //when
         String shouldBeFillPassword = toTest.validateData(user).getUsername();
         //then
@@ -45,7 +41,7 @@ public class UserServiceTestSuite {
         //given
         User user = new User(null, "userek", null, "password", "confirmpassword");
         //system under test
-        var toTest = new UserService(null, null);
+        var toTest = new UserFacade(null, null);
         //when
         String shouldBeEnterName = toTest.validateData(user).getUsername();
         //then
@@ -57,7 +53,7 @@ public class UserServiceTestSuite {
         //given
         User user = new User(null, null, "real name", "password", "confirmpassword");
         //system under test
-        var toTest = new UserService(null, null);
+        var toTest = new UserFacade(null, null);
         //when
         String shouldBeEnterLogin = toTest.validateData(user).getUsername();
         //then
@@ -71,7 +67,7 @@ public class UserServiceTestSuite {
         var mockRepo = mock(AdapterUserEntityRepository.class);
         when(mockRepo.existsByUsername(anyString())).thenReturn(true);
         //system under test
-        var toTest = new UserService(mockRepo, null);
+        var toTest = new UserFacade(mockRepo, null);
         //when
         String shouldBeUserExist = toTest.validateData(user).getUsername();
         //then
@@ -86,9 +82,9 @@ public class UserServiceTestSuite {
         var mockRepo = mock(AdapterUserEntityRepository.class);
         when(mockRepo.existsByUsername(anyString())).thenReturn(false);
         //system under test
-        var toTest = new UserService(mockRepo, userMapper);
+        var toTest = new UserFacade(mockRepo, userFactory);
         //when
-        User userAfterTest = toTest.validateData(user);
+        UserDto userAfterTest = toTest.validateData(user);
         //then
         Assertions.assertEquals("username", userAfterTest.getUsername());
         Assertions.assertEquals("real name", userAfterTest.getRealName());
@@ -98,12 +94,12 @@ public class UserServiceTestSuite {
     void loginUser(){
         //given
         User user = new User(null, "username", "real name", "password", "confirm password");
-        UserEntity userEntity = userMapper.mapToUserEntityFromUser(user);
+        UserEntity userEntity = userFactory.mapToUserEntityFromUser(user);
         adapterUserEntityRepository.save(userEntity);
         //system under test
-        var toTest = new UserService(adapterUserEntityRepository,userMapper);
+        var toTest = new UserFacade(adapterUserEntityRepository, userFactory);
         //when
-        User userAfterTest = toTest.loginUser("username");
+        UserDto userAfterTest = toTest.loginUser("username");
         //then
         Assertions.assertNotNull(userAfterTest.getId());
         Assertions.assertEquals("username",userAfterTest.getUsername());

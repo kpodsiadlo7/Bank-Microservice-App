@@ -1,7 +1,5 @@
-package com.usermanager.repository;
+package com.usermanager.user;
 
-import com.usermanager.domain.UserEntity;
-import com.usermanager.repository.adapter.AdapterUserEntityRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
