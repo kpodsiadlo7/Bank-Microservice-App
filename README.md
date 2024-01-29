@@ -1,5 +1,6 @@
 # Nowszy projekt 
 # Aplikacja do gry League of Legends: https://kpodsiadlo7.github.io/
+Kod źródłowy
 ## <a href="https://github.com/kpodsiadlo7/LeagueOfLegendsSTATS">Backend</a>
 ## <a href="https://github.com/kpodsiadlo7/kpodsiadlo7.github.io">Frontend</a>
 
