@@ -4,8 +4,10 @@ Kod źródłowy
 ## <a href="https://github.com/kpodsiadlo7/LeagueOfLegendsSTATS">Backend</a>
 ## <a href="https://github.com/kpodsiadlo7/kpodsiadlo7.github.io">Frontend</a>
 
- 
+
  <br><br><br><br><br><br>
+  ----------------------------------------------------------------------------
+  <br>
  ### Microservices Bank Application with Frontend
 #Spring boot #Microservices #Spring cloud #OpenFeign #Docker #Hibernate #Mockito #HTML/CSS #Thymleaf 
 #Bootstrap #JUnit #RESTAPI #PostgreSQL #Flyway #Spring security #mvc #RabbitMQ #Facade #Builder #Factory
