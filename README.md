@@ -1,4 +1,5 @@
-# Nowszy projekt - aplikacja do gry League of Legends: https://kpodsiadlo7.github.io/
+# Nowszy projekt - aplikacja do gry League of Legends: 
+## https://kpodsiadlo7.github.io/
 ## <a href="https://github.com/kpodsiadlo7/LeagueOfLegendsSTATS">Backend</a>
 ## <a href="https://github.com/kpodsiadlo7/kpodsiadlo7.github.io">Frontend</a>
  
